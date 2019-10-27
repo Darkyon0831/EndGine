@@ -30,10 +30,20 @@ void EG::Shader::Load(const String& vsShaderName, const String& psShaderName)
 	m_psShaderName = psShaderName;
 	m_vsShaderName = vsShaderName;
 
-	String vsFilePath = String("../../game/data/shaders/");
+	String vsFilePath;
+	if (IsDebuggerPresent())
+		vsFilePath += "../../game/data/shaders/";
+	else
+		vsFilePath += "data/shaders/";
+
 	vsFilePath += vsShaderName.GetString();
 
-	String psFilePath = String("../../game/data/shaders/");
+	String psFilePath;
+	if (IsDebuggerPresent())
+		psFilePath += "../../game/data/shaders/";
+	else
+		psFilePath += "data/shaders/";
+	
 	psFilePath += psShaderName.GetString();
 	
 	std::wstring vsWS(vsFilePath.GetSize(), L'#');

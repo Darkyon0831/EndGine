@@ -47,7 +47,6 @@ namespace EG
 		
 	private:
 		Matrix m_projectionMatrix;
-		DirectX::XMMATRIX m_xmMatrix;
 		ProjectionType m_projection;
 		Transform m_transform;
 		Vector2D m_viewportSize;

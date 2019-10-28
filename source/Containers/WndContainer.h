@@ -8,7 +8,7 @@ namespace EG
 {
 	class WndContainer : public Singleton<WndContainer>
 	{
-	public:
+	public:	
 		void SetWindowHandle(HWND& rWindowHandle) { m_windowHandle = rWindowHandle; }
 		const HWND& GetWindowHandle() const { return m_windowHandle; }
 

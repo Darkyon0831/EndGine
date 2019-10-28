@@ -39,7 +39,8 @@ EG::SimpleRenderTest::SimpleRenderTest()
 	float windowWidth = WndSettings::GetInstance().GetWndWidth();
 	float windowHeight = WndSettings::GetInstance().GetWndHeight();
 
-	m_model.GetTransform().scale.Set(0.5f, 0.5f, 0.5f);
+	m_model.GetTransform().scale.x = 10.5f;
+	m_model.Update();
 	
 	m_camera = new Camera(
 		45, 

@@ -7,8 +7,6 @@ EG::Camera::Camera(float fov, float aspectRatio, float nearPlane, float farPlane
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 	float windowWidth = WndSettings::GetInstance().GetWndWidth();
 	float windowHeight = WndSettings::GetInstance().GetWndHeight();
-
-	m_xmMatrix = DirectX::XMMatrixPerspectiveFovLH(1.5707963268f, windowWidth / windowHeight, nearPlane, farPlane);
 	
 	if (projectionType == ProjectionType::Perspective)
 		m_projectionMatrix.ApplyPerspectiveMatrix(aspectRatio, fov, nearPlane, farPlane);

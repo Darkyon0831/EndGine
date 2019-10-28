@@ -103,22 +103,22 @@ void EG::Matrix::Rotate(Vector3D rotation, CombineFunc combine)
 	rotationMatrixZ[4] = sin(rotation.z);
 	rotationMatrixZ[5] = cos(rotation.z);
 
-	Matrix matrix = rotationMatrixX * rotationMatrixY * rotationMatrixZ;
+	Matrix rotationMatrix = rotationMatrixX * rotationMatrixY * rotationMatrixZ;
 
 	if (combine == CombineFunc::PreMultiply)
-		*this = matrix * *this;
+		*this = rotationMatrix * *this;
 	else if (combine == CombineFunc::PostMultiply)
-		*this = *this * matrix;
+		*this = *this * rotationMatrix;
 	else if (combine == CombineFunc::Replace)
-		*this = matrix;
+		*this = rotationMatrix;
 }
 
 void EG::Matrix::Translate(Vector3D translation, CombineFunc combine)
 {
 	Matrix translationMatrix = Matrix::identity;
-	translationMatrix[3] = translation.x;
-	translationMatrix[7] = translation.y;
-	translationMatrix[11] = translation.z;
+	translationMatrix[41] = translation.x;
+	translationMatrix[42] = translation.y;
+	translationMatrix[43] = translation.z;
 
 	if (combine == CombineFunc::PreMultiply)
 		*this = translationMatrix * *this;
@@ -157,9 +157,9 @@ void EG::Matrix::ScaleRotateTranslate(Vector3D scale, Vector3D rotate, Vector3D 
 	scaleMatrix[5] = scale.y;
 	scaleMatrix[10] = scale.z;
 
-	translateMatrix[3] = translate.x;
-	translateMatrix[7] = translate.y;
-	translateMatrix[11] = translate.z;
+	translateMatrix[12] = translate.x;
+	translateMatrix[13] = translate.y;
+	translateMatrix[14] = translate.z;
 
 	rotationMatrixX[5] = cos(rotate.x);
 	rotationMatrixX[6] = -sin(rotate.x);
@@ -176,14 +176,14 @@ void EG::Matrix::ScaleRotateTranslate(Vector3D scale, Vector3D rotate, Vector3D 
 	rotationMatrixZ[4] = sin(rotate.z);
 	rotationMatrixZ[5] = cos(rotate.z);
 
-	Matrix matrix = rotationMatrixX * rotationMatrixY * rotationMatrixZ;
+	Matrix rotationMatrix = rotationMatrixX * rotationMatrixY * rotationMatrixZ;
 
 	if (combine == CombineFunc::PreMultiply)
-		*this = translateMatrix * matrix * scaleMatrix * *this;
+		*this = scaleMatrix * rotationMatrix * translateMatrix * *this;
 	else if (combine == CombineFunc::PostMultiply)
-		*this = *this * translateMatrix * matrix * scaleMatrix;
+		*this = *this * scaleMatrix * rotationMatrix * translateMatrix;
 	else if (combine == CombineFunc::Replace)
-		*this = translateMatrix * matrix * scaleMatrix;
+		*this = scaleMatrix * rotationMatrix * translateMatrix;
 }
 
 void EG::Matrix::ScaleRotate(Vector3D scale, Vector3D rotate, CombineFunc combine)
@@ -214,14 +214,14 @@ void EG::Matrix::ScaleRotate(Vector3D scale, Vector3D rotate, CombineFunc combin
 	rotationMatrixZ[4] = sin(rotate.z);
 	rotationMatrixZ[5] = cos(rotate.z);
 
-	Matrix matrix = rotationMatrixX * rotationMatrixY * rotationMatrixZ;
+	Matrix rotationMatrix = rotationMatrixX * rotationMatrixY * rotationMatrixZ;
 
 	if (combine == CombineFunc::PreMultiply)
-		*this = matrix * scaleMatrix * *this;
+		*this = scaleMatrix * rotationMatrix * *this;
 	else if (combine == CombineFunc::PostMultiply)
-		*this = *this * matrix * scaleMatrix;
+		*this = *this * scaleMatrix * rotationMatrix;
 	else if (combine == CombineFunc::Replace)
-		*this = matrix * scaleMatrix;
+		*this = scaleMatrix * rotationMatrix;
 }
 
 void EG::Matrix::ScaleTranslate(Vector3D scale, Vector3D translate, CombineFunc combine)
@@ -233,16 +233,16 @@ void EG::Matrix::ScaleTranslate(Vector3D scale, Vector3D translate, CombineFunc 
 	scaleMatrix[5] = scale.y;
 	scaleMatrix[10] = scale.z;
 
-	translateMatrix[3] = translate.x;
-	translateMatrix[7] = translate.y;
-	translateMatrix[11] = translate.z;
+	translateMatrix[41] = translate.x;
+	translateMatrix[42] = translate.y;
+	translateMatrix[43] = translate.z;
 
 	if (combine == CombineFunc::PreMultiply)
-		*this = translateMatrix * scaleMatrix * *this;
+		*this = scaleMatrix * translateMatrix * *this;
 	else if (combine == CombineFunc::PostMultiply)
-		*this = *this * translateMatrix * scaleMatrix;
+		*this = *this * scaleMatrix * translateMatrix;
 	else if (combine == CombineFunc::Replace)
-		*this = translateMatrix * scaleMatrix;
+		*this = scaleMatrix * translateMatrix;
 }
 
 void EG::Matrix::RotateTranslate(Vector3D rotate, Vector3D translate, CombineFunc combine)
@@ -254,9 +254,9 @@ void EG::Matrix::RotateTranslate(Vector3D rotate, Vector3D translate, CombineFun
 
 	rotate *= static_cast<float>(M_PI / 180.0f);
 
-	translateMatrix[3] = translate.x;
-	translateMatrix[7] = translate.y;
-	translateMatrix[11] = translate.z;
+	translateMatrix[41] = translate.x;
+	translateMatrix[42] = translate.y;
+	translateMatrix[43] = translate.z;
 
 	rotationMatrixX[5] = cos(rotate.x);
 	rotationMatrixX[6] = -sin(rotate.x);
@@ -273,14 +273,14 @@ void EG::Matrix::RotateTranslate(Vector3D rotate, Vector3D translate, CombineFun
 	rotationMatrixZ[4] = sin(rotate.z);
 	rotationMatrixZ[5] = cos(rotate.z);
 
-	Matrix matrix = rotationMatrixX * rotationMatrixY * rotationMatrixZ;
+	Matrix rotationMatrix = rotationMatrixX * rotationMatrixY * rotationMatrixZ;
 
 	if (combine == CombineFunc::PreMultiply)
-		*this = translateMatrix * matrix * *this;
+		*this = rotationMatrix * translateMatrix * *this;
 	else if (combine == CombineFunc::PostMultiply)
-		*this = *this * translateMatrix * matrix;
+		*this = *this * rotationMatrix * translateMatrix;
 	else if (combine == CombineFunc::Replace)
-		*this = translateMatrix * matrix;
+		*this = rotationMatrix * translateMatrix;
 }
 
 EG::Matrix& EG::Matrix::Transpose(bool createNew)
@@ -413,8 +413,6 @@ EG::Matrix EG::Matrix::operator-(Matrix& rMatrix)
 
 void EG::Matrix::ApplyPerspectiveMatrix(float aspect, float fov, float nearPlane, float farPlane)
 {
-	// double cotan(double i) { return(1 / tan(i)); }
-
 	(*this)[0] = 1.0f / tan(fov / 2) / aspect;
 	(*this)[5] = 1.0f / tan(fov / 2);
 	(*this)[10] = farPlane / (farPlane - nearPlane);

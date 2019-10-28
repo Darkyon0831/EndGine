@@ -81,6 +81,7 @@ EG::SwapChain::SwapChain()
 	HRESULT result = pFactory->CreateSwapChain(pDxgiDevice, &swapChainDesc, &m_pSwapChain);
 
 	pFactory->Release();
+	pDxgiDevice->Release();
 }
 
 EG::SwapChain::~SwapChain()

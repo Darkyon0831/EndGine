@@ -16,6 +16,12 @@ EG::Mesh::~Mesh()
 
 	if (m_pIndexBuffer != nullptr)
 		m_pIndexBuffer->Release();
+
+	if (m_vertexArray != nullptr)
+		delete[] m_vertexArray;
+
+	if (m_indexArray != nullptr)
+		delete[] m_indexArray;
 }
 
 void EG::Mesh::SetVertexArray(Vertex* vertexArray, size_t size)

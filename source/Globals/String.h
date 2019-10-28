@@ -7,10 +7,10 @@ namespace EG
 	class String
 	{
 	public:
-		explicit String() = default;
-		explicit String(const char* str);
-		explicit String(int size);
-		explicit String(const char& characher);
+		String() = default;
+		String(const char* str);
+		String(size_t size);
+		String(const char& characher);
 		~String();
 
 		String(const String& other);
@@ -22,7 +22,13 @@ namespace EG
 		void operator+=(const char& characher);
 		void operator+=(const char* str);
 		void operator=(const char* str);
+		void operator=(char* str);
 		void operator=(const char& characher);
+		
+		void operator=(const String& other);
+		String operator+(const String& other) const;
+
+		char operator[] (const int& index) const { return GetString()[index]; }
 
 	private:
 		LinearAllocator m_allocator;

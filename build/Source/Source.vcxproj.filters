@@ -22,6 +22,9 @@
     <Filter Include="Tests">
       <UniqueIdentifier>{88daed15-d861-4bb9-ad85-63b4ddedd1eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Globals\File">
+      <UniqueIdentifier>{bea23664-e998-41ef-b809-32fbc24962b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\Containers\WndContainer.cpp">
@@ -89,6 +92,12 @@
     </ClCompile>
     <ClCompile Include="..\..\source\Tests\RenderCubeTest.cpp">
       <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Globals\File\FileSystem.cpp">
+      <Filter>Globals\File</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Graphics\Texture.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +175,12 @@
     </ClInclude>
     <ClInclude Include="..\..\source\Tests\RenderCubeTest.h">
       <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Globals\File\FileSystem.h">
+      <Filter>Globals\File</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Graphics\Texture.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

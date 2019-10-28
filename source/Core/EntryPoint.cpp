@@ -12,6 +12,8 @@
 #include "Graphics/Shader.h"
 #include "Graphics/Model.h"
 #include "Globals/Clock.h"
+#include <d3d11.h>
+#include "Globals/File/FileSystem.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -33,11 +35,17 @@ int EG::EntryPoint::WinEntryPoint(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 	// Warning avoid for unused parameters
 	(void)hPrevInstance;
 	(void)lpCmdLine;
-
+	
 	WndContainer::Initialize();
 	WndSettings::Initialize();
 	InputHandler::Initialize();
 	Clock::Initialize();
+	FileSystem::Initialize();
+
+	if (IsDebuggerPresent())
+		FileSystem::GetInstance().SetDataLocation("../../game/data/");
+	else
+		FileSystem::GetInstance().SetDataLocation("data/");
 	
 	m_wndName = L"EndGine";
 
@@ -55,9 +63,6 @@ int EG::EntryPoint::WinEntryPoint(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 	SwapChain::Initialize();
 	
 	RenderCubeTest renderCubeTest;
-
-	Shader testShader = Shader();
-	testShader.Load(String("simpleColor_vertex.hlsl"), String("simpleColor_pixel.hlsl"));
 
 	bool isRunning = true;
 	// Main message loop:
@@ -78,6 +83,13 @@ int EG::EntryPoint::WinEntryPoint(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 			renderCubeTest.Render();
 		}
 	}
+
+	WndContainer::Uninitialized();
+	WndSettings::Uninitialized();
+	InputHandler::Uninitialized();
+	Clock::Uninitialized();
+	SwapChain::Uninitialized();
+	Device::Uninitialized();
 
 	return static_cast<int>(msg.wParam);
 }

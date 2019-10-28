@@ -150,3 +150,17 @@ void EG::WString::operator=(const wchar_t& characher)
 
 	m_str = static_cast<wchar_t*>(m_allocator.GetFirst());
 }
+
+void EG::WString::operator=(const WString& other)
+{
+	const size_t otherStringBlockSize = other.m_allocator.GetBlockSize();
+
+	m_allocator.Free();
+	m_allocator.AllocBlock(otherStringBlockSize);
+	void* newPtr = m_allocator.Alloc(otherStringBlockSize);
+	wchar_t* copyStr = other.GetString();
+
+	memcpy(newPtr, &copyStr[0], otherStringBlockSize);
+
+	m_str = static_cast<wchar_t*>(m_allocator.GetFirst());
+}

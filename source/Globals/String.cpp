@@ -11,7 +11,7 @@ EG::String::String(const char* str)
 	m_str = static_cast<char*>(m_allocator.GetFirst());
 }
 
-EG::String::String(int size)
+EG::String::String(size_t size)
 {
 	m_allocator.AllocBlock(size + 1);
 
@@ -138,6 +138,18 @@ void EG::String::operator=(const char* str)
 	m_str = static_cast<char*>(m_allocator.GetFirst());
 }
 
+void EG::String::operator=(char* str)
+{
+	const size_t strSize = strlen(str);
+	m_allocator.Free();
+	m_allocator.AllocBlock(strSize + 1);
+	void* newPtr = m_allocator.Alloc(strSize + 1);
+	memcpy(newPtr, &str[0], strSize);
+	memset(&static_cast<char*>(newPtr)[strSize], '\0', 1);
+
+	m_str = static_cast<char*>(m_allocator.GetFirst());
+}
+
 void EG::String::operator=(const char& characher)
 {
 	const size_t charSize = sizeof(char);
@@ -148,4 +160,29 @@ void EG::String::operator=(const char& characher)
 	memset(&static_cast<char*>(newPtr)[charSize], '\0', 1);
 
 	m_str = static_cast<char*>(m_allocator.GetFirst());
+}
+
+void EG::String::operator=(const String& other)
+{
+	const size_t otherStringBlockSize = other.m_allocator.GetBlockSize();
+
+	m_allocator.Free();
+	m_allocator.AllocBlock(otherStringBlockSize);
+	void* newPtr = m_allocator.Alloc(otherStringBlockSize);
+	char* copyStr = other.GetString();
+
+	memcpy(newPtr, &copyStr[0], otherStringBlockSize);
+
+	m_str = static_cast<char*>(m_allocator.GetFirst());
+}
+
+EG::String EG::String::operator+(const String& other) const
+{
+	String newString = String(GetSize() + other.GetSize());
+	char* newStringPtr = newString.GetString();
+
+	newString += GetString();
+	newString += other.GetString();
+
+	return newString;
 }

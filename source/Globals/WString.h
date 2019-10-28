@@ -7,10 +7,10 @@ namespace EG
 	class WString
 	{
 	public:
-		explicit WString() = default;
-		explicit WString(const wchar_t* str);
-		explicit WString(int size);
-		explicit WString(const wchar_t& characher);
+		WString() = default;
+		WString(const wchar_t* str);
+		WString(int size);
+		WString(const wchar_t& characher);
 		~WString();
 
 		WString(const WString& other);
@@ -23,6 +23,7 @@ namespace EG
 		void operator+=(const wchar_t* str);
 		void operator=(const wchar_t* str);
 		void operator=(const wchar_t& characher);
+		void operator=(const WString& other);
 
 	private:
 		LinearAllocator m_allocator;

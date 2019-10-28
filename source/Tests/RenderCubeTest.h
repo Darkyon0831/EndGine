@@ -6,6 +6,7 @@
 #include "Globals/Macro.h"
 #include "Graphics/Model.h"
 #include "Globals/Clock.h"
+#include "Globals/File/FileSystem.h"
 
 namespace EG
 {
@@ -23,5 +24,7 @@ namespace EG
 		ID3D11RasterizerState* m_rasterState;
 		Camera* m_camera;
 		Model m_model;
+
+		FileSystem::D3D11Texture m_texture;
 	};
 }

@@ -35,6 +35,7 @@ namespace EG
 		ID3D11VertexShader* GetVertexShader() const { return m_pVertexShader; }
 		ID3D11PixelShader* GetPixelShader() const { return m_pPixelShader; }
 		ID3D11InputLayout* GetInputLayout() const { return m_pInputLayout; }
+		ID3D11SamplerState* GetSamplerState() const { return m_pSamplerState; }
 		ID3D11Buffer* GetVertexConstantBuffer() const { return m_pConstantBuffer; }
 		ID3D11Buffer** GetVertexConstantBufferPtr() { return &m_pConstantBuffer; }
 		
@@ -45,6 +46,7 @@ namespace EG
 		ID3D11InputLayout* m_pInputLayout;
 		ID3D11VertexShader* m_pVertexShader;
 		ID3D11PixelShader* m_pPixelShader;
+		ID3D11SamplerState* m_pSamplerState;
 		ID3D10Blob* m_pVertexShaderBuffer;
 		ID3D10Blob* m_pPixelShaderBuffer;
 		ID3D10Blob* m_pError;

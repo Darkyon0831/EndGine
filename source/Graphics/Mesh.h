@@ -2,6 +2,7 @@
 
 #include "Globals/Color.h"
 #include "Globals/Vector3D.h"
+#include "Globals/Vector2D.h"
 #include "Device.h"
 
 #include <d3d11.h>
@@ -18,6 +19,7 @@ namespace EG
 		{
 			Vector3D position;
 			Color color;
+			Vector2D uv;
 		};
 
 		void SetVertexArray(Vertex* vertexArray, size_t size);

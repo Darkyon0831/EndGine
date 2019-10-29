@@ -182,5 +182,8 @@
     <ClInclude Include="..\..\source\Graphics\Texture.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\Memory\Allocator.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

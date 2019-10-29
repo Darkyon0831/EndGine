@@ -14,6 +14,7 @@
 #include "Globals/Clock.h"
 #include <d3d11.h>
 #include "Globals/File/FileSystem.h"
+#include "Memory/PoolAllocator.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -41,6 +42,10 @@ int EG::EntryPoint::WinEntryPoint(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 	InputHandler::Initialize();
 	Clock::Initialize();
 	FileSystem::Initialize();
+
+	PoolAllocator allocator = PoolAllocator(64, 16);
+
+	WndSettings::GetInstance().SetIsVsync(true);
 
 	if (IsDebuggerPresent())
 		FileSystem::GetInstance().SetDataLocation("../../game/data/");

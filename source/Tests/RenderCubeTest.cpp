@@ -163,7 +163,7 @@ void EG::RenderCubeTest::Render()
 	m_camera->BeginRender(Camera::ClearFlags::RenderTarget | Camera::ClearFlags::Depth);
 	m_model.Render(*m_camera);
 
-	SwapChain::GetInstance().Present(0, 0);
+	SwapChain::GetInstance().Present(1, 0);
 }
 
 void EG::RenderCubeTest::Update()

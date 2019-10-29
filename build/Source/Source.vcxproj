@@ -75,6 +75,7 @@
     <ClInclude Include="..\..\source\Graphics\Shader.h" />
     <ClInclude Include="..\..\source\Graphics\SwapChain.h" />
     <ClInclude Include="..\..\source\Graphics\Texture.h" />
+    <ClInclude Include="..\..\source\Memory\Allocator.h" />
     <ClInclude Include="..\..\source\Memory\LinearAllocator.h" />
     <ClInclude Include="..\..\source\Memory\PoolAllocator.h" />
     <ClInclude Include="..\..\source\Settings\WndSettings.h" />

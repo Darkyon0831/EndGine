@@ -2,6 +2,7 @@
 
 EG::Clock::Clock()
 	: m_deltaTime(0.0)
+	, m_lifeTime(0.0f)
 	, m_isFirst(true)
 {
 	
@@ -27,5 +28,7 @@ void EG::Clock::Update()
 		m_deltaTime = timeSpan.count();
 
 		m_oldTimepoint = now;
+
+		m_lifeTime += m_deltaTime;
 	}
 }

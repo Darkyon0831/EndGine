@@ -15,6 +15,9 @@ namespace EG
 		ATOM RegisterWndClass(HINSTANCE hInstance) const;
 		int InitInstance(HINSTANCE hInstance, int nCmdShow) const;
 
+		void InitializeSystems();
+		void InitializeEntities();
+
 		WString m_wndName;
 	};
 }

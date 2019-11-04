@@ -15,6 +15,15 @@
 #include <d3d11.h>
 #include "Globals/File/FileSystem.h"
 #include "Memory/PoolAllocator.h"
+#include "Tests/TestEntity.h"
+#include "ECS/EntityManager.h"
+#include "ECS/ComponentManager.h"
+#include "ECS/SystemManager.h"
+#include "Tests/TestSystem.h"
+#include "Tests/DeltaTimeSystem.h"
+#include "Tests/Ecs Test/Cube.h"
+#include "Tests/Ecs Test/RenderSystem.h"
+#include "Tests/Ecs Test/RotateCubeSystem.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -42,8 +51,9 @@ int EG::EntryPoint::WinEntryPoint(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 	InputHandler::Initialize();
 	Clock::Initialize();
 	FileSystem::Initialize();
-
-	PoolAllocator allocator = PoolAllocator(64, 16);
+	EntityManager::Initialize();
+	ComponentManager::Initialize();
+	SystemManager::Initialize();
 
 	WndSettings::GetInstance().SetIsVsync(true);
 
@@ -53,7 +63,7 @@ int EG::EntryPoint::WinEntryPoint(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 		FileSystem::GetInstance().SetDataLocation("data/");
 	
 	m_wndName = L"EndGine";
-
+	
 	// Initialize global strings
 	RegisterWndClass(hInstance);
 
@@ -66,6 +76,9 @@ int EG::EntryPoint::WinEntryPoint(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 	MSG msg;
 	Device::Initialize();
 	SwapChain::Initialize();
+
+	InitializeEntities();
+	InitializeSystems();
 	
 	RenderCubeTest renderCubeTest;
 
@@ -84,8 +97,11 @@ int EG::EntryPoint::WinEntryPoint(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 		else
 		{
 			Clock::GetInstance().Update();
-			renderCubeTest.Update();
-			renderCubeTest.Render();
+			//renderCubeTest.Update();
+			//renderCubeTest.Render();
+			SystemManager::GetInstance().UpdateSystems();
+
+			int debug = 0;
 		}
 	}
 
@@ -138,4 +154,16 @@ int EG::EntryPoint::InitInstance(HINSTANCE hInstance, int nCmdShow) const
 	UpdateWindow(hWnd);
 
 	return TRUE;
+}
+
+void EG::EntryPoint::InitializeSystems()
+{
+	SystemManager::GetInstance().CreateSystem<RenderSystem>();
+	SystemManager::GetInstance().CreateSystem<RotateCubeSystem>();
+	SystemManager::GetInstance().InitializeSystems();
+}
+
+void EG::EntryPoint::InitializeEntities()
+{
+	EntityManager::GetInstance().CreateEntity<Cube>();
 }

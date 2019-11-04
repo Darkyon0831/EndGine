@@ -30,12 +30,18 @@
     <ClCompile Include="..\..\source\Containers\WndContainer.cpp" />
     <ClCompile Include="..\..\source\Core\EntryPoint.cpp" />
     <ClCompile Include="..\..\source\Core\InputHandler.cpp" />
+    <ClCompile Include="..\..\source\ECS\Component.cpp" />
+    <ClCompile Include="..\..\source\ECS\ComponentManager.cpp" />
+    <ClCompile Include="..\..\source\ECS\EntityManager.cpp" />
+    <ClCompile Include="..\..\source\ECS\System.cpp" />
+    <ClCompile Include="..\..\source\ECS\SystemManager.cpp" />
     <ClCompile Include="..\..\source\Globals\Camera.cpp" />
     <ClCompile Include="..\..\source\Globals\Clock.cpp" />
     <ClCompile Include="..\..\source\Globals\Color.cpp" />
     <ClCompile Include="..\..\source\Globals\File\FileSystem.cpp" />
     <ClCompile Include="..\..\source\Globals\Matrix.cpp" />
     <ClCompile Include="..\..\source\Globals\String.cpp" />
+    <ClCompile Include="..\..\source\Globals\Texture.cpp" />
     <ClCompile Include="..\..\source\Globals\Transform.cpp" />
     <ClCompile Include="..\..\source\Globals\Vector2D.cpp" />
     <ClCompile Include="..\..\source\Globals\Vector3D.cpp" />
@@ -49,13 +55,31 @@
     <ClCompile Include="..\..\source\Graphics\Texture.cpp" />
     <ClCompile Include="..\..\source\Memory\LinearAllocator.cpp" />
     <ClCompile Include="..\..\source\Memory\PoolAllocator.cpp" />
+    <ClCompile Include="..\..\source\Tests\DeltaTimeComponent.cpp" />
+    <ClCompile Include="..\..\source\Tests\DeltaTimeSystem.cpp" />
+    <ClCompile Include="..\..\source\Tests\Ecs Test\Cube.cpp" />
+    <ClCompile Include="..\..\source\Tests\Ecs Test\MaterialComponent.cpp" />
+    <ClCompile Include="..\..\source\Tests\Ecs Test\MeshComponent.cpp" />
+    <ClCompile Include="..\..\source\Tests\Ecs Test\RenderSystem.cpp" />
+    <ClCompile Include="..\..\source\Tests\Ecs Test\RotateCubeSystem.cpp" />
+    <ClCompile Include="..\..\source\Tests\Ecs Test\TransformComponent.cpp" />
     <ClCompile Include="..\..\source\Tests\RenderCubeTest.cpp" />
     <ClCompile Include="..\..\source\Tests\SimpeRenderTest.cpp" />
+    <ClCompile Include="..\..\source\Tests\TestComponent.cpp" />
+    <ClCompile Include="..\..\source\Tests\TestEntity.cpp" />
+    <ClCompile Include="..\..\source\Tests\TestSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\Containers\WndContainer.h" />
     <ClInclude Include="..\..\source\Core\EntryPoint.h" />
     <ClInclude Include="..\..\source\Core\InputHandler.h" />
+    <ClInclude Include="..\..\source\ECS\Component.h" />
+    <ClInclude Include="..\..\source\ECS\ComponentManager.h" />
+    <ClInclude Include="..\..\source\ECS\Entity.h" />
+    <ClInclude Include="..\..\source\ECS\EntityManager.h" />
+    <ClInclude Include="..\..\source\ECS\ISystem.h" />
+    <ClInclude Include="..\..\source\ECS\System.h" />
+    <ClInclude Include="..\..\source\ECS\SystemManager.h" />
     <ClInclude Include="..\..\source\Globals\Camera.h" />
     <ClInclude Include="..\..\source\Globals\Clock.h" />
     <ClInclude Include="..\..\source\Globals\Color.h" />
@@ -64,6 +88,7 @@
     <ClInclude Include="..\..\source\Globals\Matrix.h" />
     <ClInclude Include="..\..\source\Globals\Singleton.h" />
     <ClInclude Include="..\..\source\Globals\String.h" />
+    <ClInclude Include="..\..\source\Globals\Texture.h" />
     <ClInclude Include="..\..\source\Globals\Transform.h" />
     <ClInclude Include="..\..\source\Globals\Vector2D.h" />
     <ClInclude Include="..\..\source\Globals\Vector3D.h" />
@@ -79,8 +104,20 @@
     <ClInclude Include="..\..\source\Memory\LinearAllocator.h" />
     <ClInclude Include="..\..\source\Memory\PoolAllocator.h" />
     <ClInclude Include="..\..\source\Settings\WndSettings.h" />
+    <ClInclude Include="..\..\source\Tests\DeltaTimeComponent.h" />
+    <ClInclude Include="..\..\source\Tests\DeltaTimeSystem.h" />
+    <ClInclude Include="..\..\source\Tests\Ecs Test\Cube.h" />
+    <ClInclude Include="..\..\source\Tests\Ecs Test\MaterialComponent.h" />
+    <ClInclude Include="..\..\source\Tests\Ecs Test\MeshComponent.h" />
+    <ClInclude Include="..\..\source\Tests\Ecs Test\RenderSystem.h" />
+    <ClInclude Include="..\..\source\Tests\Ecs Test\RotateCubeSystem.h" />
+    <ClInclude Include="..\..\source\Tests\Ecs Test\TransformComponent.h" />
+    <ClInclude Include="..\..\source\Tests\IEntity.h" />
     <ClInclude Include="..\..\source\Tests\RenderCubeTest.h" />
     <ClInclude Include="..\..\source\Tests\SimpeRenderTest.h" />
+    <ClInclude Include="..\..\source\Tests\TestComponent.h" />
+    <ClInclude Include="..\..\source\Tests\TestEntity.h" />
+    <ClInclude Include="..\..\source\Tests\TestSystem.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

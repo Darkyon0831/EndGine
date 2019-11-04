@@ -25,6 +25,12 @@
     <Filter Include="Globals\File">
       <UniqueIdentifier>{bea23664-e998-41ef-b809-32fbc24962b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS">
+      <UniqueIdentifier>{e7a31fe5-c6e6-4b0d-a48f-f24922c27224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Ecs test">
+      <UniqueIdentifier>{a0d1f794-d5fa-4931-b5fb-dadc66c06b82}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\Containers\WndContainer.cpp">
@@ -98,6 +104,57 @@
     </ClCompile>
     <ClCompile Include="..\..\source\Graphics\Texture.cpp">
       <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\ECS\EntityManager.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\TestEntity.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\ECS\ComponentManager.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\TestComponent.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\ECS\System.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\ECS\SystemManager.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\TestSystem.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\DeltaTimeComponent.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\DeltaTimeSystem.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\Ecs Test\Cube.cpp">
+      <Filter>Tests\Ecs test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\Ecs Test\MaterialComponent.cpp">
+      <Filter>Tests\Ecs test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\Ecs Test\MeshComponent.cpp">
+      <Filter>Tests\Ecs test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\Ecs Test\TransformComponent.cpp">
+      <Filter>Tests\Ecs test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Globals\Texture.cpp">
+      <Filter>Globals</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\ECS\Component.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\Ecs Test\RenderSystem.cpp">
+      <Filter>Tests\Ecs test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\Ecs Test\RotateCubeSystem.cpp">
+      <Filter>Tests\Ecs test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +241,66 @@
     </ClInclude>
     <ClInclude Include="..\..\source\Memory\Allocator.h">
       <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\ECS\Entity.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\ECS\EntityManager.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\TestEntity.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\ECS\Component.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\ECS\ComponentManager.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\TestComponent.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\ECS\System.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\ECS\SystemManager.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\ECS\ISystem.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\TestSystem.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\DeltaTimeComponent.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\DeltaTimeSystem.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\IEntity.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\Ecs Test\Cube.h">
+      <Filter>Tests\Ecs test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\Ecs Test\MaterialComponent.h">
+      <Filter>Tests\Ecs test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\Ecs Test\MeshComponent.h">
+      <Filter>Tests\Ecs test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\Ecs Test\TransformComponent.h">
+      <Filter>Tests\Ecs test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Globals\Texture.h">
+      <Filter>Globals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\Ecs Test\RenderSystem.h">
+      <Filter>Tests\Ecs test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\Ecs Test\RotateCubeSystem.h">
+      <Filter>Tests\Ecs test</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

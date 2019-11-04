@@ -1,7 +1,8 @@
 #include "PoolAllocator.h"
 #include <cassert>
+#include <cstdlib>
 
-EG::PoolAllocator::PoolAllocator(size_t totalSize, size_t chunkSize)
+EG::PoolAllocator::PoolAllocator(size_t totalSize, size_t chunkSize, size_t alignment)
 	: m_block(nullptr)
 	, m_blockSize(totalSize)
 	, m_chunkSize(chunkSize)
@@ -10,8 +11,9 @@ EG::PoolAllocator::PoolAllocator(size_t totalSize, size_t chunkSize)
 	assert(totalSize % chunkSize == 0 && "Total size must be a multible of chunk size");
 	assert(chunkSize >= sizeof(void*) && "Chunk size is a minimum of 8");
 
-	m_block = malloc(totalSize);
-
+	m_blockWithOffset = malloc(totalSize + alignment - 1);
+	m_block = reinterpret_cast<void*>((reinterpret_cast<size_t>(m_blockWithOffset) + alignment - 1 & ~alignment));
+	
 	// Split the memory and fill the linked list
 
 	m_linkedList = static_cast<Node*>(m_block);
@@ -23,19 +25,21 @@ EG::PoolAllocator::PoolAllocator(size_t totalSize, size_t chunkSize)
 
 	while (currentSize != m_blockSize - m_chunkSize)
 	{
-		currentNode->next = reinterpret_cast<Node*>(blockChar + (currentSize + m_chunkSize + sizeof(void*)));
+		currentNode->next = reinterpret_cast<Node*>(blockChar + (currentSize + m_chunkSize));
 		currentSize += m_chunkSize;
 		currentNode = currentNode->next;
 
 		if (currentSize == m_blockSize - m_chunkSize)
 			currentNode->next = nullptr;
 	}
+
+	int debug = 0;
 }
 
 EG::PoolAllocator::~PoolAllocator()
 {
-	if (m_block != nullptr)
-		free(m_block);
+	if (m_blockWithOffset != nullptr)
+		free(m_blockWithOffset);
 }
 
 void* EG::PoolAllocator::Alloc()

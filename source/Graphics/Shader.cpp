@@ -73,7 +73,7 @@ void EG::Shader::Load(const String& vsShaderName, const String& psShaderName)
 	if (FAILED(result))
 	{
 		if (m_pError)
-			PrintError(ErrorSource::VS);
+			PrintError(ShaderStage::VS);
 		
 		isLoadError = true;
 		return;
@@ -93,7 +93,7 @@ void EG::Shader::Load(const String& vsShaderName, const String& psShaderName)
 	if (FAILED(result))
 	{
 		if (m_pError)
-			PrintError(ErrorSource::PS);
+			PrintError(ShaderStage::PS);
 		
 		isLoadError = true;
 		return;
@@ -167,7 +167,7 @@ void EG::Shader::SetInputLayout(ID3D11InputLayout* pInputLayout)
 	m_pInputLayout = pInputLayout;
 }
 
-void EG::Shader::PrintError(ErrorSource errorSource) const
+void EG::Shader::PrintError(ShaderStage errorSource) const
 {
 	char* compileErrors;
 	unsigned long bufferSize, i;
@@ -184,9 +184,9 @@ void EG::Shader::PrintError(ErrorSource errorSource) const
 	vsErrorFile += m_vsShaderName.GetString();
 	vsErrorFile += ".txt";
 	
-	if (errorSource == ErrorSource::PS)
+	if (errorSource == ShaderStage::PS)
 		fout.open(psErrorFile.GetString());
-	else if (errorSource == ErrorSource::VS)
+	else if (errorSource == ShaderStage::VS)
 		fout.open(vsErrorFile.GetString());
 
 	for (i = 0; i < bufferSize; i++)

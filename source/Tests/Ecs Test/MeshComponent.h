@@ -1,6 +1,7 @@
 #include "Globals/Color.h"
 #include "Globals/Vector2D.h"
 #include "Globals/Vector3D.h"
+#include "Graphics/ConstantBuffer.h"
 #include <d3d11.h>
 
 #include "ECS/Component.h"
@@ -28,6 +29,9 @@ public:
 
 	size_t GetVertexCount() const { return m_vertexCount; }
 	size_t GetIndexCount() const { return m_indexCount; }
+
+	EG::ConstantBuffer m_vsConstantsBuffer;
+	EG::ConstantBuffer m_psConstantBuffer;
 
 private:
 	Vertex* m_vertexArray;

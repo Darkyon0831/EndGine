@@ -8,10 +8,10 @@ EG::Device::Device()
 	IDXGIAdapter* pAdapter;
 	D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0;
 
-	EGCHECKHRERROR(CreateDXGIFactory(__uuidof(IDXGIFactory), reinterpret_cast<void**>(&pFactory)));
-	EGCHECKHRERROR(pFactory->EnumAdapters(0, &pAdapter));
+	EGCHECKHR(CreateDXGIFactory(__uuidof(IDXGIFactory), reinterpret_cast<void**>(&pFactory)));
+	EGCHECKHR(pFactory->EnumAdapters(0, &pAdapter));
 
-	EGCHECKHRERROR(D3D11CreateDevice(
+	EGCHECKHR(D3D11CreateDevice(
 		nullptr, 
 		D3D_DRIVER_TYPE_HARDWARE, 
 		nullptr, 

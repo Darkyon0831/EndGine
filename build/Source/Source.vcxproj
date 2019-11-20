@@ -27,13 +27,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\source\Components\RenderComponent.cpp" />
     <ClCompile Include="..\..\source\Containers\WndContainer.cpp" />
     <ClCompile Include="..\..\source\Core\EntryPoint.cpp" />
     <ClCompile Include="..\..\source\Core\InputHandler.cpp" />
-    <ClCompile Include="..\..\source\ECS\Component.cpp" />
     <ClCompile Include="..\..\source\ECS\ComponentManager.cpp" />
     <ClCompile Include="..\..\source\ECS\EntityManager.cpp" />
-    <ClCompile Include="..\..\source\ECS\System.cpp" />
     <ClCompile Include="..\..\source\ECS\SystemManager.cpp" />
     <ClCompile Include="..\..\source\Globals\Camera.cpp" />
     <ClCompile Include="..\..\source\Globals\Clock.cpp" />
@@ -47,6 +46,7 @@
     <ClCompile Include="..\..\source\Globals\Vector3D.cpp" />
     <ClCompile Include="..\..\source\Globals\Vector4D.cpp" />
     <ClCompile Include="..\..\source\Globals\WString.cpp" />
+    <ClCompile Include="..\..\source\Graphics\ConstantBuffer.cpp" />
     <ClCompile Include="..\..\source\Graphics\Device.cpp" />
     <ClCompile Include="..\..\source\Graphics\Mesh.cpp" />
     <ClCompile Include="..\..\source\Graphics\Model.cpp" />
@@ -70,6 +70,7 @@
     <ClCompile Include="..\..\source\Tests\TestSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\source\Components\RenderComponent.h" />
     <ClInclude Include="..\..\source\Containers\WndContainer.h" />
     <ClInclude Include="..\..\source\Core\EntryPoint.h" />
     <ClInclude Include="..\..\source\Core\InputHandler.h" />
@@ -77,6 +78,7 @@
     <ClInclude Include="..\..\source\ECS\ComponentManager.h" />
     <ClInclude Include="..\..\source\ECS\Entity.h" />
     <ClInclude Include="..\..\source\ECS\EntityManager.h" />
+    <ClInclude Include="..\..\source\ECS\IComponent.h" />
     <ClInclude Include="..\..\source\ECS\ISystem.h" />
     <ClInclude Include="..\..\source\ECS\System.h" />
     <ClInclude Include="..\..\source\ECS\SystemManager.h" />
@@ -94,7 +96,9 @@
     <ClInclude Include="..\..\source\Globals\Vector3D.h" />
     <ClInclude Include="..\..\source\Globals\Vector4D.h" />
     <ClInclude Include="..\..\source\Globals\WString.h" />
+    <ClInclude Include="..\..\source\Graphics\ConstantBuffer.h" />
     <ClInclude Include="..\..\source\Graphics\Device.h" />
+    <ClInclude Include="..\..\source\Graphics\Material.h" />
     <ClInclude Include="..\..\source\Graphics\Mesh.h" />
     <ClInclude Include="..\..\source\Graphics\Model.h" />
     <ClInclude Include="..\..\source\Graphics\Shader.h" />
@@ -112,7 +116,6 @@
     <ClInclude Include="..\..\source\Tests\Ecs Test\RenderSystem.h" />
     <ClInclude Include="..\..\source\Tests\Ecs Test\RotateCubeSystem.h" />
     <ClInclude Include="..\..\source\Tests\Ecs Test\TransformComponent.h" />
-    <ClInclude Include="..\..\source\Tests\IEntity.h" />
     <ClInclude Include="..\..\source\Tests\RenderCubeTest.h" />
     <ClInclude Include="..\..\source\Tests\SimpeRenderTest.h" />
     <ClInclude Include="..\..\source\Tests\TestComponent.h" />

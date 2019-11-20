@@ -1,3 +1,5 @@
 #pragma once
 
-#define EGCHECKHRERROR(ERR) if ((ERR) != 0) return;
+#include <cassert>
+
+#define EGCHECKHR(HRCODE) assert((HRCODE) == 0x00)

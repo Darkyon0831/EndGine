@@ -37,35 +37,17 @@ EG::String EG::FileSystem::GetErrorFileOutputForFile(const String& fileName) con
 	return m_errorFileOutput + fileName;
 }
 
-void EG::FileSystem::WriteErrorFile(const String& filename, const String& extension)
+void EG::FileSystem::WriteErrorFile(const String& filename, const String& extension, const String& errorMessage)
 {
 	String errorPath = GetErrorFileOutputForFile(filename + extension);
 	std::ofstream fout;
-	
+
 	fout.open(errorPath.GetString());
 
-	for (int i = 0; i < errorPath.GetSize(); i++)
+	for (int i = 0; i < errorMessage.GetSize(); i++)
 	{
-		fout << errorPath[i];
+		fout << errorMessage[i];
 	}
 
 	fout.close();
-}
-
-EG::FileSystem::D3D11Texture EG::FileSystem::LoadTexture(const String& fromDataPath) const
-{
-	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
-	ID3D11Resource* pTextureResource;
-	D3D11Texture texture;
-	
-	String fullPath = GetDataLocationForPath(fromDataPath);
-
-	std::wstring vsWS(fullPath.GetSize(), L'#');
-	mbstowcs_s(nullptr, &vsWS[0], fullPath.GetSize(), fullPath.GetString(), fullPath.GetSize() - 1);
-	
-	HRESULT hr = DirectX::CreateDDSTextureFromFile(pDevice, vsWS.c_str(), &pTextureResource, &texture.pShaderResourceView);
-
-	pTextureResource->QueryInterface(IID_ID3D11Texture2D, reinterpret_cast<void**>(&texture.pD311Texture));
-
-	return texture;
 }

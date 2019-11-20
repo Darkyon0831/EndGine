@@ -1,13 +1,15 @@
 #pragma once
 
 #include "Globals/WString.h"
+#include "Device.h"
+#include "Globals/String.h"
+#include "Globals/Matrix.h"
+#include "ConstantBuffer.h"
+
 #include <d3d11.h>
 #include <d3dcommon.h>
 #include <d3dcompiler.h>
-#include "Device.h"
-
-#include "Globals/String.h"
-#include "Globals/Matrix.h"
+#include <vector>
 
 namespace EG
 {
@@ -15,10 +17,18 @@ namespace EG
 	{
 	public:
 
-		enum ErrorSource
+		enum ShaderStage
 		{
 			PS,
 			VS
+		};
+
+		struct ShaderVariable
+		{
+			ShaderStage shaderStage;
+			String varName;
+			void* varPtr;
+			size_t varSize;
 		};
 		
 		Shader();
@@ -36,24 +46,28 @@ namespace EG
 		ID3D11PixelShader* GetPixelShader() const { return m_pPixelShader; }
 		ID3D11InputLayout* GetInputLayout() const { return m_pInputLayout; }
 		ID3D11SamplerState* GetSamplerState() const { return m_pSamplerState; }
-		ID3D11Buffer* GetVertexConstantBuffer() const { return m_pConstantBuffer; }
-		ID3D11Buffer** GetVertexConstantBufferPtr() { return &m_pConstantBuffer; }
 		
-		void PrintError(ErrorSource errorSource) const;
+		void PrintError(ShaderStage errorSource) const;
+
+		void AddShaderVariable(const ShaderVariable& shaderVariableToAdd) { m_shaderVariables.push_back(shaderVariableToAdd); }
 		
 	private:
-		
+
+		ID3D11RasterizerState* m_pRasterizerState;
+		ID3D11SamplerState* m_pSamplerState;
 		ID3D11InputLayout* m_pInputLayout;
+		ID3D11Buffer* m_pConstantsVertex;
+		ID3D11Buffer* m_pConstantsPixel;
+		
 		ID3D11VertexShader* m_pVertexShader;
 		ID3D11PixelShader* m_pPixelShader;
-		ID3D11SamplerState* m_pSamplerState;
+		
 		ID3D10Blob* m_pVertexShaderBuffer;
 		ID3D10Blob* m_pPixelShaderBuffer;
 		ID3D10Blob* m_pError;
 
-		// TODO: Use and own defined constant buffer class that handles the content of the constant buffer
-		ID3D11Buffer* m_pConstantBuffer;
-
+		std::vector<ShaderVariable> m_shaderVariables;
+	
 		String m_vsShaderName;
 		String m_psShaderName;
 

@@ -18,15 +18,15 @@ EG::SwapChain::SwapChain()
 	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
 	IDXGIDevice* pDxgiDevice;
 	
-	EGCHECKHRERROR(pDevice->QueryInterface(__uuidof(IDXGIDevice), reinterpret_cast<void**>(&pDxgiDevice)));
-	EGCHECKHRERROR(pDxgiDevice->GetAdapter(&pAdapter));
-	EGCHECKHRERROR(pAdapter->GetParent(__uuidof(IDXGIFactory2), reinterpret_cast<void**>(&pFactory)));
-	EGCHECKHRERROR(pAdapter->EnumOutputs(0, &pAdapterOutput));
-	EGCHECKHRERROR(pAdapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, nullptr));
+	EGCHECKHR(pDevice->QueryInterface(__uuidof(IDXGIDevice), reinterpret_cast<void**>(&pDxgiDevice)));
+	EGCHECKHR(pDxgiDevice->GetAdapter(&pAdapter));
+	EGCHECKHR(pAdapter->GetParent(__uuidof(IDXGIFactory2), reinterpret_cast<void**>(&pFactory)));
+	EGCHECKHR(pAdapter->EnumOutputs(0, &pAdapterOutput));
+	EGCHECKHR(pAdapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, nullptr));
 
 	pDisplayModeList = new DXGI_MODE_DESC[numModes];
 
-	EGCHECKHRERROR(pAdapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, pDisplayModeList));
+	EGCHECKHR(pAdapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, pDisplayModeList));
 
 	for (i = 0; i < numModes; i++)
 	{
@@ -51,7 +51,7 @@ EG::SwapChain::SwapChain()
 		swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
 	}
 
-	EGCHECKHRERROR(pAdapter->GetDesc(&adapterDesc));
+	EGCHECKHR(pAdapter->GetDesc(&adapterDesc));
 	delete[] pDisplayModeList;
 	pAdapterOutput->Release();
 	pAdapter->Release();
@@ -78,7 +78,7 @@ EG::SwapChain::SwapChain()
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	swapChainDesc.Flags = 0;
 
-	HRESULT result = pFactory->CreateSwapChain(pDxgiDevice, &swapChainDesc, &m_pSwapChain);
+	EGCHECKHR(pFactory->CreateSwapChain(pDxgiDevice, &swapChainDesc, &m_pSwapChain));
 
 	pFactory->Release();
 	pDxgiDevice->Release();
@@ -93,12 +93,12 @@ ID3D11Texture2D* EG::SwapChain::GetBackBuffer() const
 {
 	ID3D11Texture2D* ptr = nullptr;
 	
-	m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<LPVOID*>(&ptr));
+	EGCHECKHR(m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<LPVOID*>(&ptr)));
 
 	return ptr;
 }
 
 void EG::SwapChain::Present(UINT syncInterval, UINT flags)
 {
-	m_pSwapChain->Present(syncInterval, flags);
+	EGCHECKHR(m_pSwapChain->Present(syncInterval, flags));
 }

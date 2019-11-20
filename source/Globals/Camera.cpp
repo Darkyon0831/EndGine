@@ -18,7 +18,7 @@ EG::Camera::Camera(float fov, float aspectRatio, float nearPlane, float farPlane
 
 	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
 	ID3D11Texture2D* pTexture = SwapChain::GetInstance().GetBackBuffer();
-	EGCHECKHRERROR(pDevice->CreateRenderTargetView(pTexture, NULL, &m_pRenderTarget));
+	EGCHECKHR(pDevice->CreateRenderTargetView(pTexture, NULL, &m_pRenderTarget));
 	pTexture->Release();
 
 	depthBufferDesc.Width = viewportSize.x;
@@ -33,14 +33,14 @@ EG::Camera::Camera(float fov, float aspectRatio, float nearPlane, float farPlane
 	depthBufferDesc.CPUAccessFlags = 0;
 	depthBufferDesc.MiscFlags = 0;
 
-	EGCHECKHRERROR(pDevice->CreateTexture2D(&depthBufferDesc, nullptr, &m_pDepthBuffer));
+	EGCHECKHR(pDevice->CreateTexture2D(&depthBufferDesc, nullptr, &m_pDepthBuffer));
 
 	depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	depthStencilViewDesc.Texture2D.MipSlice = 0;
 	depthStencilViewDesc.Flags = 0;
 	
-	EGCHECKHRERROR(pDevice->CreateDepthStencilView(m_pDepthBuffer, &depthStencilViewDesc, &m_pDepthStencil));
+	EGCHECKHR(pDevice->CreateDepthStencilView(m_pDepthBuffer, &depthStencilViewDesc, &m_pDepthStencil));
 }
 
 void EG::Camera::Update()

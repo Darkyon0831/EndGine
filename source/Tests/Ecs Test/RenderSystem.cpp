@@ -118,7 +118,7 @@ void RenderSystem::Render()
 			pDeviceContext->VSSetShader(simpleColorShader.GetVertexShader(), nullptr, 0);
 			pDeviceContext->PSSetShader(simpleColorShader.GetPixelShader(), nullptr, 0);
 			pDeviceContext->PSSetSamplers(0, 1, &pSamplerState);
-
+			
 			pDeviceContext->Map(pVertexConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &vsConstantBufferResource);
 			pConstantBuffer = static_cast<ConstantBufferVS*>(vsConstantBufferResource.pData);
 

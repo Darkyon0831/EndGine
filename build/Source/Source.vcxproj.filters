@@ -31,6 +31,9 @@
     <Filter Include="Tests\Ecs test">
       <UniqueIdentifier>{a0d1f794-d5fa-4931-b5fb-dadc66c06b82}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{fdbc1d59-b8bb-48d0-ad9b-ded2da8a2c96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\Containers\WndContainer.cpp">
@@ -117,9 +120,6 @@
     <ClCompile Include="..\..\source\Tests\TestComponent.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\ECS\System.cpp">
-      <Filter>ECS</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\ECS\SystemManager.cpp">
       <Filter>ECS</Filter>
     </ClCompile>
@@ -147,14 +147,17 @@
     <ClCompile Include="..\..\source\Globals\Texture.cpp">
       <Filter>Globals</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\ECS\Component.cpp">
-      <Filter>ECS</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\Tests\Ecs Test\RenderSystem.cpp">
       <Filter>Tests\Ecs test</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\Tests\Ecs Test\RotateCubeSystem.cpp">
       <Filter>Tests\Ecs test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Graphics\ConstantBuffer.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Components\RenderComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -278,9 +281,6 @@
     <ClInclude Include="..\..\source\Tests\DeltaTimeSystem.h">
       <Filter>Tests</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\Tests\IEntity.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\source\Tests\Ecs Test\Cube.h">
       <Filter>Tests\Ecs test</Filter>
     </ClInclude>
@@ -301,6 +301,18 @@
     </ClInclude>
     <ClInclude Include="..\..\source\Tests\Ecs Test\RotateCubeSystem.h">
       <Filter>Tests\Ecs test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Graphics\ConstantBuffer.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\ECS\IComponent.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Components\RenderComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Graphics\Material.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -9,14 +9,14 @@ EG::Vector3D::Vector3D(float _x, float _y, float _z)
 {
 }
 
-void EG::Vector3D::operator*=(Vector3D& rVector)
+void EG::Vector3D::operator*=(const Vector3D& rVector)
 {
 	x *= rVector.x;
 	y *= rVector.y;
 	z *= rVector.z;
 }
 
-EG::Vector3D EG::Vector3D::operator*(Vector3D& rVector) const
+EG::Vector3D EG::Vector3D::operator*(const Vector3D& rVector) const
 {
 	Vector3D newVector;
 
@@ -27,14 +27,14 @@ EG::Vector3D EG::Vector3D::operator*(Vector3D& rVector) const
 	return newVector;
 }
 
-void EG::Vector3D::operator*=(float rScalar)
+void EG::Vector3D::operator*=(const float& rScalar)
 {
 	x *= rScalar;
 	y *= rScalar;
 	z *= rScalar;
 }
 
-EG::Vector3D EG::Vector3D::operator*(float rScalar) const
+EG::Vector3D EG::Vector3D::operator*(const float& rScalar) const
 {
 	Vector3D vector = Vector3D::Zero;
 
@@ -45,21 +45,21 @@ EG::Vector3D EG::Vector3D::operator*(float rScalar) const
 	return vector;
 }
 
-void EG::Vector3D::operator/=(float rScalar)
+void EG::Vector3D::operator/=(const float& rScalar)
 {
 	x /= rScalar;
 	y /= rScalar;
 	z /= rScalar;
 }
 
-void EG::Vector3D::operator-=(Vector3D& rVector)
+void EG::Vector3D::operator-=(const Vector3D& rVector)
 {
 	x -= rVector.x;
 	y -= rVector.y;
 	z -= rVector.z;
 }
 
-EG::Vector3D EG::Vector3D::operator-(Vector3D& rVector) const
+EG::Vector3D EG::Vector3D::operator-(const Vector3D& rVector) const
 {
 	Vector3D newVector;
 
@@ -70,14 +70,14 @@ EG::Vector3D EG::Vector3D::operator-(Vector3D& rVector) const
 	return newVector;
 }
 
-void EG::Vector3D::operator+=(Vector3D& rVector)
+void EG::Vector3D::operator+=(const Vector3D& rVector)
 {
 	x += rVector.x;
 	y += rVector.y;
 	z += rVector.z;
 }
 
-EG::Vector3D EG::Vector3D::operator+(Vector3D& rVector) const
+EG::Vector3D EG::Vector3D::operator+(const Vector3D& rVector) const
 {
 	Vector3D newVector;
 
@@ -88,14 +88,14 @@ EG::Vector3D EG::Vector3D::operator+(Vector3D& rVector) const
 	return newVector;
 }
 
-void EG::Vector3D::operator=(float rScalar)
+void EG::Vector3D::operator=(const float& rScalar)
 {
 	x = rScalar;
 	y = rScalar;
 	z = rScalar;
 }
 
-void EG::Vector3D::Set(float _x, float _y, float _z)
+void EG::Vector3D::Set(const float _x, const float _y, const float _z)
 {
 	x = _x;
 	y = _y;
@@ -127,4 +127,19 @@ EG::Vector3D EG::Vector3D::CrossProduct(const Vector3D& rOther) const
 float EG::Vector3D::DotProduct(const Vector3D& rOther) const
 {
 	return x * rOther.x + y * rOther.y + z * rOther.z;
+}
+
+EG::Vector3D EG::Vector3D::CrossProduct(const Vector3D& v1, const Vector3D& v2)
+{
+	Vector3D newVector;
+	newVector.x = v1.y * v2.z - v1.z * v2.y;
+	newVector.y = v1.z * v2.x - v1.x * v2.z;
+	newVector.z = v1.x * v2.y - v1.y * v2.x;
+
+	return newVector;
+}
+
+float EG::Vector3D::DotProduct(const Vector3D& v1, const Vector3D& v2)
+{
+	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }

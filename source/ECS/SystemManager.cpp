@@ -37,7 +37,6 @@ void EG::SystemManager::UpdateSystems()
 		system->PreUpdate();
 		system->Update();
 		system->PostStart();
-		system->Render();
 	}
 }
 

@@ -2,25 +2,68 @@
 #include <fstream>
 
 EG::Shader::Shader()
-	: m_pInputLayout(nullptr)
+	: m_pRasterizerState(nullptr)
+	, m_pSamplerState(nullptr)
+	, m_pInputLayout(nullptr)
+	, m_pConstantsVertex(nullptr)
+	, m_pConstantsPixel(nullptr)
 	, m_pVertexShader(nullptr)
 	, m_pPixelShader(nullptr)
-	, m_pSamplerState(0)
+	, m_pVertexShaderBuffer(nullptr)
+	, m_pPixelShaderBuffer(nullptr)
+	, m_pError(nullptr)
+	, isLoadError(false)
 {
+	// Create default states, input layouts and constant buffers
 
-	int debug = 0;
+	D3D11_RASTERIZER_DESC rasterDesc;
+	D3D11_INPUT_ELEMENT_DESC defaultLayout[3];
+	D3D11_SAMPLER_DESC samplerDesc;
+	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
+
+	rasterDesc.FillMode = D3D11_FILL_SOLID;
+	rasterDesc.CullMode = D3D11_CULL_BACK;
+	rasterDesc.FrontCounterClockwise = false;
+	rasterDesc.DepthBias = false;
+	rasterDesc.DepthBiasClamp = 0;
+	rasterDesc.SlopeScaledDepthBias = 0;
+	rasterDesc.DepthClipEnable = true;
+	rasterDesc.ScissorEnable = false;
+	rasterDesc.MultisampleEnable = false;
+	rasterDesc.AntialiasedLineEnable = false;
+
+	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.MipLODBias = 0.0f;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	samplerDesc.BorderColor[0] = 0;
+	samplerDesc.BorderColor[1] = 0;
+	samplerDesc.BorderColor[2] = 0;
+	samplerDesc.BorderColor[3] = 0;
+	samplerDesc.MinLOD = 0;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+	
+	EGCHECKHR(pDevice->CreateRasterizerState(&rasterDesc, &m_pRasterizerState));
+	
+	EGCHECKHR(pDevice->CreateSamplerState(&samplerDesc, &m_pSamplerState));	
 }
 
 EG::Shader::~Shader()
 {
 	if (m_pError == nullptr)
 	{
+		m_pRasterizerState->Release();
+		m_pSamplerState->Release();
 		m_pInputLayout->Release();
-		m_pConstantBuffer->Release();
+		m_pConstantsVertex->Release();
+		m_pConstantsPixel->Release();
 		m_pVertexShader->Release();
 		m_pPixelShader->Release();
 		m_pVertexShaderBuffer->Release();
-		m_pPixelShaderBuffer->Release();
+		m_pPixelShaderBuffer->Release();	
 	}
 	else
 		m_pError->Release();
@@ -31,7 +74,31 @@ EG::Shader::~Shader()
 void EG::Shader::Load(const String& vsShaderName, const String& psShaderName)
 {
 	D3D11_INPUT_ELEMENT_DESC defaultLayout[3];
-	D3D11_SAMPLER_DESC samplerDesc;
+	
+	defaultLayout[0].SemanticName = "POSITION";
+	defaultLayout[0].SemanticIndex = 0;
+	defaultLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	defaultLayout[0].InputSlot = 0;
+	defaultLayout[0].AlignedByteOffset = 0;
+	defaultLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	defaultLayout[0].InstanceDataStepRate = 0;
+
+	defaultLayout[1].SemanticName = "COLOR";
+	defaultLayout[1].SemanticIndex = 0;
+	defaultLayout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	defaultLayout[1].InputSlot = 0;
+	defaultLayout[1].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+	defaultLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	defaultLayout[1].InstanceDataStepRate = 0;
+
+	defaultLayout[2].SemanticName = "TEXCOORD";
+	defaultLayout[2].SemanticIndex = 0;
+	defaultLayout[2].Format = DXGI_FORMAT_R32G32_FLOAT;
+	defaultLayout[2].InputSlot = 0;
+	defaultLayout[2].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+	defaultLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	defaultLayout[2].InstanceDataStepRate = 0;
+	
 	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
 
 	m_psShaderName = psShaderName;
@@ -111,52 +178,12 @@ void EG::Shader::Load(const String& vsShaderName, const String& psShaderName)
 		nullptr,
 		&m_pPixelShader);
 
-	defaultLayout[0].SemanticName = "POSITION";
-	defaultLayout[0].SemanticIndex = 0;
-	defaultLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	defaultLayout[0].InputSlot = 0;
-	defaultLayout[0].AlignedByteOffset = 0;
-	defaultLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-	defaultLayout[0].InstanceDataStepRate = 0;
-
-	defaultLayout[1].SemanticName = "COLOR";
-	defaultLayout[1].SemanticIndex = 0;
-	defaultLayout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	defaultLayout[1].InputSlot = 0;
-	defaultLayout[1].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
-	defaultLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-	defaultLayout[1].InstanceDataStepRate = 0;
-
-	defaultLayout[2].SemanticName = "TEXCOORD";
-	defaultLayout[2].SemanticIndex = 0;
-	defaultLayout[2].Format = DXGI_FORMAT_R32G32_FLOAT;
-	defaultLayout[2].InputSlot = 0;
-	defaultLayout[2].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
-	defaultLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-	defaultLayout[2].InstanceDataStepRate = 0;
-
-	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.MipLODBias = 0.0f;
-	samplerDesc.MaxAnisotropy = 1;
-	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-	samplerDesc.BorderColor[0] = 0;
-	samplerDesc.BorderColor[1] = 0;
-	samplerDesc.BorderColor[2] = 0;
-	samplerDesc.BorderColor[3] = 0;
-	samplerDesc.MinLOD = 0;
-	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
-	pDevice->CreateSamplerState(&samplerDesc, &m_pSamplerState);
-	
-	result = pDevice->CreateInputLayout(
-		defaultLayout, 
-		3, 
+	EGCHECKHR(pDevice->CreateInputLayout(
+		defaultLayout,
+		3,
 		m_pVertexShaderBuffer->GetBufferPointer(),
 		m_pVertexShaderBuffer->GetBufferSize(),
-		&m_pInputLayout);
+		&m_pInputLayout));
 }
 
 void EG::Shader::SetInputLayout(ID3D11InputLayout* pInputLayout)
@@ -167,14 +194,12 @@ void EG::Shader::SetInputLayout(ID3D11InputLayout* pInputLayout)
 	m_pInputLayout = pInputLayout;
 }
 
-void EG::Shader::PrintError(ShaderStage errorSource) const
+void EG::Shader::PrintError(const ShaderStage errorSource) const
 {
-	char* compileErrors;
-	unsigned long bufferSize, i;
 	std::ofstream fout;
 
-	compileErrors = static_cast<char*>(m_pError->GetBufferPointer());
-	bufferSize = m_pError->GetBufferSize();
+	char* compileErrors = static_cast<char*>(m_pError->GetBufferPointer());
+	const unsigned long bufferSize = m_pError->GetBufferSize();
 
 	String psErrorFile = String("../../game/");
 	psErrorFile += m_psShaderName.GetString();
@@ -189,10 +214,23 @@ void EG::Shader::PrintError(ShaderStage errorSource) const
 	else if (errorSource == ShaderStage::VS)
 		fout.open(vsErrorFile.GetString());
 
-	for (i = 0; i < bufferSize; i++)
+	for (unsigned int i = 0; i < bufferSize; i++)
 	{
 		fout << compileErrors[i];
 	}
 
 	fout.close();
+}
+
+size_t EG::Shader::GetTotalSizeOfVariables(const ShaderStage& shaderStage)
+{
+	size_t size = 0;
+
+	for (unsigned int i = 0; i < m_shaderVariables.size(); i++)
+	{
+		if (m_shaderVariables.at(i).shaderStage == shaderStage)
+			size += m_shaderVariables.at(i).varSize;
+	}
+
+	return size;
 }

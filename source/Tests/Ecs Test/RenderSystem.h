@@ -18,8 +18,6 @@ public:
 	};
 	
 	RenderSystem();
-	
-	void Render() override;
 
 private:
 	ID3D11DepthStencilState* m_pDepthStencilState;

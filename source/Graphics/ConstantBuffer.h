@@ -1,4 +1,5 @@
 #pragma once
+
 #include <d3d11.h>
 
 namespace EG
@@ -6,14 +7,16 @@ namespace EG
 	class ConstantBuffer
 	{
 	public:
-		ConstantBuffer();
-		~ConstantBuffer() = default;
 
-		void Update(void* var, size_t varSize);
-			
+		ConstantBuffer(size_t size);
+		~ConstantBuffer();
+
+		void Update(void* pMem) const;
+
 		ID3D11Buffer* GetBuffer() const { return m_pBuffer; }
 		
-	private:
+	private:	
 		ID3D11Buffer* m_pBuffer;
+		size_t m_size;
 	};
 }

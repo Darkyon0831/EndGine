@@ -38,10 +38,9 @@ namespace EG
 
 		Matrix GetViewMatrix();
 		Matrix GetProjectionMatrix() const;
-
 		Matrix GetViewProjectionMatrix();
 
-		void SetClearColor(Color color) { m_clearColor = color; }
+		void SetClearColor(const Color color) { m_clearColor = color; }
 
 		void BeginRender(unsigned int clearFlags) const;
 		

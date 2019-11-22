@@ -44,12 +44,12 @@ void EG::InputHandler::RegisterInput(WPARAM wParam, LPARAM lParam, UINT message)
 		break;
 	case WM_MOUSEMOVE:
 		ResetLastInput();
-		float lastX = m_lastInputState.AbsoluteMouse.x;
-		float lastY = m_lastInputState.AbsoluteMouse.y;
-		m_lastInputState.AbsoluteMouse.x = ((1 << 16) - 1) & (lParam >> (1 - 1));
-		m_lastInputState.AbsoluteMouse.y = ((1 << 16) - 1) & (lParam >> (16 - 1));
-		m_lastInputState.RelativMouse.x = m_lastInputState.AbsoluteMouse.x - lastX;
-		m_lastInputState.RelativMouse.y = m_lastInputState.AbsoluteMouse.y - lastY;
+		const float lastX = m_lastInputState.absoluteMouse.x;
+		const float lastY = m_lastInputState.absoluteMouse.y;
+		m_lastInputState.absoluteMouse.x = ((1 << 16) - 1) & (lParam >> (1 - 1));
+		m_lastInputState.absoluteMouse.y = ((1 << 16) - 1) & (lParam >> (16 - 1));
+		m_lastInputState.relativeMouse.x = m_lastInputState.absoluteMouse.x - lastX;
+		m_lastInputState.relativeMouse.y = m_lastInputState.absoluteMouse.y - lastY;
 		m_lastInputState.keyState = KeyState::MouseMove;
 		break;
 	}

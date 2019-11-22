@@ -53,6 +53,7 @@ namespace EG
 
 		void ApplyPerspectiveMatrix(float aspect, float fov, float nearPlane, float farPlane);
 		void ApplyOrthoMatrix(float width, float height, float nearPlane, float farPlane);
+		void ApplyOrthoMatrix(float l, float r, float b, float t, float nearPlane, float farPlane);
 		void ApplyViewMatrix(Vector3D cameraPos, Vector3D cameraLookAt);
 		
 		static const Matrix& identity;

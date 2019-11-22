@@ -1,3 +1,5 @@
+// OUTDATED
+
 #include "helpers.hlsl"
 
 float4x4 world;
@@ -22,11 +24,6 @@ PixelInput main(VertexInput input)
 {
 	PixelInput output;
 
-	input.position.w = 1.0;
-
-	output.position = mul(input.position, world);
-	output.position = mul(output.position, view);
-	output.position = mul(output.position, projection);
 	output.color = input.color;
 	output.uv = input.uv;
 

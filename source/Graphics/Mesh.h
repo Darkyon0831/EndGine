@@ -6,6 +6,7 @@
 #include "Device.h"
 
 #include <d3d11.h>
+#include "Material.h"
 
 namespace EG
 {
@@ -32,6 +33,9 @@ namespace EG
 
 		size_t GetVertexCount() const { return m_vertexCount; }
 		size_t GetIndexCount() const { return m_indexCount; }
+
+		void SetMaterial(Material& rMaterial) { m_material = rMaterial; }
+		Material& GetMaterial() { return m_material; }
 		
 	private:
 		Vertex* m_vertexArray;
@@ -42,5 +46,7 @@ namespace EG
 
 		size_t m_vertexCount;
 		size_t m_indexCount;
+
+		Material m_material;
 	};
 }

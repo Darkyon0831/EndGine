@@ -17,6 +17,9 @@ namespace EG
 	{
 	public:
 
+		friend class RenderComponent;
+		friend class QuadComponent;
+
 		enum ShaderStage
 		{
 			PS,
@@ -42,14 +45,20 @@ namespace EG
 		const void* GetPixelShaderBuffer() const { return m_pPixelShaderBuffer->GetBufferPointer(); }
 		size_t GetVertexShaderBufferSize() const { return m_pVertexShaderBuffer->GetBufferSize(); }
 		size_t GetPixelShaderBufferSize() const { return m_pPixelShaderBuffer->GetBufferSize(); }
+
+		ID3D11RasterizerState* GetRasterizerState() const { return m_pRasterizerState; }
 		ID3D11VertexShader* GetVertexShader() const { return m_pVertexShader; }
 		ID3D11PixelShader* GetPixelShader() const { return m_pPixelShader; }
 		ID3D11InputLayout* GetInputLayout() const { return m_pInputLayout; }
 		ID3D11SamplerState* GetSamplerState() const { return m_pSamplerState; }
+		ID3D11Buffer* GetVertexConstantBuffer() const { return m_pConstantsVertex; }
+		ID3D11Buffer* GetPixelConstantBuffer() const { return m_pConstantsPixel; }
 		
 		void PrintError(ShaderStage errorSource) const;
 
 		void AddShaderVariable(const ShaderVariable& shaderVariableToAdd) { m_shaderVariables.push_back(shaderVariableToAdd); }
+
+		size_t GetTotalSizeOfVariables(const ShaderStage& shaderStage);
 		
 	private:
 

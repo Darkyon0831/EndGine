@@ -2,7 +2,7 @@
 #include <cassert>
 #include <cstdlib>
 
-EG::PoolAllocator::PoolAllocator(size_t totalSize, size_t chunkSize, size_t alignment)
+EG::PoolAllocator::PoolAllocator(const size_t totalSize, const size_t chunkSize, const size_t alignment)
 	: m_block(nullptr)
 	, m_blockSize(totalSize)
 	, m_chunkSize(chunkSize)
@@ -38,8 +38,8 @@ EG::PoolAllocator::PoolAllocator(size_t totalSize, size_t chunkSize, size_t alig
 
 EG::PoolAllocator::~PoolAllocator()
 {
-	if (m_blockWithOffset != nullptr)
-		free(m_blockWithOffset);
+	if (m_block != nullptr)
+		free(m_block);
 }
 
 void* EG::PoolAllocator::Alloc()

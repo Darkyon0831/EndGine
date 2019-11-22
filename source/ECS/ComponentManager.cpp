@@ -17,3 +17,57 @@ EG::ComponentManager::~ComponentManager()
 	m_poolAllocators.clear();
 }
 
+void EG::ComponentManager::StartComponents()
+{
+	for (auto entitytIT = m_entityComponentLookup.begin(); entitytIT != m_entityComponentLookup.end(); entitytIT++)
+	{
+		for (auto componentIT = entitytIT->second.begin(); componentIT != entitytIT->second.end(); componentIT++)
+		{
+			componentIT->second->PreStart();
+		}
+	}
+
+	for (auto entitytIT = m_entityComponentLookup.begin(); entitytIT != m_entityComponentLookup.end(); entitytIT++)
+	{
+		for (auto componentIT = entitytIT->second.begin(); componentIT != entitytIT->second.end(); componentIT++)
+		{
+			componentIT->second->Start();
+		}
+	}
+
+	for (auto entitytIT = m_entityComponentLookup.begin(); entitytIT != m_entityComponentLookup.end(); entitytIT++)
+	{
+		for (auto componentIT = entitytIT->second.begin(); componentIT != entitytIT->second.end(); componentIT++)
+		{
+			componentIT->second->PostStart();
+		}
+	}
+}
+
+void EG::ComponentManager::UpdateComponents()
+{
+	for (auto entitytIT = m_entityComponentLookup.begin(); entitytIT != m_entityComponentLookup.end(); entitytIT++)
+	{
+		for (auto componentIT = entitytIT->second.begin(); componentIT != entitytIT->second.end(); componentIT++)
+		{
+			componentIT->second->PreUpdate();
+		}
+	}
+
+	for (auto entitytIT = m_entityComponentLookup.begin(); entitytIT != m_entityComponentLookup.end(); entitytIT++)
+	{
+		for (auto componentIT = entitytIT->second.begin(); componentIT != entitytIT->second.end(); componentIT++)
+		{
+			componentIT->second->Update();
+		}
+	}
+
+	for (auto entitytIT = m_entityComponentLookup.begin(); entitytIT != m_entityComponentLookup.end(); entitytIT++)
+	{
+		for (auto componentIT = entitytIT->second.begin(); componentIT != entitytIT->second.end(); componentIT++)
+		{
+			componentIT->second->PostUpdate();
+		}
+	}
+}
+

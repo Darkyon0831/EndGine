@@ -33,8 +33,8 @@ EG::RenderCubeTest::RenderCubeTest()
 	rasterDesc.MultisampleEnable = false;
 	rasterDesc.AntialiasedLineEnable = false;
 
-	EGCHECKHRERROR(pDevice->CreateDepthStencilState(&depthStencilDesc, &m_pDepthStencilState));
-	EGCHECKHRERROR(pDevice->CreateRasterizerState(&rasterDesc, &m_rasterState));
+	EGCHECKHR(pDevice->CreateDepthStencilState(&depthStencilDesc, &m_pDepthStencilState));
+	EGCHECKHR(pDevice->CreateRasterizerState(&rasterDesc, &m_rasterState));
 
 	float windowWidth = WndSettings::GetInstance().GetWndWidth();
 	float windowHeight = WndSettings::GetInstance().GetWndHeight();

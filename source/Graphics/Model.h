@@ -12,38 +12,28 @@
 
 #include <d3d11.h>
 #include <vector>
+#include "Material.h"
+
 
 namespace EG
 {
-	class Camera;
-
 	class Model
 	{
 	public:
-		struct ConstantBufferVS
-		{
-			Matrix world;
-			Matrix view;
-			Matrix projection;
-		};
-
 		Model();
 		~Model();
 
-		void Update();
-
-		// TODO: Use an camera manager instead, Do not take it in from an parameter to have a good user experience
-		void Render(Camera& rCurrentCamera);
-
 		Transform& GetTransform() { return m_transform; }
+		void SetTransform(const Transform& transform) { m_transform = transform; }
 
 		void AddMesh(Mesh* pMesh) { m_meshes.push_back(pMesh); }
+
+		size_t GetNumMeshes() const { return m_meshes.size(); }
+
+		Mesh* GetMesh(const int index) const { return m_meshes.at(index); }
 		
 	private:
 		std::vector<Mesh*> m_meshes;
-		
-		Shader simpleColorShader;
-
 		Transform m_transform;
 	};
 }

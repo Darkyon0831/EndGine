@@ -1,29 +1,22 @@
 #include "EntryPoint.h"
 
 #include  "Containers/WndContainer.h"
-#include  "Globals/String.h"
 #include  "Settings/WndSettings.h"
 #include  "InputHandler.h"
-#include  "Globals/Transform.h"
 #include "Graphics/Device.h"
 #include "Graphics/SwapChain.h"
-#include "Tests/SimpeRenderTest.h"
 #include "Tests/RenderCubeTest.h"
-#include "Graphics/Shader.h"
-#include "Graphics/Model.h"
 #include "Globals/Clock.h"
 #include <d3d11.h>
 #include "Globals/File/FileSystem.h"
-#include "Memory/PoolAllocator.h"
-#include "Tests/TestEntity.h"
 #include "ECS/EntityManager.h"
 #include "ECS/ComponentManager.h"
 #include "ECS/SystemManager.h"
-#include "Tests/TestSystem.h"
-#include "Tests/DeltaTimeSystem.h"
-#include "Tests/Ecs Test/Cube.h"
-#include "Tests/Ecs Test/RenderSystem.h"
-#include "Tests/Ecs Test/RotateCubeSystem.h"
+#include "Core/RenderQueue.h"
+
+#include "Tests/RenderTest/CameraEntity.h"
+#include "Tests/RenderTest/CubeEntity.h"
+#include "Tests/RenderTest/AnotherCubeEntity.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -53,7 +46,6 @@ int EG::EntryPoint::WinEntryPoint(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 	FileSystem::Initialize();
 	EntityManager::Initialize();
 	ComponentManager::Initialize();
-	SystemManager::Initialize();
 
 	WndSettings::GetInstance().SetIsVsync(true);
 
@@ -77,12 +69,13 @@ int EG::EntryPoint::WinEntryPoint(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 	Device::Initialize();
 	SwapChain::Initialize();
 
+	RenderQueue::Initialize();
+
 	InitializeEntities();
 	InitializeSystems();
-	
-	RenderCubeTest renderCubeTest;
 
 	bool isRunning = true;
+	
 	// Main message loop:
 	while (isRunning)
 	{
@@ -97,9 +90,11 @@ int EG::EntryPoint::WinEntryPoint(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 		else
 		{
 			Clock::GetInstance().Update();
-			//renderCubeTest.Update();
-			//renderCubeTest.Render();
-			SystemManager::GetInstance().UpdateSystems();
+
+			ComponentManager::GetInstance().UpdateComponents();
+			
+			RenderQueue::GetInstance().Update();
+			RenderQueue::GetInstance().Render();
 
 			int debug = 0;
 		}
@@ -111,6 +106,7 @@ int EG::EntryPoint::WinEntryPoint(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 	Clock::Uninitialized();
 	SwapChain::Uninitialized();
 	Device::Uninitialized();
+	RenderQueue::Uninitialized();
 
 	return static_cast<int>(msg.wParam);
 }
@@ -158,12 +154,14 @@ int EG::EntryPoint::InitInstance(HINSTANCE hInstance, int nCmdShow) const
 
 void EG::EntryPoint::InitializeSystems()
 {
-	SystemManager::GetInstance().CreateSystem<RenderSystem>();
-	SystemManager::GetInstance().CreateSystem<RotateCubeSystem>();
-	SystemManager::GetInstance().InitializeSystems();
+	//SystemManager::GetInstance().InitializeSystems();
 }
 
 void EG::EntryPoint::InitializeEntities()
 {
-	EntityManager::GetInstance().CreateEntity<Cube>();
+	EntityManager::GetInstance().CreateEntity<CameraEntity>();
+	EntityManager::GetInstance().CreateEntity<CubeEntity>();
+	EntityManager::GetInstance().CreateEntity<AnotherCubeEntity>();
+
+	ComponentManager::GetInstance().StartComponents();
 }

@@ -30,8 +30,8 @@ namespace EG
 		
 		struct Input
 		{
-			MouseInput AbsoluteMouse { 0.0f, 0.0f };
-			MouseInput RelativMouse;
+			MouseInput absoluteMouse { 0.0f, 0.0f };
+			MouseInput relativeMouse;
 			KeyState keyState;
 			int repeatCount;
 			bool extendedKey;

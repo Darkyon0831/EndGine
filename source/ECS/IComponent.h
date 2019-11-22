@@ -2,11 +2,11 @@
 
 namespace EG
 {
-	class ICompoent
+	class IComponent
 	{
 	public:
-		ICompoent() = default;
-		virtual ~ICompoent() = default;
+		IComponent() = default;
+		virtual ~IComponent() = default;
 
 		virtual void PreStart() { }
 		virtual void Start() { }

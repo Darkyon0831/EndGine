@@ -25,7 +25,7 @@ void EG::Texture::Load(const String& textureName)
 	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
 	ID3D11Resource* pTextureResource;
 
-	String fullPath = FileSystem::GetInstance().GetDataLocationForPath(textureName);
+	const String fullPath = FileSystem::GetInstance().GetDataLocationForPath(textureName);
 
 	std::wstring vsWS(fullPath.GetSize(), L'#');
 	mbstowcs_s(nullptr, &vsWS[0], fullPath.GetSize(), fullPath.GetString(), fullPath.GetSize() - 1);

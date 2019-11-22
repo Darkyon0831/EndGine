@@ -13,8 +13,8 @@ namespace EG
 
 		void Load(const String& textureName);
 
-		const ID3D11Texture2D* GetD3D11Texture() const { return m_pTexture; }
-		const ID3D11ShaderResourceView* GetShaderResourceView() const { return m_pShaderResource; }
+		ID3D11Texture2D* GetD3D11Texture() const { return m_pTexture; }
+		ID3D11ShaderResourceView* GetShaderResourceView() const { return m_pShaderResource; }
 		
 	private:
 		ID3D11Texture2D* m_pTexture;

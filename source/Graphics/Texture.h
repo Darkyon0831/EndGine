@@ -3,12 +3,14 @@
 #include <d3d11.h>
 #include <Globals/String.h>
 
+#include "Core/Asset.h"
+
 namespace EG
 {
-	class Texture
+	class Texture : public Asset
 	{
 	public:
-		Texture();
+		Texture(bool initializeTexture = false, float width = 0, float height = 0);
 		~Texture();
 
 		void Load(const String& textureName);

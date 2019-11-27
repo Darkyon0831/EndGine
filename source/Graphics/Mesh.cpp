@@ -1,8 +1,11 @@
 #include "Mesh.h"
 
 EG::Mesh::Mesh()
-	: m_vertexArray(nullptr)
+	: Asset(Asset::AssetType::Mesh)
+	, m_vertexArray(nullptr)
 	, m_indexArray(nullptr)
+	, m_pVertexBuffer(nullptr)
+	, m_pIndexBuffer(nullptr)
 	, m_vertexCount(0)
 	, m_indexCount(0)
 {

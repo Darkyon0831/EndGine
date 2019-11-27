@@ -31,6 +31,7 @@
     <ClCompile Include="..\..\source\Components\QuadComponent.cpp" />
     <ClCompile Include="..\..\source\Components\RenderComponent.cpp" />
     <ClCompile Include="..\..\source\Containers\WndContainer.cpp" />
+    <ClCompile Include="..\..\source\Core\Asset.cpp" />
     <ClCompile Include="..\..\source\Core\EntryPoint.cpp" />
     <ClCompile Include="..\..\source\Core\InputHandler.cpp" />
     <ClCompile Include="..\..\source\Core\RenderQueue.cpp" />
@@ -76,6 +77,7 @@
     <ClInclude Include="..\..\source\Components\QuadComponent.h" />
     <ClInclude Include="..\..\source\Components\RenderComponent.h" />
     <ClInclude Include="..\..\source\Containers\WndContainer.h" />
+    <ClInclude Include="..\..\source\Core\Asset.h" />
     <ClInclude Include="..\..\source\Core\EntryPoint.h" />
     <ClInclude Include="..\..\source\Core\InputHandler.h" />
     <ClInclude Include="..\..\source\Core\RenderQueue.h" />

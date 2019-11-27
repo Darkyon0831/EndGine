@@ -12,6 +12,30 @@ namespace EG
 	{
 	public:
 
+		struct FullscreenRender
+		{
+			ID3D11RenderTargetView* pRenderTargetView;
+			D3D11_VIEWPORT viewPort;
+			Color clearColor;
+			Transform transform;
+			Shader* pShader;
+			Matrix viewMatrix;
+			Matrix projectionMatrix;
+			Mesh quad;
+		};
+
+		struct FullscreenConstantsVertex
+		{
+			Matrix worldMatrix;
+			Matrix viewMatrix;
+			Matrix projectionMatrix;
+		};
+
+		struct FullscreenConstantsPixel
+		{
+			Color materialColor;
+		};
+		
 		struct VSGeneralVars
 		{
 			Matrix modelWorldMatrix;
@@ -31,6 +55,11 @@ namespace EG
 		};
 
 		RenderQueue();
+		~RenderQueue();
+
+		void InitFullcreenRender();
+
+		void BeginRenderFullscreen() const;
 		
 		void AddRenderObject(const RenderObject rRenderObject) { m_renderQueue.push_back(rRenderObject); }
 
@@ -40,9 +69,12 @@ namespace EG
 	private:
 		std::vector<RenderObject> m_renderQueue;
 
+		ConstantBuffer* m_fullscreenVS;
+		ConstantBuffer* m_fullscreenPS;
+		
 		ConstantBuffer* m_vsGeneral;
 		ConstantBuffer* m_psGeneral;
 
-		
+		FullscreenRender m_fullscreenRender;
 	};
 }

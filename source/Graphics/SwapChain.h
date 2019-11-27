@@ -19,7 +19,7 @@ namespace EG
 
 		ID3D11Texture2D* GetBackBuffer() const;
 
-		void Present(UINT syncInterval, UINT flags);
+		void Present(UINT syncInterval, UINT flags) const;
 		
 	private:
 		IDXGISwapChain* m_pSwapChain;

@@ -5,10 +5,34 @@
 #include "Device.h"
 #include "Globals/File/FileSystem.h"
 
-EG::Texture::Texture()
-	: m_pTexture(nullptr)
+EG::Texture::Texture(const bool initializeTexture, const float width, const float height)
+	: Asset(Asset::AssetType::Texture)
+	, m_pTexture(nullptr)
 	, m_pShaderResource(__nullptr)
 {
+
+	if (initializeTexture)
+	{
+		ID3D11Device* pDevice = Device::GetInstance().GetDevice();
+		
+		D3D11_TEXTURE2D_DESC texure2DDesc;
+
+		texure2DDesc.Width = width;
+		texure2DDesc.Height = height;
+		texure2DDesc.MipLevels = 1;
+		texure2DDesc.ArraySize = 1;
+		texure2DDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+		texure2DDesc.SampleDesc.Count = 1;
+		texure2DDesc.SampleDesc.Quality = 0;
+		texure2DDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
+		texure2DDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
+		texure2DDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		texure2DDesc.MiscFlags = 0;
+
+		EGCHECKHR(pDevice->CreateTexture2D(&texure2DDesc, nullptr, &m_pTexture));
+		EGCHECKHR(pDevice->CreateShaderResourceView(m_pTexture, nullptr, &m_pShaderResource));
+	}
+	
 }
 
 EG::Texture::~Texture()

@@ -2,8 +2,15 @@
 #include "Globals/Macro.h"
 #include "Graphics/SwapChain.h"
 
-EG::CameraComponent::CameraComponent(const float fov, const float aspectRatio, const float nearPlane, const float farPlane,
-                                     const ProjectionType projectionType, const Vector2D viewportStart, const Vector2D viewportSize)
+EG::CameraComponent::CameraComponent(
+	const float fov, 
+	const float aspectRatio, 
+	const float nearPlane, 
+	const float farPlane, 
+	const ProjectionType projectionType, 
+	const Vector2D size,
+	const Vector2D viewportStart, 
+	const Vector2D viewportSize)
 {
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
@@ -19,21 +26,25 @@ EG::CameraComponent::CameraComponent(const float fov, const float aspectRatio, c
 	m_viewPort.MinDepth = 0.0f;
 	m_viewPort.MaxDepth = 1.0f;
 
+	m_size = size;
+
+	m_texture = new Texture(true, size.x, size.y);
+
 	m_fov = fov;
 	m_aspectRatio = aspectRatio;
 	m_nearPlane = nearPlane;
 	m_farPlane = farPlane;
 
 	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
-	ID3D11Texture2D* pTexture = SwapChain::GetInstance().GetBackBuffer();
+	ID3D11Texture2D* pTexture = m_texture->GetD3D11Texture();
 	EGCHECKHR(pDevice->CreateRenderTargetView(pTexture, NULL, &m_pRenderTarget));
 	pTexture->Release();
 
 	const float& rWindowWidth = WndSettings::GetInstance().GetWndWidth();
 	const float& rWindowHeight = WndSettings::GetInstance().GetWndHeight();
 
-	depthBufferDesc.Width = rWindowWidth;
-	depthBufferDesc.Height = rWindowHeight;
+	depthBufferDesc.Width = size.x;
+	depthBufferDesc.Height = size.y;
 	depthBufferDesc.MipLevels = 1;
 	depthBufferDesc.ArraySize = 1;
 	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -54,6 +65,11 @@ EG::CameraComponent::CameraComponent(const float fov, const float aspectRatio, c
 	EGCHECKHR(pDevice->CreateDepthStencilView(m_pDepthBuffer, &depthStencilViewDesc, &m_pDepthStencil));
 
 	m_frustum.Update(nearPlane, farPlane, m_transform, aspectRatio, fov);
+}
+
+EG::CameraComponent::~CameraComponent()
+{
+	delete m_texture;
 }
 
 void EG::CameraComponent::Update()
@@ -79,7 +95,7 @@ EG::Matrix EG::CameraComponent::GetProjectionMatrix() const
 	if (m_projection == ProjectionType::Perspective)
 		projectionMatrix.ApplyPerspectiveMatrix(m_aspectRatio, m_fov, m_nearPlane, m_farPlane);
 	else if (m_projection == ProjectionType::Orthogonal)
-		projectionMatrix.ApplyOrthoMatrix(-m_viewPort.Width / 2, m_viewPort.Width / 2, -m_viewPort.Height / 2, m_viewPort.Height / 2, m_nearPlane, m_farPlane);
+		projectionMatrix.ApplyOrthoMatrix(m_viewPort.Width, m_viewPort.Height, m_nearPlane, m_farPlane);
 
 	return projectionMatrix;
 }

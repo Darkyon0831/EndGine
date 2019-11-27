@@ -423,10 +423,16 @@ void EG::Matrix::ApplyPerspectiveMatrix(float aspect, float fov, float nearPlane
 void EG::Matrix::ApplyOrthoMatrix(float width, float height, float nearPlane, float farPlane)
 {
 	*this = Matrix::identity;
+
 	(*this)[0] = 2 / width;
 	(*this)[5] = 2 / height;
 	(*this)[10] = 1 / (farPlane - nearPlane);
-	(*this)[14] = nearPlane / (farPlane - nearPlane);
+	(*this)[11] = -nearPlane / (farPlane - nearPlane);
+	
+	/*(*this)[0] = 2 / width;
+	(*this)[5] = 2 / height;
+	(*this)[10] = 1 / (farPlane - nearPlane);
+	(*this)[14] = nearPlane / (farPlane - nearPlane);*/
 }
 
 void EG::Matrix::ApplyOrthoMatrix(float l, float r, float b, float t, float nearPlane, float farPlane)

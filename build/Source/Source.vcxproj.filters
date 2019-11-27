@@ -168,6 +168,9 @@
     <ClCompile Include="..\..\source\Components\QuadComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\Core\Asset.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\Containers\WndContainer.h">
@@ -328,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="..\..\source\Components\QuadComponent.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Core\Asset.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

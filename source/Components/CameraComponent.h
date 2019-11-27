@@ -7,6 +7,8 @@
 #include "Globals/Frustum.h"
 
 #include "ECS/Component.h"
+#include <Graphics/Texture.h>
+#include "Graphics/Mesh.h"
 
 namespace EG
 {
@@ -31,7 +33,17 @@ namespace EG
 			Depth = 1 << 2
 		};
 
-		CameraComponent(float fov, float aspectRatio, float nearPlane, float farPlane, ProjectionType projectionType, Vector2D viewportStart, Vector2D viewportSize);
+		CameraComponent(
+			const float fov, 
+			const float aspectRatio, 
+			const float nearPlane, 
+			const float farPlane, 
+			const ProjectionType projectionType, 
+			const Vector2D size, 
+			const Vector2D viewportStart,
+			const Vector2D viewportSize);
+
+		~CameraComponent();
 		
 		void Update() override;
 
@@ -58,6 +70,11 @@ namespace EG
 
 		void SetClearColor(const Color& color) { m_clearColor = color; }
 		Color& GetClearColor() { return m_clearColor; }
+
+		Vector2D& GetSize() { return m_size; }
+		void SetSize(const Vector2D& size) { m_size = size; }
+
+		const Texture* GetTexture() const { return m_texture; };
 		
 	private:
 
@@ -69,6 +86,7 @@ namespace EG
 		Transform m_transform;
 		Vector2D m_viewportSize;
 		Vector2D m_viewportStart;
+		Vector2D m_size;
 
 		Color m_clearColor;
 
@@ -76,6 +94,8 @@ namespace EG
 		ID3D11DepthStencilView* m_pDepthStencil;
 		ID3D11Texture2D* m_pDepthBuffer;
 		D3D11_VIEWPORT m_viewPort;
+
+		Texture* m_texture;
 
 		float m_fov;
 		float m_aspectRatio;

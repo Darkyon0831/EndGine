@@ -4,13 +4,15 @@
 #include "Globals/Vector3D.h"
 #include "Globals/Vector2D.h"
 #include "Device.h"
+#include "Core/Asset.h"
+#include "Material.h"
 
 #include <d3d11.h>
-#include "Material.h"
+
 
 namespace EG
 {
-	class Mesh
+	class Mesh : public Asset
 	{
 	public:
 		Mesh();

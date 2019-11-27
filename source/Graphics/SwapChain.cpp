@@ -98,7 +98,7 @@ ID3D11Texture2D* EG::SwapChain::GetBackBuffer() const
 	return ptr;
 }
 
-void EG::SwapChain::Present(UINT syncInterval, UINT flags)
+void EG::SwapChain::Present(const UINT syncInterval, const UINT flags) const
 {
 	EGCHECKHR(m_pSwapChain->Present(syncInterval, flags));
 }

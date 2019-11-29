@@ -17,6 +17,7 @@ namespace EG
 
 		void InitializeSystems();
 		void InitializeEntities();
+		void InitializeRawInput();
 
 		WString m_wndName;
 	};

@@ -177,6 +177,9 @@
     <ClCompile Include="..\..\source\Tests\RenderTest\ThirdCameraEntity.cpp">
       <Filter>Tests\RenderTest</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\Core\Input.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\Containers\WndContainer.h">
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="..\..\source\Tests\RenderTest\ThirdCameraEntity.h">
       <Filter>Tests\RenderTest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Core\Input.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -17,9 +17,11 @@ float4 GetScreenPosition(float4 pos)
 }
 #endif
 
+#ifndef NOINPUT
 struct VertexInput
 {
 	float4 position : POSITION;
 	float4 color : COLOR;
 	float2 uv : TEXCOORD;
 };
+#endif

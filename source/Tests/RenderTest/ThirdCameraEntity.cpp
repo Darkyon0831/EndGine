@@ -15,7 +15,7 @@ ThirdCameraEntity::ThirdCameraEntity()
 	m_pCameraComponent = reinterpret_cast<EG::CameraComponent*>(EG::ComponentManager::GetInstance().CreateComponent<EG::CameraComponent>(
 		m_id,
 		45,
-		cameraWidth / cameraHeight,
+		windowWidth / windowHeight,
 		1,
 		1000,
 		EG::CameraComponent::ProjectionType::Perspective,

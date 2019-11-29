@@ -44,8 +44,6 @@ void EG::RenderComponent::PostStart()
 
 	if (pixelConstantBufferSize > 0)
 		EGCHECKHR(pDevice->CreateBuffer(&constantBufferPixelDesc, nullptr, &m_shader.m_pConstantsVertex));
-
-	//m_model.GetTransform().position.z = 5.0f;
 }
 
 void EG::RenderComponent::PostUpdate()
@@ -70,10 +68,10 @@ void EG::RenderComponent::PostUpdate()
 
 void EG::RenderComponent::Update()
 {
-	float deltaTime = Clock::GetInstance().GetDeltaTime();
-
-	m_model.GetTransform().rotation.y += deltaTime * 25.0f;
-
+	const float& deltaTime = Clock::GetInstance().GetDeltaTime();
+	
+	m_model.GetTransform().rotation.y += 25.0f * deltaTime;
+	
 	m_model.GetTransform().Update();
 }
 

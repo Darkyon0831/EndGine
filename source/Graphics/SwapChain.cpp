@@ -100,5 +100,6 @@ ID3D11Texture2D* EG::SwapChain::GetBackBuffer() const
 
 void EG::SwapChain::Present(const UINT syncInterval, const UINT flags) const
 {
-	EGCHECKHR(m_pSwapChain->Present(syncInterval, flags));
+	//if (IsIconic(WndContainer::GetInstance().GetWindowHandle()) == 0)
+		EGCHECKHR(m_pSwapChain->Present(syncInterval, flags));
 }

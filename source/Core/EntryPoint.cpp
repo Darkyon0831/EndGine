@@ -23,11 +23,30 @@
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	EG::InputHandler::GetInstance().RegisterInput(wParam, lParam, message);
+
+	LPBYTE lpb;
+	RAWINPUT* raw;
 	
 	switch (message) 
 	{
 	case WM_DESTROY:
 		PostQuitMessage(0);
+		break;
+	case WM_INPUT:
+		unsigned int dwSize;
+
+		GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, nullptr, &dwSize, sizeof(RAWINPUTHEADER));
+
+		lpb = new BYTE[dwSize];
+	
+		GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, lpb, &dwSize, sizeof(RAWINPUTHEADER));
+
+		raw = reinterpret_cast<RAWINPUT*>(lpb);
+
+		// Handle the input here
+
+		delete[] lpb;
+		
 		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
@@ -168,4 +187,21 @@ void EG::EntryPoint::InitializeEntities()
 	EntityManager::GetInstance().CreateEntity<ThirdCameraEntity>();
 
 	ComponentManager::GetInstance().StartComponents();
+}
+
+void EG::EntryPoint::InitializeRawInput()
+{
+	RAWINPUTDEVICE rid[2];
+
+	rid[0].usUsagePage = 0x01;
+	rid[0].usUsage = 0x02;
+	rid[0].dwFlags = 0;   
+	rid[0].hwndTarget = nullptr;
+
+	rid[1].usUsagePage = 0x01;
+	rid[1].usUsage = 0x06;
+	rid[1].dwFlags = 0;   
+	rid[1].hwndTarget = nullptr;
+
+	RegisterRawInputDevices(rid, 2, sizeof(RAWINPUTDEVICE));
 }

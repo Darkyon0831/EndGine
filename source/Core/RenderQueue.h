@@ -33,9 +33,8 @@ namespace EG
 
 		struct InstanceData
 		{
-			Matrix worldMatrix;
-			Matrix viewMatrix;
-			Matrix projectionMatrix;
+			Vector3D position;
+			Vector3D scale;
 		};
 
 		struct FullscreenConstantsPixel
@@ -61,6 +60,12 @@ namespace EG
 			Model* pModel;
 		};
 
+		struct TextureArray
+		{
+			ID3D11Texture2D* pTexture2D = nullptr;
+			ID3D11ShaderResourceView* pShaderResourceView = nullptr;
+		};
+
 		RenderQueue();
 		~RenderQueue();
 
@@ -83,5 +88,7 @@ namespace EG
 		ConstantBuffer* m_vsGeneral;
 		ConstantBuffer* m_psGeneral;
 		FullscreenRender m_fullscreenRender;
+
+		TextureArray m_textureArray;
 	};
 }

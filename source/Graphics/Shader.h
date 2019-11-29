@@ -37,7 +37,7 @@ namespace EG
 		Shader();
 		~Shader();
 		
-		void Load(const String& vsShaderName, const String& psShaderName);
+		void Load(const String& vsShaderName, const String& psShaderName, bool initializeLayout = true);
 		
 		void SetInputLayout(ID3D11InputLayout* pInputLayout);
 

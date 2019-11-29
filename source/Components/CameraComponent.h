@@ -39,9 +39,8 @@ namespace EG
 			const float nearPlane, 
 			const float farPlane, 
 			const ProjectionType projectionType, 
-			const Vector2D size, 
-			const Vector2D viewportStart,
-			const Vector2D viewportSize);
+			const Vector2D viewportSize, 
+			const Vector2D viewportPos);
 
 		~CameraComponent();
 		
@@ -71,23 +70,27 @@ namespace EG
 		void SetClearColor(const Color& color) { m_clearColor = color; }
 		Color& GetClearColor() { return m_clearColor; }
 
-		Vector2D& GetSize() { return m_size; }
-		void SetSize(const Vector2D& size) { m_size = size; }
+		Vector2D& GetViewportSize() { return m_viewportSize; }
+		void SetViewportSize(const Vector2D& viewportSize) { m_viewportSize = viewportSize; }
+
+		Vector2D& GetViewportPos() { return m_viewportPos; }
+		void SetViewportPos(const Vector2D& viewportPos) { m_viewportPos = viewportPos; }
 
 		const Texture* GetTexture() const { return m_texture; };
 		
 	private:
 
 		void BeginRender(unsigned int clearFlags) const;
+		void EndRender();
 
 		Frustum m_frustum;
 		
 		ProjectionType m_projection;
 		Transform m_transform;
+		
 		Vector2D m_viewportSize;
-		Vector2D m_viewportStart;
-		Vector2D m_size;
-
+		Vector2D m_viewportPos;
+		
 		Color m_clearColor;
 
 		ID3D11RenderTargetView* m_pRenderTarget;

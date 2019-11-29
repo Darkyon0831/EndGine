@@ -65,9 +65,11 @@
     <ClCompile Include="..\..\source\Tests\Ecs Test\MaterialComponent.cpp" />
     <ClCompile Include="..\..\source\Tests\Ecs Test\RotateCubeSystem.cpp" />
     <ClCompile Include="..\..\source\Tests\Ecs Test\TransformComponent.cpp" />
+    <ClCompile Include="..\..\source\Tests\RenderTest\AnotherCameraEntity.cpp" />
     <ClCompile Include="..\..\source\Tests\RenderTest\AnotherCubeEntity.cpp" />
     <ClCompile Include="..\..\source\Tests\RenderTest\CameraEntity.cpp" />
     <ClCompile Include="..\..\source\Tests\RenderTest\CubeEntity.cpp" />
+    <ClCompile Include="..\..\source\Tests\RenderTest\ThirdCameraEntity.cpp" />
     <ClCompile Include="..\..\source\Tests\TestComponent.cpp" />
     <ClCompile Include="..\..\source\Tests\TestEntity.cpp" />
     <ClCompile Include="..\..\source\Tests\TestSystem.cpp" />
@@ -121,9 +123,11 @@
     <ClInclude Include="..\..\source\Tests\Ecs Test\MaterialComponent.h" />
     <ClInclude Include="..\..\source\Tests\Ecs Test\RotateCubeSystem.h" />
     <ClInclude Include="..\..\source\Tests\Ecs Test\TransformComponent.h" />
+    <ClInclude Include="..\..\source\Tests\RenderTest\AnotherCameraEntity.h" />
     <ClInclude Include="..\..\source\Tests\RenderTest\AnotherCubeEntity.h" />
     <ClInclude Include="..\..\source\Tests\RenderTest\CameraEntity.h" />
     <ClInclude Include="..\..\source\Tests\RenderTest\CubeEntity.h" />
+    <ClInclude Include="..\..\source\Tests\RenderTest\ThirdCameraEntity.h" />
     <ClInclude Include="..\..\source\Tests\TestComponent.h" />
     <ClInclude Include="..\..\source\Tests\TestEntity.h" />
     <ClInclude Include="..\..\source\Tests\TestSystem.h" />

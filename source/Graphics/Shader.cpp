@@ -71,7 +71,7 @@ EG::Shader::~Shader()
 	int debug = 0;
 }
 
-void EG::Shader::Load(const String& vsShaderName, const String& psShaderName)
+void EG::Shader::Load(const String& vsShaderName, const String& psShaderName, bool initializeLayout)
 {
 	D3D11_INPUT_ELEMENT_DESC defaultLayout[3];
 	
@@ -178,12 +178,15 @@ void EG::Shader::Load(const String& vsShaderName, const String& psShaderName)
 		nullptr,
 		&m_pPixelShader);
 
-	EGCHECKHR(pDevice->CreateInputLayout(
-		defaultLayout,
-		3,
-		m_pVertexShaderBuffer->GetBufferPointer(),
-		m_pVertexShaderBuffer->GetBufferSize(),
-		&m_pInputLayout));
+	if (initializeLayout)
+	{
+		EGCHECKHR(pDevice->CreateInputLayout(
+			defaultLayout,
+			3,
+			m_pVertexShaderBuffer->GetBufferPointer(),
+			m_pVertexShaderBuffer->GetBufferSize(),
+			&m_pInputLayout));
+	}
 }
 
 void EG::Shader::SetInputLayout(ID3D11InputLayout* pInputLayout)

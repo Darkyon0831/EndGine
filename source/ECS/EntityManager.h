@@ -59,9 +59,10 @@ namespace EG
 		if (entity == nullptr)
 			return entity;
 		
-		entity->m_id = CreateID();
-
-		T* ptr = static_cast<T*>(entity);
+		int id = CreateID();
+		entity->m_id = id;
+		
+		T* ptr = reinterpret_cast<T*>(entity);
 		ptr = new(ptr) T(args...);
 
 		m_entities.insert(std::pair<int, Entity*>(entity->m_id, entity));

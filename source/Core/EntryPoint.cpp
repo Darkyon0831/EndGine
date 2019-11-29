@@ -17,6 +17,8 @@
 #include "Tests/RenderTest/CameraEntity.h"
 #include "Tests/RenderTest/CubeEntity.h"
 #include "Tests/RenderTest/AnotherCubeEntity.h"
+#include "Tests/RenderTest/AnotherCameraEntity.h"
+#include "Tests/RenderTest/ThirdCameraEntity.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -159,9 +161,11 @@ void EG::EntryPoint::InitializeSystems()
 
 void EG::EntryPoint::InitializeEntities()
 {
+	EntityManager::GetInstance().CreateEntity<AnotherCameraEntity>();
+	EntityManager::GetInstance().CreateEntity<AnotherCubeEntity>();
 	EntityManager::GetInstance().CreateEntity<CameraEntity>();
 	EntityManager::GetInstance().CreateEntity<CubeEntity>();
-	EntityManager::GetInstance().CreateEntity<AnotherCubeEntity>();
+	EntityManager::GetInstance().CreateEntity<ThirdCameraEntity>();
 
 	ComponentManager::GetInstance().StartComponents();
 }

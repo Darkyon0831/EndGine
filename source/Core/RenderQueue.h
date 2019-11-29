@@ -31,6 +31,13 @@ namespace EG
 			Matrix projectionMatrix;
 		};
 
+		struct InstanceData
+		{
+			Matrix worldMatrix;
+			Matrix viewMatrix;
+			Matrix projectionMatrix;
+		};
+
 		struct FullscreenConstantsPixel
 		{
 			Color materialColor;
@@ -60,6 +67,7 @@ namespace EG
 		void InitFullcreenRender();
 
 		void BeginRenderFullscreen() const;
+		void EndRenderFullscreen();
 		
 		void AddRenderObject(const RenderObject rRenderObject) { m_renderQueue.push_back(rRenderObject); }
 
@@ -74,7 +82,6 @@ namespace EG
 		
 		ConstantBuffer* m_vsGeneral;
 		ConstantBuffer* m_psGeneral;
-
 		FullscreenRender m_fullscreenRender;
 	};
 }

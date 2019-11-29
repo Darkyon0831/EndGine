@@ -8,27 +8,28 @@ EG::CameraComponent::CameraComponent(
 	const float nearPlane, 
 	const float farPlane, 
 	const ProjectionType projectionType, 
-	const Vector2D size,
-	const Vector2D viewportStart, 
-	const Vector2D viewportSize)
+	const Vector2D viewportSize,
+	const Vector2D viewportPos)
 {
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 
-	m_projection = projectionType;
-	m_viewportSize = viewportSize;
-	m_viewportStart = viewportStart;
+	const float& rWindowWidth = WndSettings::GetInstance().GetWndWidth();
+	const float& rWindowHeight = WndSettings::GetInstance().GetWndHeight();
 
-	m_viewPort.TopLeftX = viewportStart.x;
-	m_viewPort.TopLeftY = viewportStart.y;
-	m_viewPort.Width = viewportSize.x;
-	m_viewPort.Height = viewportSize.y;
+	m_projection = projectionType;
+
+	m_viewPort.TopLeftX = 0.0f;
+	m_viewPort.TopLeftY = 0.0f;
+	m_viewPort.Width = rWindowWidth;
+	m_viewPort.Height = rWindowHeight;
 	m_viewPort.MinDepth = 0.0f;
 	m_viewPort.MaxDepth = 1.0f;
 
-	m_size = size;
+	m_viewportSize = viewportSize;
+	m_viewportPos = viewportPos;
 
-	m_texture = new Texture(true, size.x, size.y);
+	m_texture = new Texture(true, rWindowWidth, rWindowHeight);
 
 	m_fov = fov;
 	m_aspectRatio = aspectRatio;
@@ -40,11 +41,8 @@ EG::CameraComponent::CameraComponent(
 	EGCHECKHR(pDevice->CreateRenderTargetView(pTexture, NULL, &m_pRenderTarget));
 	pTexture->Release();
 
-	const float& rWindowWidth = WndSettings::GetInstance().GetWndWidth();
-	const float& rWindowHeight = WndSettings::GetInstance().GetWndHeight();
-
-	depthBufferDesc.Width = size.x;
-	depthBufferDesc.Height = size.y;
+	depthBufferDesc.Width = rWindowWidth;
+	depthBufferDesc.Height = rWindowHeight;
 	depthBufferDesc.MipLevels = 1;
 	depthBufferDesc.ArraySize = 1;
 	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -63,7 +61,7 @@ EG::CameraComponent::CameraComponent(
 	depthStencilViewDesc.Flags = 0;
 
 	EGCHECKHR(pDevice->CreateDepthStencilView(m_pDepthBuffer, &depthStencilViewDesc, &m_pDepthStencil));
-
+	
 	m_frustum.Update(nearPlane, farPlane, m_transform, aspectRatio, fov);
 }
 
@@ -131,4 +129,13 @@ void EG::CameraComponent::BeginRender(const unsigned int clearFlags) const
 	pDeviceContext->ClearDepthStencilView(m_pDepthStencil, clearStencilViewFlags, 1.0f, 0.0f);
 
 	pDeviceContext->OMSetRenderTargets(1, &m_pRenderTarget, m_pDepthStencil);
+}
+
+void EG::CameraComponent::EndRender()
+{
+	ID3D11DeviceContext* pDeviceContext = Device::GetInstance().GetDeviceContext();
+	
+	ID3D11RenderTargetView* nullRTV = nullptr;
+	
+	pDeviceContext->OMSetRenderTargets(1, &nullRTV, nullptr);
 }

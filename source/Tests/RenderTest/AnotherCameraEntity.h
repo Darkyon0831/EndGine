@@ -5,10 +5,10 @@
 
 #include "Components/CameraComponent.h"
 
-class CameraEntity : public EG::Entity
+class AnotherCameraEntity : public EG::Entity
 {
 public:
-	CameraEntity();
+	AnotherCameraEntity();
 
 private:
 	EG::CameraComponent* m_pCameraComponent;

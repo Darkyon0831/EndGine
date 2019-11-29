@@ -1,3 +1,5 @@
+
+#ifndef NOMATRIX
 float4x4 worldMatrix;
 float4x4 viewMatrix;
 float4x4 projectionMatrix;
@@ -13,6 +15,7 @@ float4 GetScreenPosition(float4 pos)
 
 	return result;
 }
+#endif
 
 struct VertexInput
 {

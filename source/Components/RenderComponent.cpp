@@ -3,9 +3,11 @@
 #include "Core/RenderQueue.h"
 #include "Globals/Clock.h"
 
+#include "Entities/GameObject.h"
+
 EG::RenderComponent::RenderComponent()
 {
-
+	
 }
 
 EG::RenderComponent::~RenderComponent()
@@ -17,8 +19,10 @@ void EG::RenderComponent::PostStart()
 {
 	// Init constant buffers after the user have defined all variables
 
-	const size_t vertexConstantBufferSize = m_shader.GetTotalSizeOfVariables(EG::Shader::ShaderStage::VS);
-	const size_t pixelConstantBufferSize = m_shader.GetTotalSizeOfVariables(EG::Shader::ShaderStage::PS);
+	Shader& rShader = GetGameObject()->GetComponent<Mesh>()->GetMaterial().GetShader();
+	
+	const size_t vertexConstantBufferSize = rShader.GetTotalSizeOfVariables(EG::Shader::ShaderStage::VS);
+	const size_t pixelConstantBufferSize = rShader.GetTotalSizeOfVariables(EG::Shader::ShaderStage::PS);
 
 	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
 
@@ -40,42 +44,32 @@ void EG::RenderComponent::PostStart()
 	constantBufferPixelDesc.StructureByteStride = 0;
 
 	if (vertexConstantBufferSize > 0)
-		EGCHECKHR(pDevice->CreateBuffer(&constantBufferVertexDesc, nullptr, &m_shader.m_pConstantsVertex));
+		EGCHECKHR(pDevice->CreateBuffer(&constantBufferVertexDesc, nullptr, &rShader.m_pConstantsVertex));
 
 	if (pixelConstantBufferSize > 0)
-		EGCHECKHR(pDevice->CreateBuffer(&constantBufferPixelDesc, nullptr, &m_shader.m_pConstantsVertex));
+		EGCHECKHR(pDevice->CreateBuffer(&constantBufferPixelDesc, nullptr, &rShader.m_pConstantsVertex));
 }
 
 void EG::RenderComponent::PostUpdate()
 {
+	Shader& rShader = GetGameObject()->GetComponent<Mesh>()->GetMaterial().GetShader();
+	
 	// Update constant buffers
 	ID3D11DeviceContext* pDeviceContext = Device::GetInstance().GetDeviceContext();
 
-	if (m_shader.m_pConstantsVertex != nullptr)
-		UpdateConstantBuffer(Shader::ShaderStage::VS, m_shader.m_pConstantsVertex, pDeviceContext);
+	if (rShader.m_pConstantsVertex != nullptr)
+		UpdateConstantBuffer(rShader, Shader::ShaderStage::VS, rShader.m_pConstantsVertex, pDeviceContext);
 
-	if (m_shader.m_pConstantsPixel != nullptr)
-		UpdateConstantBuffer(Shader::ShaderStage::PS, m_shader.m_pConstantsPixel, pDeviceContext);
-	
-	// Add this render component to the render queue
-
-	RenderQueue::RenderObject renderObject {};
-	renderObject.pModel = &m_model;
-	renderObject.pShader = &m_shader;
-	
-	RenderQueue::GetInstance().AddRenderObject(renderObject);
+	if (rShader.m_pConstantsPixel != nullptr)
+		UpdateConstantBuffer(rShader, Shader::ShaderStage::PS, rShader.m_pConstantsPixel, pDeviceContext);
 }
 
 void EG::RenderComponent::Update()
 {
 	const float& deltaTime = Clock::GetInstance().GetDeltaTime();
-	
-	m_model.GetTransform().rotation.y += 25.0f * deltaTime;
-	
-	m_model.GetTransform().Update();
 }
 
-void EG::RenderComponent::UpdateConstantBuffer(const Shader::ShaderStage shaderStage, ID3D11Buffer* pConstantBuffer, ID3D11DeviceContext* pDeviceContext) const
+void EG::RenderComponent::UpdateConstantBuffer(Shader& rShader, const Shader::ShaderStage shaderStage, ID3D11Buffer* pConstantBuffer, ID3D11DeviceContext* pDeviceContext) const
 {
 	D3D11_MAPPED_SUBRESOURCE constantBufferResource;
 	
@@ -84,9 +78,9 @@ void EG::RenderComponent::UpdateConstantBuffer(const Shader::ShaderStage shaderS
 	size_t currentStride = 0;
 	char* ptrChar = static_cast<char*>(constantBufferResource.pData);
 
-	for (unsigned int i = 0; i < m_shader.m_shaderVariables.size(); i++)
+	for (unsigned int i = 0; i < rShader.m_shaderVariables.size(); i++)
 	{
-		const Shader::ShaderVariable& shaderVar = m_shader.m_shaderVariables.at(i);
+		const Shader::ShaderVariable& shaderVar = rShader.m_shaderVariables.at(i);
 
 		if (shaderVar.shaderStage == shaderStage)
 		{

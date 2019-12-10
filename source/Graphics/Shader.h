@@ -10,10 +10,11 @@
 #include <d3dcommon.h>
 #include <d3dcompiler.h>
 #include <vector>
+#include "Core/Asset.h"
 
 namespace EG
 {
-	class Shader
+	class Shader : public Asset
 	{
 	public:
 

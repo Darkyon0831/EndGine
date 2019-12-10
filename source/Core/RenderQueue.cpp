@@ -2,6 +2,11 @@
 
 #include "ECS/ComponentManager.h"
 #include "Components/CameraComponent.h"
+#include "Graphics/SwapChain.h"
+
+#include "Components/RenderComponent.h"
+
+#include "Entities/GameObject.h"
 
 EG::RenderQueue::RenderQueue()
 {
@@ -72,8 +77,8 @@ void EG::RenderQueue::InitFullcreenRender()
 	m_fullscreenRender.quad.SetIndexArray(index, 6);
 	m_fullscreenRender.quad.SetVertexArray(vertex, 4);
 
-	m_fullscreenRender.pShader = new Shader();
-	m_fullscreenRender.pShader->Load("fullscreen_vertex.hlsl", "fullscreen_pixel.hlsl", false);
+	Shader& rShader = m_fullscreenRender.quad.GetMaterial().GetShader();
+	rShader.Load("fullscreen_vertex.hlsl", "fullscreen_pixel.hlsl", false);
 
 	D3D11_INPUT_ELEMENT_DESC inputLayout[5]
 	{
@@ -84,13 +89,13 @@ void EG::RenderQueue::InitFullcreenRender()
 		{ "TEXCOORD", 2, DXGI_FORMAT_R32G32B32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1},
 	};
 
-	ID3D11InputLayout* pLayout = m_fullscreenRender.pShader->GetInputLayout();
-	const void* pVertexShaderBuffer = m_fullscreenRender.pShader->GetVertexShaderBuffer();
-	const size_t& rVertexShaderBufferSize = m_fullscreenRender.pShader->GetVertexShaderBufferSize();
+	ID3D11InputLayout* pLayout = rShader.GetInputLayout();
+	const void* pVertexShaderBuffer = rShader.GetVertexShaderBuffer();
+	const size_t& rVertexShaderBufferSize = rShader.GetVertexShaderBufferSize();
 	
 	EGCHECKHR(pDevice->CreateInputLayout(inputLayout, 5, pVertexShaderBuffer, rVertexShaderBufferSize, &pLayout));
 
-	m_fullscreenRender.pShader->SetInputLayout(pLayout);
+	rShader.SetInputLayout(pLayout);
 
 	D3D11_TEXTURE2D_DESC texure2DDesc;
 
@@ -142,7 +147,6 @@ void EG::RenderQueue::Update()
 void EG::RenderQueue::Render()
 {
 	// Todo: Use instancing on all meshes that are the same (ex. cube) to minimize draw calls
-
 	
 	ID3D11DeviceContext* pDeviceContext = Device::GetInstance().GetDeviceContext();
 	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
@@ -163,45 +167,50 @@ void EG::RenderQueue::Render()
 	{
 		cameraIT->BeginRender(CameraComponent::ClearFlags::Depth | CameraComponent::ClearFlags::RenderTarget);
 
-		for (unsigned int i = 0; i < m_renderQueue.size(); i++)
+		ComponentManager::iterator<RenderComponent> renderIT = ComponentManager::GetInstance().Begin<RenderComponent>();
+		ComponentManager::iterator<RenderComponent> renderEnd = ComponentManager::GetInstance().End<RenderComponent>();
+
+		for (; renderIT != renderEnd; renderIT++)
 		{
-			const RenderObject& rRenderObject = m_renderQueue.at(i);
-			ID3D11SamplerState* pSampletState = rRenderObject.pShader->GetSamplerState();
-			ID3D11Buffer* pVertexConstantBuffer = rRenderObject.pShader->GetVertexConstantBuffer();
-			ID3D11Buffer* pPixelConstantBuffer = rRenderObject.pShader->GetPixelConstantBuffer();
-
-			size_t stride = sizeof(Mesh::Vertex);
-			size_t offset = 0;
-
-			vsGeneralVars.modelWorldMatrix = rRenderObject.pModel->GetTransform().GetWorldMatrix().Transpose(true);
-			vsGeneralVars.cameraViewMatrix = cameraIT->GetViewMatrix().Transpose(true);
-			vsGeneralVars.cameraProjectionMatrix = cameraIT->GetProjectionMatrix().Transpose(true);
-
-			m_vsGeneral->Update(&vsGeneralVars);
-
-			ID3D11Buffer* vertexConstantBuffers[2];
-			vertexConstantBuffers[0] = m_vsGeneral->GetBuffer();
-			vertexConstantBuffers[1] = pVertexConstantBuffer;
-
-			ID3D11Buffer* pixelConstantBuffers[2];
-			pixelConstantBuffers[1] = pPixelConstantBuffer;
-
-			pDeviceContext->IASetInputLayout(rRenderObject.pShader->GetInputLayout());
-			pDeviceContext->VSSetShader(rRenderObject.pShader->GetVertexShader(), nullptr, 0);
-			pDeviceContext->PSSetShader(rRenderObject.pShader->GetPixelShader(), nullptr, 0);
-			pDeviceContext->PSSetSamplers(0, 1, &pSampletState);
-			pDeviceContext->RSSetState(rRenderObject.pShader->GetRasterizerState());
-			pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-			if (rRenderObject.pShader->GetVertexConstantBuffer() != nullptr)
-				pDeviceContext->VSSetConstantBuffers(0, 2, vertexConstantBuffers);
-			else
-				pDeviceContext->VSSetConstantBuffers(0, 1, &vertexConstantBuffers[0]);
-
-			for (unsigned int j = 0; j < rRenderObject.pModel->GetNumMeshes(); j++)
+			if (renderIT->GetGameObject()->HaveComponent<Mesh>())
 			{
-				Mesh* pMesh = rRenderObject.pModel->GetMesh(j);
+				Transform* pTransform = renderIT->GetGameObject()->GetComponent<Transform>();
+				Mesh* pMesh = renderIT->GetGameObject()->GetComponent<Mesh>();
+				Shader& rShader = pMesh->GetMaterial().GetShader();
 				Material& rMaterial = pMesh->GetMaterial();
+
+				ID3D11SamplerState* pSamplerState = rShader.GetSamplerState();
+				ID3D11Buffer* pVertexConstantBuffer = rShader.GetVertexConstantBuffer();
+				ID3D11Buffer* pPixelConstantBuffer = rShader.GetPixelConstantBuffer();
+
+				size_t stride = sizeof(Mesh::Vertex);
+				size_t offset = 0;
+
+				vsGeneralVars.modelWorldMatrix = pTransform->GetWorldMatrix().Transpose(true);
+				vsGeneralVars.cameraViewMatrix = cameraIT->GetViewMatrix().Transpose(true);
+				vsGeneralVars.cameraProjectionMatrix = cameraIT->GetProjectionMatrix().Transpose(true);
+
+				m_vsGeneral->Update(&vsGeneralVars);
+
+				ID3D11Buffer* vertexConstantBuffers[2];
+				vertexConstantBuffers[0] = m_vsGeneral->GetBuffer();
+				vertexConstantBuffers[1] = pVertexConstantBuffer;
+
+				ID3D11Buffer* pixelConstantBuffers[2];
+				pixelConstantBuffers[1] = pPixelConstantBuffer;
+
+				pDeviceContext->IASetInputLayout(rShader.GetInputLayout());
+				pDeviceContext->VSSetShader(rShader.GetVertexShader(), nullptr, 0);
+				pDeviceContext->PSSetShader(rShader.GetPixelShader(), nullptr, 0);
+				pDeviceContext->PSSetSamplers(0, 1, &pSamplerState);
+				pDeviceContext->RSSetState(rShader.GetRasterizerState());
+				pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+				if (rShader.GetVertexConstantBuffer() != nullptr)
+					pDeviceContext->VSSetConstantBuffers(0, 2, vertexConstantBuffers);
+				else
+					pDeviceContext->VSSetConstantBuffers(0, 1, &vertexConstantBuffers[0]);
+
 				ID3D11ShaderResourceView* pColormap = rMaterial.GetColormap()->GetShaderResourceView();
 
 				psGeneralVars.materialColor = rMaterial.GetColor();
@@ -215,7 +224,7 @@ void EG::RenderQueue::Render()
 
 				pDeviceContext->PSSetShaderResources(0, 1, &pColormap);
 
-				if (rRenderObject.pShader->GetPixelConstantBuffer() != nullptr)
+				if (rShader.GetPixelConstantBuffer() != nullptr)
 					pDeviceContext->PSSetConstantBuffers(0, 2, pixelConstantBuffers);
 				else
 					pDeviceContext->PSSetConstantBuffers(0, 1, &pixelConstantBuffers[0]);
@@ -230,9 +239,8 @@ void EG::RenderQueue::Render()
 		cameraIT->EndRender();
 	}
 
-	m_renderQueue.clear();
-
 	BeginRenderFullscreen();
+	Shader& rFullscreenShader = m_fullscreenRender.quad.GetMaterial().GetShader();
 
 	int cameraCount = 0;
 
@@ -274,14 +282,12 @@ void EG::RenderQueue::Render()
 	textures.reserve(cameraCount);
 
 	cameraIT = ComponentManager::GetInstance().Begin<CameraComponent>();
-	
-	m_fullscreenRender.transform.Update();
 
 	m_fullscreenRender.viewMatrix.ApplyViewMatrix(Vector3D::Zero, Vector3D(0.0f, 0.0f, 1.0f));
 	m_fullscreenRender.projectionMatrix.ApplyOrthoMatrix(cameraIT->m_viewPort.Width, cameraIT->m_viewPort.Height, 0, 1);
 	
 	FullscreenConstantsVertex fullscreenConstants;
-	fullscreenConstants.worldMatrix = m_fullscreenRender.transform.GetWorldMatrix().Transpose(true);
+	fullscreenConstants.worldMatrix = Matrix::identity;
 	fullscreenConstants.viewMatrix = m_fullscreenRender.viewMatrix.Transpose(true);
 	fullscreenConstants.projectionMatrix = m_fullscreenRender.projectionMatrix.Transpose(true);
 
@@ -294,7 +300,7 @@ void EG::RenderQueue::Render()
 
 
 	ID3D11Buffer* bufferPointers[2];
-	ID3D11SamplerState* pSamplerState = m_fullscreenRender.pShader->GetSamplerState();
+	ID3D11SamplerState* pSamplerState = rFullscreenShader.GetSamplerState();
 	ID3D11Buffer* pVertexBuffer = m_fullscreenRender.quad.GetVertexBuffer();
 	ID3D11Buffer* pIndexBuffer = m_fullscreenRender.quad.GetIndexBuffer();
 	ID3D11Buffer* pVSConstantBufferFullscreen = m_fullscreenVS->GetBuffer();
@@ -326,11 +332,11 @@ void EG::RenderQueue::Render()
 		index++;
 	}
 
-	pDeviceContext->IASetInputLayout(m_fullscreenRender.pShader->GetInputLayout());
-	pDeviceContext->VSSetShader(m_fullscreenRender.pShader->GetVertexShader(), nullptr, 0);
-	pDeviceContext->PSSetShader(m_fullscreenRender.pShader->GetPixelShader(), nullptr, 0);
+	pDeviceContext->IASetInputLayout(rFullscreenShader.GetInputLayout());
+	pDeviceContext->VSSetShader(rFullscreenShader.GetVertexShader(), nullptr, 0);
+	pDeviceContext->PSSetShader(rFullscreenShader.GetPixelShader(), nullptr, 0);
 	pDeviceContext->PSSetSamplers(0, 1, &pSamplerState);
-	pDeviceContext->RSSetState(m_fullscreenRender.pShader->GetRasterizerState());
+	pDeviceContext->RSSetState(rFullscreenShader.GetRasterizerState());
 	pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	pDeviceContext->VSSetConstantBuffers(0, 1, &pVSConstantBufferFullscreen);
 

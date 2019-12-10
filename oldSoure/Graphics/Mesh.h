@@ -17,8 +17,7 @@ namespace EG
 	public:
 		Mesh();
 		~Mesh();
-		
-		struct Vertex
+				struct Vertex
 		{
 			Vector3D position;
 			Color color;

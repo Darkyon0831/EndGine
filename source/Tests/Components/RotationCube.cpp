@@ -1,13 +1,12 @@
-#include "CubeEntity.h"
+#include "RotationCube.h"
 
-#include "ECS/ComponentManager.h"
+#include "Entities/GameObject.h"
+#include "Globals/Clock.h"
 
-CubeEntity::CubeEntity()
+RotationCube::RotationCube()
 {
-	m_pRenderComponent = reinterpret_cast<EG::RenderComponent*>(
-		EG::ComponentManager::GetInstance().CreateComponent<EG::RenderComponent>(m_id));
-
-	// Build mesh for the model and load a shader
+	m_pMesh = GetGameObject()->CreateComponent<EG::Mesh>();
+	m_pRenderComponent = GetGameObject()->CreateComponent<EG::RenderComponent>();
 
 	EG::Mesh::Vertex* vertex = new EG::Mesh::Vertex[8];
 
@@ -90,18 +89,27 @@ CubeEntity::CubeEntity()
 	index[34] = 3;
 	index[35] = 7;
 
-	EG::Mesh* cubeMesh = new EG::Mesh();
-	cubeMesh->SetIndexArray(index, 36);
-	cubeMesh->SetVertexArray(vertex, 8);
+	m_pMesh->SetIndexArray(index, 36);
+	m_pMesh->SetVertexArray(vertex, 8);
 
 	EG::Texture* texture = new EG::Texture();
 	texture->Load("textures/test.dds");
 
-	cubeMesh->GetMaterial().SetColormap(texture);
+	m_pMesh->GetMaterial().SetColormap(texture);
+	m_pMesh->GetMaterial().GetShader().Load("mesh_simple_vertex.hlsl", "mesh_simple_pixel.hlsl");
+
+	GetGameObject()->GetTransform()->position.x = 3.0f;
+}
+
+RotationCube::~RotationCube()
+{
+	GetGameObject()->RemoveComponent<EG::Mesh>();
+	GetGameObject()->RemoveComponent<EG::RenderComponent>();
+}
+
+void RotationCube::Update()
+{
+	const float deltaTime = EG::Clock::GetInstance().GetDeltaTime();
 	
-	m_pRenderComponent->GetModel().AddMesh(cubeMesh);
-
-	m_pRenderComponent->GetShader().Load("mesh_simple_vertex.hlsl", "mesh_simple_pixel.hlsl");
-
-	m_pRenderComponent->GetModel().GetTransform().position.x = 3.0f;
+	GetGameObject()->GetTransform()->rotation.y += deltaTime * 30.0f;
 }

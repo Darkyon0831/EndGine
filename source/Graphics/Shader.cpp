@@ -2,7 +2,8 @@
 #include <fstream>
 
 EG::Shader::Shader()
-	: m_pRasterizerState(nullptr)
+	: Asset(Asset::AssetType::AShader)
+	, m_pRasterizerState(nullptr)
 	, m_pSamplerState(nullptr)
 	, m_pInputLayout(nullptr)
 	, m_pConstantsVertex(nullptr)
@@ -55,15 +56,32 @@ EG::Shader::~Shader()
 {
 	if (m_pError == nullptr)
 	{
-		m_pRasterizerState->Release();
-		m_pSamplerState->Release();
-		m_pInputLayout->Release();
-		m_pConstantsVertex->Release();
-		m_pConstantsPixel->Release();
-		m_pVertexShader->Release();
-		m_pPixelShader->Release();
-		m_pVertexShaderBuffer->Release();
-		m_pPixelShaderBuffer->Release();	
+		if (m_pRasterizerState != nullptr)
+			m_pRasterizerState->Release();
+
+		if (m_pSamplerState != nullptr)
+			m_pSamplerState->Release();
+
+		if (m_pInputLayout != nullptr)
+			m_pInputLayout->Release();
+
+		if (m_pConstantsVertex != nullptr)
+			m_pConstantsVertex->Release();
+		
+		if (m_pConstantsPixel != nullptr)
+			m_pConstantsPixel->Release();
+
+		if (m_pVertexShader != nullptr)
+			m_pVertexShader->Release();
+
+		if (m_pPixelShader != nullptr)
+			m_pPixelShader->Release();
+
+		if (m_pVertexShaderBuffer != nullptr)
+			m_pVertexShaderBuffer->Release();
+
+		if (m_pPixelShaderBuffer != nullptr)
+			m_pPixelShaderBuffer->Release();	
 	}
 	else
 		m_pError->Release();

@@ -1,9 +1,10 @@
 #pragma once
 
 #include "Graphics/Shader.h"
-#include "Graphics/Model.h"
+#include "Components/Mesh.h"
 
 #include "Globals/Singleton.h"
+#include "Components/Transform.h"
 #include "Graphics/ConstantBuffer.h"
 
 namespace EG
@@ -17,8 +18,6 @@ namespace EG
 			ID3D11RenderTargetView* pRenderTargetView;
 			D3D11_VIEWPORT viewPort;
 			Color clearColor;
-			Transform transform;
-			Shader* pShader;
 			Matrix viewMatrix;
 			Matrix projectionMatrix;
 			Mesh quad;
@@ -53,12 +52,6 @@ namespace EG
 		{
 			Color materialColor;
 		};
-		
-		struct RenderObject
-		{
-			Shader* pShader;
-			Model* pModel;
-		};
 
 		struct TextureArray
 		{
@@ -73,15 +66,12 @@ namespace EG
 
 		void BeginRenderFullscreen() const;
 		void EndRenderFullscreen();
-		
-		void AddRenderObject(const RenderObject rRenderObject) { m_renderQueue.push_back(rRenderObject); }
+	
 
 		void Update();
 		void Render();
 		
 	private:
-		std::vector<RenderObject> m_renderQueue;
-
 		ConstantBuffer* m_fullscreenVS;
 		ConstantBuffer* m_fullscreenPS;
 		

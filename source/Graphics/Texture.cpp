@@ -6,9 +6,9 @@
 #include "Globals/File/FileSystem.h"
 
 EG::Texture::Texture(const bool initializeTexture, const float width, const float height)
-	: Asset(Asset::AssetType::Texture)
+	: Asset(Asset::AssetType::ATexture)
 	, m_pTexture(nullptr)
-	, m_pShaderResource(__nullptr)
+	, m_pShaderResource(nullptr)
 {
 
 	if (initializeTexture)

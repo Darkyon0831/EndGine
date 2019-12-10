@@ -1,6 +1,6 @@
 #pragma once
 #include "Globals/Matrix.h"
-#include "Globals/Transform.h"
+#include "Components/Transform.h"
 #include <d3d11.h>
 #include "Globals/Color.h"
 #include "Globals/Vector2D.h"
@@ -8,7 +8,7 @@
 
 #include "ECS/Component.h"
 #include <Graphics/Texture.h>
-#include "Graphics/Mesh.h"
+
 
 namespace EG
 {
@@ -46,11 +46,9 @@ namespace EG
 		
 		void Update() override;
 
-		Transform& GetTransform() { return m_transform; }
-
-		Matrix GetViewMatrix();
+		Matrix GetViewMatrix() const;
 		Matrix GetProjectionMatrix() const;
-		Matrix GetViewProjectionMatrix();
+		Matrix GetViewProjectionMatrix() const;
 
 		float& GetFov() { return m_fov; }
 		void SetFov(const float fov) { m_fov = fov; }
@@ -83,10 +81,9 @@ namespace EG
 		void BeginRender(unsigned int clearFlags) const;
 		void EndRender();
 
-		Frustum m_frustum;
+		//Frustum m_frustum;
 		
 		ProjectionType m_projection;
-		Transform m_transform;
 		
 		Vector2D m_viewportSize;
 		Vector2D m_viewportPos;

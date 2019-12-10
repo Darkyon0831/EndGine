@@ -2,6 +2,8 @@
 #include "Globals/Macro.h"
 #include "Graphics/SwapChain.h"
 
+#include "Entities/GameObject.h"
+
 EG::CameraComponent::CameraComponent(
 	const float fov, 
 	const float aspectRatio, 
@@ -62,7 +64,7 @@ EG::CameraComponent::CameraComponent(
 
 	EGCHECKHR(pDevice->CreateDepthStencilView(m_pDepthBuffer, &depthStencilViewDesc, &m_pDepthStencil));
 	
-	m_frustum.Update(nearPlane, farPlane, m_transform, aspectRatio, fov);
+	//m_frustum.Update(nearPlane, farPlane, m_transform, aspectRatio, fov);
 }
 
 EG::CameraComponent::~CameraComponent()
@@ -72,16 +74,19 @@ EG::CameraComponent::~CameraComponent()
 
 void EG::CameraComponent::Update()
 {
-	m_transform.Update();
-	
-	m_frustum.Update(m_nearPlane, m_farPlane, m_transform, m_aspectRatio, m_fov);;
+	//m_frustum.Update(m_nearPlane, m_farPlane, m_transform, m_aspectRatio, m_fov);;
 }
 
-EG::Matrix EG::CameraComponent::GetViewMatrix()
+EG::Matrix EG::CameraComponent::GetViewMatrix() const
 {
 	Matrix viewMatrix = Matrix::identity;
 	
-	viewMatrix.ApplyViewMatrix(m_transform.position, m_transform.position + m_transform.GetForward());
+	if (GetGameObject()->HaveComponent<Transform>())
+	{
+		Transform* transform = GetGameObject()->GetComponent<Transform>();
+		
+		viewMatrix.ApplyViewMatrix(transform->position, transform->position + transform->GetForward());
+	}
 
 	return viewMatrix;
 }
@@ -98,7 +103,7 @@ EG::Matrix EG::CameraComponent::GetProjectionMatrix() const
 	return projectionMatrix;
 }
 
-EG::Matrix EG::CameraComponent::GetViewProjectionMatrix()
+EG::Matrix EG::CameraComponent::GetViewProjectionMatrix() const
 {
 	Matrix projectionMatrix = GetProjectionMatrix();
 	Matrix viewMatrix = GetViewMatrix();

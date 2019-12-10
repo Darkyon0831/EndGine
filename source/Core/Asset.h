@@ -7,8 +7,10 @@ namespace EG
 	public:
 		enum AssetType
 		{
-			Mesh,
-			Texture
+			AMesh,
+			ATexture,
+			AMaterial,
+			AShader
 		};
 
 		Asset(AssetType assetType);

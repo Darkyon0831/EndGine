@@ -1,15 +1,14 @@
 #pragma once
 
-#include "ECS/Entity.h"
-#include "ECS/ComponentManager.h"
-
 #include "Components/CameraComponent.h"
+#include "Entities/GameObject.h"
 
-class CameraEntity : public EG::Entity
+class TestCamera : public EG::GameObject
 {
 public:
-	CameraEntity();
-
+	TestCamera();
+	~TestCamera();
+	
 private:
 	EG::CameraComponent* m_pCameraComponent;
 };

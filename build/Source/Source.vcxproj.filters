@@ -37,6 +37,9 @@
     <Filter Include="Tests\RenderTest">
       <UniqueIdentifier>{39ada81e-e15f-4a46-be82-db548133386d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{b9e624ab-dbc2-4a5f-a64e-da3ecd2c7084}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\Containers\WndContainer.cpp">
@@ -179,6 +182,12 @@
     </ClCompile>
     <ClCompile Include="..\..\source\Core\Input.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Graphics\FBXLoader.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Entities\Default3DCamera.cpp">
+      <Filter>Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -352,6 +361,12 @@
     </ClInclude>
     <ClInclude Include="..\..\source\Core\Input.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Graphics\FBXLoader.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Entities\Default3DCamera.h">
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

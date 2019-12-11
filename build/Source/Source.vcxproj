@@ -13,6 +13,14 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseEG|Win32">
+      <Configuration>ReleaseEG</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseEG|x64">
+      <Configuration>ReleaseEG</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -39,6 +47,7 @@
     <ClCompile Include="..\..\source\ECS\ComponentManager.cpp" />
     <ClCompile Include="..\..\source\ECS\EntityManager.cpp" />
     <ClCompile Include="..\..\source\ECS\SystemManager.cpp" />
+    <ClCompile Include="..\..\source\Entities\Default3DCamera.cpp" />
     <ClCompile Include="..\..\source\Globals\Camera.cpp" />
     <ClCompile Include="..\..\source\Globals\Clock.cpp" />
     <ClCompile Include="..\..\source\Globals\Color.cpp" />
@@ -53,6 +62,7 @@
     <ClCompile Include="..\..\source\Globals\WString.cpp" />
     <ClCompile Include="..\..\source\Graphics\ConstantBuffer.cpp" />
     <ClCompile Include="..\..\source\Graphics\Device.cpp" />
+    <ClCompile Include="..\..\source\Graphics\FBXLoader.cpp" />
     <ClCompile Include="..\..\source\Graphics\Mesh.cpp" />
     <ClCompile Include="..\..\source\Graphics\Model.cpp" />
     <ClCompile Include="..\..\source\Graphics\Shader.cpp" />
@@ -93,6 +103,7 @@
     <ClInclude Include="..\..\source\ECS\ISystem.h" />
     <ClInclude Include="..\..\source\ECS\System.h" />
     <ClInclude Include="..\..\source\ECS\SystemManager.h" />
+    <ClInclude Include="..\..\source\Entities\Default3DCamera.h" />
     <ClInclude Include="..\..\source\Globals\Camera.h" />
     <ClInclude Include="..\..\source\Globals\Clock.h" />
     <ClInclude Include="..\..\source\Globals\Color.h" />
@@ -109,6 +120,7 @@
     <ClInclude Include="..\..\source\Globals\WString.h" />
     <ClInclude Include="..\..\source\Graphics\ConstantBuffer.h" />
     <ClInclude Include="..\..\source\Graphics\Device.h" />
+    <ClInclude Include="..\..\source\Graphics\FBXLoader.h" />
     <ClInclude Include="..\..\source\Graphics\Material.h" />
     <ClInclude Include="..\..\source\Graphics\Mesh.h" />
     <ClInclude Include="..\..\source\Graphics\Model.h" />
@@ -180,6 +192,12 @@
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='ReleaseEG|Win32'">
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='ReleaseEG|x64'">
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -256,7 +274,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;CORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;$(SolutionDir)dependencies\FBXSdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -276,7 +294,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;CORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;$(SolutionDir)dependencies\FBXSdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -296,7 +314,7 @@
       <PreprocessorDefinitions>_DEBUG;CORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;$(SolutionDir)dependencies\FBXSdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -316,7 +334,7 @@
       <PreprocessorDefinitions>_DEBUG;CORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;$(SolutionDir)dependencies\FBXSdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -338,7 +356,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;CORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;$(SolutionDir)dependencies\FBXSdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -362,7 +380,7 @@
       <PreprocessorDefinitions>NDEBUG;CORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;$(SolutionDir)dependencies\FBXSdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -374,6 +392,16 @@
     <Lib>
       <AdditionalLibraryDirectories>D3D11.lib;DXGI.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseEG|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;$(SolutionDir)dependencies\FBXSdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseEG|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;$(SolutionDir)dependencies\FBXSdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

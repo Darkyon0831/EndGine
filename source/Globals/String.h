@@ -27,6 +27,10 @@ namespace EG
 		
 		void operator=(const String& other);
 		String operator+(const String& other) const;
+		String operator+(const char& other) const;
+		String operator+(const int& other) const;
+		String operator+(const float& other) const;
+		String operator+(const double& other) const;
 
 		char operator[] (const int& index) const { return GetString()[index]; }
 

@@ -1,5 +1,7 @@
 #include  "String.h"
 
+#include <string>
+
 EG::String::String(const char* str)
 {
 	const size_t strLen = strlen(str);
@@ -78,25 +80,28 @@ void EG::String::operator+=(const char& characher)
 
 	const size_t charSize = sizeof(char) + static_cast<int>(isOffset);
 
-	void* newPtr = m_allocator.Alloc(charSize);
-
-	if (newPtr == nullptr)
+	if (charSize != 0)
 	{
-		m_allocator.Realloc(charSize);
-		newPtr = m_allocator.Alloc(charSize);
+		void* newPtr = m_allocator.Alloc(charSize);
+
+		if (newPtr == nullptr)
+		{
+			m_allocator.Realloc(charSize);
+			newPtr = m_allocator.Alloc(charSize);
+		}
+
+		char* cPtr = static_cast<char*>(newPtr);
+
+		if (isOffset == false)
+			cPtr -= 1;
+
+		memcpy(cPtr, &characher, charSize - static_cast<int>(isOffset));
+
+		cPtr += charSize - static_cast<int>(isOffset);
+		memset(cPtr, '\0', 1);
+
+		m_str = static_cast<char*>(m_allocator.GetFirst());
 	}
-
-	char* cPtr = static_cast<char*>(newPtr);
-
-	if (isOffset == false)
-		cPtr -= 1;
-	
-	memcpy(cPtr, &characher, charSize - static_cast<int>(isOffset));
-	
-	cPtr += charSize - static_cast<int>(isOffset);
-	memset(cPtr, '\0', 1);
-	
-	m_str = static_cast<char*>(m_allocator.GetFirst());
 }
 
 void EG::String::operator+=(const char* str)
@@ -105,25 +110,28 @@ void EG::String::operator+=(const char* str)
 
 	const size_t strSize = strlen(str) + static_cast<int>(isOffset);
 
-	void* newPtr = m_allocator.Alloc(strSize);
-
-	if (newPtr == nullptr)
+	if (strSize != 0)
 	{
-		m_allocator.Realloc(strSize);
-		newPtr = m_allocator.Alloc(strSize);
+		void* newPtr = m_allocator.Alloc(strSize);
+
+		if (newPtr == nullptr)
+		{
+			m_allocator.Realloc(strSize);
+			newPtr = m_allocator.Alloc(strSize);
+		}
+
+		char* cPtr = static_cast<char*>(newPtr);
+
+		if (isOffset == false)
+			cPtr -= 1;
+
+		memcpy(cPtr, &str[0], strSize - static_cast<int>(isOffset));
+
+		cPtr += strSize - static_cast<int>(isOffset);
+		memset(cPtr, '\0', 1);
+
+		m_str = static_cast<char*>(m_allocator.GetFirst());
 	}
-
-	char* cPtr = static_cast<char*>(newPtr);
-
-	if (isOffset == false)
-		cPtr -= 1;
-
-	memcpy(cPtr, &str[0], strSize - static_cast<int>(isOffset));
-
-	cPtr += strSize - static_cast<int>(isOffset);
-	memset(cPtr, '\0', 1);
-
-	m_str = static_cast<char*>(m_allocator.GetFirst());
 }
 
 void EG::String::operator=(const char* str)
@@ -183,6 +191,54 @@ EG::String EG::String::operator+(const String& other) const
 
 	newString += GetString();
 	newString += other.GetString();
+
+	return newString;
+}
+
+EG::String EG::String::operator+(const char& other) const
+{
+	String newString = String(GetSize() + sizeof(char));
+	char* newStringPtr = newString.GetString();
+
+	newString += GetString();
+	newString += other;
+
+	return newString;
+
+}
+
+EG::String EG::String::operator+(const int& other) const
+{
+	String newString = String(GetSize() + sizeof(int));
+
+	std::string str = std::to_string(other);
+
+	newString += GetString();
+	newString += str.c_str();
+
+	return newString;
+}
+
+EG::String EG::String::operator+(const float& other) const
+{
+	String newString = String(GetSize() + sizeof(int));
+
+	std::string str = std::to_string(other);
+
+	newString += GetString();
+	newString += str.c_str();
+
+	return newString;
+}
+
+EG::String EG::String::operator+(const double& other) const
+{
+	String newString = String(GetSize() + sizeof(int));
+
+	std::string str = std::to_string(other);
+
+	newString += GetString();
+	newString += str.c_str();
 
 	return newString;
 }

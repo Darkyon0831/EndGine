@@ -1,5 +1,6 @@
 #include "Shader.h"
 #include <fstream>
+#include "Globals/File/FileSystem.h"
 
 EG::Shader::Shader()
 	: m_pRasterizerState(nullptr)
@@ -104,27 +105,14 @@ void EG::Shader::Load(const String& vsShaderName, const String& psShaderName, bo
 	m_psShaderName = psShaderName;
 	m_vsShaderName = vsShaderName;
 
-	String vsFilePath;
-	if (IsDebuggerPresent())
-		vsFilePath += "../../game/data/shaders/";
-	else
-		vsFilePath += "data/shaders/";
-
-	vsFilePath += vsShaderName.GetString();
-
-	String psFilePath;
-	if (IsDebuggerPresent())
-		psFilePath += "../../game/data/shaders/";
-	else
-		psFilePath += "data/shaders/";
+	String vsPath = FileSystem::GetInstance().GetDataLocationForPath(String("shaders/") + vsShaderName.GetString());
+	String psPath = FileSystem::GetInstance().GetDataLocationForPath(String("shaders/") + psShaderName.GetString());
 	
-	psFilePath += psShaderName.GetString();
-	
-	std::wstring vsWS(vsFilePath.GetSize(), L'#');
-	mbstowcs_s(nullptr, &vsWS[0], vsFilePath.GetSize(), vsFilePath.GetString(), vsFilePath.GetSize() - 1);
+	std::wstring vsWS(vsPath.GetSize(), L'#');
+	mbstowcs_s(nullptr, &vsWS[0], vsPath.GetSize(), vsPath.GetString(), vsPath.GetSize() - 1);
 
-	std::wstring psWS(psFilePath.GetSize(), L'#');
-	mbstowcs_s(nullptr, &psWS[0], psFilePath.GetSize(), psFilePath.GetString(), psFilePath.GetSize() - 1);
+	std::wstring psWS(psPath.GetSize(), L'#');
+	mbstowcs_s(nullptr, &psWS[0], psPath.GetSize(), psPath.GetString(), psPath.GetSize() - 1);
 
 	HRESULT result = D3DCompileFromFile(
 		vsWS.c_str(),

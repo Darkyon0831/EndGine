@@ -78,9 +78,6 @@
     <ClCompile Include="..\..\source\Graphics\SwapChain.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\Globals\Camera.cpp">
-      <Filter>Globals</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\Globals\Transform.cpp">
       <Filter>Globals</Filter>
     </ClCompile>
@@ -144,9 +141,6 @@
     <ClCompile Include="..\..\source\Entities\DefaultCamera.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\Components\Mesh.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\ECS\Component.cpp">
       <Filter>ECS</Filter>
     </ClCompile>
@@ -161,6 +155,21 @@
     </ClCompile>
     <ClCompile Include="..\..\source\Tests\Entities\TestCamera.cpp">
       <Filter>Tests\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\Components\QuadTest.cpp">
+      <Filter>Tests\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\Entities\TestQuad.cpp">
+      <Filter>Tests\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Components\Canvas.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Graphics\Mesh.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Components\Model.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -207,9 +216,6 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\Globals\Macro.h">
-      <Filter>Globals</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Globals\Camera.h">
       <Filter>Globals</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\Globals\Transform.h">
@@ -296,9 +302,6 @@
     <ClInclude Include="..\..\source\Entities\DefaultCamera.h">
       <Filter>Entities</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\Components\Mesh.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\source\Tests\Entities\TestCube.h">
       <Filter>Tests\Entities</Filter>
     </ClInclude>
@@ -307,6 +310,24 @@
     </ClInclude>
     <ClInclude Include="..\..\source\Tests\Entities\TestCamera.h">
       <Filter>Tests\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\Components\QuadTest.h">
+      <Filter>Tests\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\Entities\TestQuad.h">
+      <Filter>Tests\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Globals\Layer.h">
+      <Filter>Globals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Components\Canvas.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Graphics\Mesh.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Components\Model.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

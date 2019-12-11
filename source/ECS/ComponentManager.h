@@ -63,6 +63,20 @@ namespace EG
 	template <typename T, typename... Args>
 	T* ComponentManager::CreateComponent(int entityID, Args... args)
 	{
+		auto entityComponentLookupIT = m_entityComponentLookup.find(entityID);
+
+		if (entityComponentLookupIT == m_entityComponentLookup.end())
+		{
+			m_entityComponentLookup.insert(std::pair<int, std::unordered_map<std::type_index, IComponent*>>(entityID, std::unordered_map<std::type_index, IComponent*>()));
+			entityComponentLookupIT = --m_entityComponentLookup.end();
+		}
+		
+		const auto componentIT = entityComponentLookupIT->second.find(typeid(T));
+
+		// An entity can only have one component of each type.
+		if (componentIT != entityComponentLookupIT->second.end())
+			return nullptr;
+		
 		PoolAllocator* poolAllocator = nullptr;
 		const auto it = m_poolAllocators.find(typeid(T));
 
@@ -86,7 +100,6 @@ namespace EG
 		T* ptr = static_cast<T*>(component);
 		ptr = new(ptr) T(args...);
 
-		auto entityComponentLookupIT = m_entityComponentLookup.find(entityID);
 		std::unordered_map<std::type_index, IComponent*>* componentMap = nullptr;
 		
 		if (entityComponentLookupIT == m_entityComponentLookup.end())

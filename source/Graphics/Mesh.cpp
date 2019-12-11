@@ -2,7 +2,8 @@
 #include "Graphics/Device.h"
 
 EG::Mesh::Mesh()
-	: m_vertexArray(nullptr)
+	: Asset(Asset::AssetType::AMesh)
+	, m_vertexArray(nullptr)
 	, m_indexArray(nullptr)
 	, m_pVertexBuffer(nullptr)
 	, m_pIndexBuffer(nullptr)

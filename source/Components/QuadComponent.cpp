@@ -7,7 +7,7 @@
 EG::QuadComponent::QuadComponent()
 {
 	m_pRenderComponent = GetGameObject()->CreateComponent<RenderComponent>();
-	m_pMesh = GetGameObject()->CreateComponent<Mesh>();
+	m_pModel = GetGameObject()->CreateComponent<Model>();
 
 	EG::Mesh::Vertex* vertex = new EG::Mesh::Vertex[4];
 
@@ -35,10 +35,13 @@ EG::QuadComponent::QuadComponent()
 	index[5] = 3;
 
 	EG::Texture* texture = new EG::Texture();
-	texture->Load("textures/white_default.dds");
+	texture->Load("textures/test.dds");
 
-	m_pMesh->GetMaterial().SetColormap(texture);
-	m_pMesh->SetVertexArray(vertex, 4);
-	m_pMesh->SetIndexArray(index, 6);
-	m_pMesh->GetMaterial().GetShader().Load("quad_simple_vertex.hlsl", "quad_simple_pixel.hlsl");
+	Mesh* pMesh = new Mesh();
+	pMesh->GetMaterial().SetColormap(texture);
+	pMesh->SetVertexArray(vertex, 4);
+	pMesh->SetIndexArray(index, 6);
+	pMesh->GetMaterial().GetShader().Load("quad_simple_vertex.hlsl", "quad_simple_pixel.hlsl");
+
+	m_pModel->AddMesh(pMesh);
 }

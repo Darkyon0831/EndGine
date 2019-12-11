@@ -11,6 +11,7 @@ float4 main(PixelInput pIn) : SV_TARGET
 {
 	float4 TexColor = GetColormap().Sample(GetSamplerState(), pIn.uv);
 	TexColor *= pIn.color;
+	TexColor *= GetMaterialColor();
 
 	return TexColor;
 }

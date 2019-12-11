@@ -5,7 +5,7 @@
 
 RotationCube::RotationCube()
 {
-	m_pMesh = GetGameObject()->CreateComponent<EG::Mesh>();
+	m_pModel = GetGameObject()->CreateComponent<EG::Model>();
 	m_pRenderComponent = GetGameObject()->CreateComponent<EG::RenderComponent>();
 
 	EG::Mesh::Vertex* vertex = new EG::Mesh::Vertex[8];
@@ -89,14 +89,18 @@ RotationCube::RotationCube()
 	index[34] = 3;
 	index[35] = 7;
 
-	m_pMesh->SetIndexArray(index, 36);
-	m_pMesh->SetVertexArray(vertex, 8);
+	EG::Mesh* pMesh = new EG::Mesh();
+
+	pMesh->SetIndexArray(index, 36);
+	pMesh->SetVertexArray(vertex, 8);
 
 	EG::Texture* texture = new EG::Texture();
 	texture->Load("textures/test.dds");
 
-	m_pMesh->GetMaterial().SetColormap(texture);
-	m_pMesh->GetMaterial().GetShader().Load("mesh_simple_vertex.hlsl", "mesh_simple_pixel.hlsl");
+	pMesh->GetMaterial().SetColormap(texture);
+	pMesh->GetMaterial().GetShader().Load("mesh_simple_vertex.hlsl", "mesh_simple_pixel.hlsl");
+
+	m_pModel->AddMesh(pMesh);
 
 	GetGameObject()->GetTransform()->position.x = 3.0f;
 }

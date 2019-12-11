@@ -137,45 +137,28 @@ void EG::RenderQueue::EndRenderFullscreen()
 	pDeviceContext->OMSetRenderTargets(1, &nullRTV, nullptr);
 }
 
-void EG::RenderQueue::Update()
+void EG::RenderQueue::RenderPerspective(
+	ID3D11DeviceContext* pDeviceContext,
+	ComponentManager::iterator<RenderComponent> renderIT,
+	ComponentManager::iterator<CameraComponent> cameraIT) const
 {
-	// Todo: Get all meshes with alpha and sort them
-
-	
-}
-
-void EG::RenderQueue::Render()
-{
-	// Todo: Use instancing on all meshes that are the same (ex. cube) to minimize draw calls
-	
-	ID3D11DeviceContext* pDeviceContext = Device::GetInstance().GetDeviceContext();
-	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
-	const float& width = WndSettings::GetInstance().GetWndWidth();
-	const float& height = WndSettings::GetInstance().GetWndHeight();
-
-	D3D11_BUFFER_DESC instanceBufferDesc;
-	D3D11_SUBRESOURCE_DATA instanceData;
-	ID3D11Buffer* pInstanceData;
-
 	VSGeneralVars vsGeneralVars;
 	PSGeneralVars psGeneralVars;
 
-	ComponentManager::iterator<CameraComponent> cameraIT = ComponentManager::GetInstance().Begin<CameraComponent>();
-	const ComponentManager::iterator<CameraComponent> cameraEnd = ComponentManager::GetInstance().End<CameraComponent>();
-
-	for (; cameraIT != cameraEnd; cameraIT++)
+	cameraIT->SetDepthStencilState(true);
+	
+	if ((renderIT->GetGameObject()->Getlayer() & cameraIT->GetRenderLayerMask()) == renderIT->GetGameObject()->Getlayer())
 	{
-		cameraIT->BeginRender(CameraComponent::ClearFlags::Depth | CameraComponent::ClearFlags::RenderTarget);
-
-		ComponentManager::iterator<RenderComponent> renderIT = ComponentManager::GetInstance().Begin<RenderComponent>();
-		ComponentManager::iterator<RenderComponent> renderEnd = ComponentManager::GetInstance().End<RenderComponent>();
-
-		for (; renderIT != renderEnd; renderIT++)
+		if (renderIT->GetGameObject()->HaveComponent<Model>())
 		{
-			if (renderIT->GetGameObject()->HaveComponent<Mesh>())
+			Transform* pTransform = renderIT->GetGameObject()->GetComponent<Transform>();
+			Model* pModel = renderIT->GetGameObject()->GetComponent<Model>();
+
+			// Loop all meshes
+
+			for (int i = 0; i < pModel->GetTotalMeshes(); i++)
 			{
-				Transform* pTransform = renderIT->GetGameObject()->GetComponent<Transform>();
-				Mesh* pMesh = renderIT->GetGameObject()->GetComponent<Mesh>();
+				Mesh* pMesh = pModel->GetMesh(i);
 				Shader& rShader = pMesh->GetMaterial().GetShader();
 				Material& rMaterial = pMesh->GetMaterial();
 
@@ -187,8 +170,8 @@ void EG::RenderQueue::Render()
 				size_t offset = 0;
 
 				vsGeneralVars.modelWorldMatrix = pTransform->GetWorldMatrix().Transpose(true);
-				vsGeneralVars.cameraViewMatrix = cameraIT->GetViewMatrix().Transpose(true);
-				vsGeneralVars.cameraProjectionMatrix = cameraIT->GetProjectionMatrix().Transpose(true);
+				vsGeneralVars.cameraViewMatrix = cameraIT->GetViewMatrix(true).Transpose(true);
+				vsGeneralVars.cameraProjectionMatrix = cameraIT->GetPerspectiveProjection().Transpose(true);
 
 				m_vsGeneral->Update(&vsGeneralVars);
 
@@ -234,6 +217,126 @@ void EG::RenderQueue::Render()
 
 				pDeviceContext->DrawIndexed(pMesh->GetIndexCount(), 0, 0);
 			}
+		}
+	}
+}
+
+void EG::RenderQueue::RenderOrthogonal(
+	ID3D11DeviceContext* pDeviceContext,
+	ComponentManager::iterator<RenderComponent> renderIT,
+	ComponentManager::iterator<CameraComponent> cameraIT) const
+{
+	VSGeneralVars vsGeneralVars;
+	PSGeneralVars psGeneralVars;
+
+	cameraIT->SetDepthStencilState(false);
+	
+	if ((renderIT->GetGameObject()->Getlayer() & cameraIT->GetOrthogonalRenderMask()) == renderIT->GetGameObject()->Getlayer())
+	{
+		if (renderIT->GetGameObject()->HaveComponent<Model>())
+		{
+			Transform* pTransform = renderIT->GetGameObject()->GetComponent<Transform>();
+			Model* pModel = renderIT->GetGameObject()->GetComponent<Model>();
+
+			for (int i = 0; i < pModel->GetTotalMeshes(); i++)
+			{
+				Mesh* pMesh = pModel->GetMesh(i);
+				Shader& rShader = pMesh->GetMaterial().GetShader();
+				Material& rMaterial = pMesh->GetMaterial();
+
+				ID3D11SamplerState* pSamplerState = rShader.GetSamplerState();
+				ID3D11Buffer* pVertexConstantBuffer = rShader.GetVertexConstantBuffer();
+				ID3D11Buffer* pPixelConstantBuffer = rShader.GetPixelConstantBuffer();
+
+				size_t stride = sizeof(Mesh::Vertex);
+				size_t offset = 0;
+
+				vsGeneralVars.modelWorldMatrix = pTransform->GetWorldMatrix().Transpose(true);
+				vsGeneralVars.cameraViewMatrix = cameraIT->GetViewMatrix(false).Transpose(true);
+				vsGeneralVars.cameraProjectionMatrix = cameraIT->GetOrthogonalProjection().Transpose(true);
+
+				m_vsGeneral->Update(&vsGeneralVars);
+
+				ID3D11Buffer* vertexConstantBuffers[2];
+				vertexConstantBuffers[0] = m_vsGeneral->GetBuffer();
+				vertexConstantBuffers[1] = pVertexConstantBuffer;
+
+				ID3D11Buffer* pixelConstantBuffers[2];
+				pixelConstantBuffers[1] = pPixelConstantBuffer;
+
+				pDeviceContext->IASetInputLayout(rShader.GetInputLayout());
+				pDeviceContext->VSSetShader(rShader.GetVertexShader(), nullptr, 0);
+				pDeviceContext->PSSetShader(rShader.GetPixelShader(), nullptr, 0);
+				pDeviceContext->PSSetSamplers(0, 1, &pSamplerState);
+				pDeviceContext->RSSetState(rShader.GetRasterizerState());
+				pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+				if (rShader.GetVertexConstantBuffer() != nullptr)
+					pDeviceContext->VSSetConstantBuffers(0, 2, vertexConstantBuffers);
+				else
+					pDeviceContext->VSSetConstantBuffers(0, 1, &vertexConstantBuffers[0]);
+
+				ID3D11ShaderResourceView* pColormap = rMaterial.GetColormap()->GetShaderResourceView();
+
+				psGeneralVars.materialColor = rMaterial.GetColor();
+
+				m_psGeneral->Update(&psGeneralVars);
+
+				pixelConstantBuffers[0] = m_psGeneral->GetBuffer();
+
+				ID3D11Buffer* pVertexBuffer = pMesh->GetVertexBuffer();
+				ID3D11Buffer* pIndexBuffer = pMesh->GetIndexBuffer();
+
+				pDeviceContext->PSSetShaderResources(0, 1, &pColormap);
+
+				if (rShader.GetPixelConstantBuffer() != nullptr)
+					pDeviceContext->PSSetConstantBuffers(0, 2, pixelConstantBuffers);
+				else
+					pDeviceContext->PSSetConstantBuffers(0, 1, &pixelConstantBuffers[0]);
+
+				pDeviceContext->IASetVertexBuffers(0, 1, &pVertexBuffer, &stride, &offset);
+				pDeviceContext->IASetIndexBuffer(pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
+				pDeviceContext->DrawIndexed(pMesh->GetIndexCount(), 0, 0);
+			}
+		}
+	}
+}
+
+void EG::RenderQueue::Update()
+{
+	// Todo: Get all meshes with alpha and sort them
+
+	
+}
+
+void EG::RenderQueue::Render()
+{
+	// Todo: Use instancing on all meshes that are the same (ex. cube) to minimize draw calls
+	
+	ID3D11DeviceContext* pDeviceContext = Device::GetInstance().GetDeviceContext();
+	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
+	const float& width = WndSettings::GetInstance().GetWndWidth();
+	const float& height = WndSettings::GetInstance().GetWndHeight();
+
+	D3D11_BUFFER_DESC instanceBufferDesc;
+	D3D11_SUBRESOURCE_DATA instanceData;
+	ID3D11Buffer* pInstanceData;
+
+	ComponentManager::iterator<CameraComponent> cameraIT = ComponentManager::GetInstance().Begin<CameraComponent>();
+	const ComponentManager::iterator<CameraComponent> cameraEnd = ComponentManager::GetInstance().End<CameraComponent>();
+
+	for (; cameraIT != cameraEnd; cameraIT++)
+	{
+		cameraIT->BeginRender(CameraComponent::ClearFlags::Depth | CameraComponent::ClearFlags::RenderTarget);
+
+		ComponentManager::iterator<RenderComponent> renderIT = ComponentManager::GetInstance().Begin<RenderComponent>();
+		ComponentManager::iterator<RenderComponent> renderEnd = ComponentManager::GetInstance().End<RenderComponent>();
+
+		for (; renderIT != renderEnd; renderIT++)
+		{
+			RenderPerspective(pDeviceContext, renderIT, cameraIT);
+			RenderOrthogonal(pDeviceContext, renderIT, cameraIT);
 		}
 
 		cameraIT->EndRender();

@@ -3,15 +3,14 @@
 #include "Globals/Color.h"
 #include "Globals/Vector3D.h"
 #include "Globals/Vector2D.h"
-#include "ECS/Component.h"
+#include "Core/Asset.h"
 
 #include <d3d11.h>
 #include "Graphics/Material.h"
 
-
 namespace EG
 {
-	class Mesh : public Component<Mesh>
+	class Mesh : public Asset
 	{
 	public:
 		Mesh();

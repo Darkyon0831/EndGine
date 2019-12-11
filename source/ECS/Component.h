@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IComponent.h"
+#include "Globals/Layer.h"
 
 namespace EG
 {

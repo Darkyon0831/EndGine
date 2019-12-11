@@ -3,7 +3,6 @@
 #include "Entities/GameObject.h"
 #include "Tests/Components/RotationCube.h"
 
-
 class TestCube : public EG::GameObject
 {
 public:

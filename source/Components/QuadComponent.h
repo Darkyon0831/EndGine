@@ -1,7 +1,7 @@
 #pragma once
 
 #include "RenderComponent.h"
-#include "Mesh.h"
+#include "Model.h"
 
 namespace EG
 {
@@ -12,6 +12,6 @@ namespace EG
 		
 	private:
 		RenderComponent* m_pRenderComponent;
-		Mesh* m_pMesh;
+		Model* m_pModel;
 	};
 }

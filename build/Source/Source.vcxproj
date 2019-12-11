@@ -28,7 +28,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\Components\CameraComponent.cpp" />
-    <ClCompile Include="..\..\source\Components\Mesh.cpp" />
+    <ClCompile Include="..\..\source\Components\Canvas.cpp" />
+    <ClCompile Include="..\..\source\Components\Model.cpp" />
     <ClCompile Include="..\..\source\Components\QuadComponent.cpp" />
     <ClCompile Include="..\..\source\Components\RenderComponent.cpp" />
     <ClCompile Include="..\..\source\Components\Transform.cpp" />
@@ -45,7 +46,6 @@
     <ClCompile Include="..\..\source\ECS\SystemManager.cpp" />
     <ClCompile Include="..\..\source\Entities\DefaultCamera.cpp" />
     <ClCompile Include="..\..\source\Entities\GameObject.cpp" />
-    <ClCompile Include="..\..\source\Globals\Camera.cpp" />
     <ClCompile Include="..\..\source\Globals\Clock.cpp" />
     <ClCompile Include="..\..\source\Globals\Color.cpp" />
     <ClCompile Include="..\..\source\Globals\File\FileSystem.cpp" />
@@ -59,18 +59,22 @@
     <ClCompile Include="..\..\source\Globals\WString.cpp" />
     <ClCompile Include="..\..\source\Graphics\ConstantBuffer.cpp" />
     <ClCompile Include="..\..\source\Graphics\Device.cpp" />
+    <ClCompile Include="..\..\source\Graphics\Mesh.cpp" />
     <ClCompile Include="..\..\source\Graphics\Shader.cpp" />
     <ClCompile Include="..\..\source\Graphics\SwapChain.cpp" />
     <ClCompile Include="..\..\source\Graphics\Texture.cpp" />
     <ClCompile Include="..\..\source\Memory\LinearAllocator.cpp" />
     <ClCompile Include="..\..\source\Memory\PoolAllocator.cpp" />
+    <ClCompile Include="..\..\source\Tests\Components\QuadTest.cpp" />
     <ClCompile Include="..\..\source\Tests\Components\RotationCube.cpp" />
     <ClCompile Include="..\..\source\Tests\Entities\TestCamera.cpp" />
     <ClCompile Include="..\..\source\Tests\Entities\TestCube.cpp" />
+    <ClCompile Include="..\..\source\Tests\Entities\TestQuad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\Components\CameraComponent.h" />
-    <ClInclude Include="..\..\source\Components\Mesh.h" />
+    <ClInclude Include="..\..\source\Components\Canvas.h" />
+    <ClInclude Include="..\..\source\Components\Model.h" />
     <ClInclude Include="..\..\source\Components\QuadComponent.h" />
     <ClInclude Include="..\..\source\Components\RenderComponent.h" />
     <ClInclude Include="..\..\source\Components\Transform.h" />
@@ -90,11 +94,11 @@
     <ClInclude Include="..\..\source\ECS\SystemManager.h" />
     <ClInclude Include="..\..\source\Entities\DefaultCamera.h" />
     <ClInclude Include="..\..\source\Entities\GameObject.h" />
-    <ClInclude Include="..\..\source\Globals\Camera.h" />
     <ClInclude Include="..\..\source\Globals\Clock.h" />
     <ClInclude Include="..\..\source\Globals\Color.h" />
     <ClInclude Include="..\..\source\Globals\File\FileSystem.h" />
     <ClInclude Include="..\..\source\Globals\Frustum.h" />
+    <ClInclude Include="..\..\source\Globals\Layer.h" />
     <ClInclude Include="..\..\source\Globals\Macro.h" />
     <ClInclude Include="..\..\source\Globals\Matrix.h" />
     <ClInclude Include="..\..\source\Globals\Singleton.h" />
@@ -107,6 +111,7 @@
     <ClInclude Include="..\..\source\Graphics\ConstantBuffer.h" />
     <ClInclude Include="..\..\source\Graphics\Device.h" />
     <ClInclude Include="..\..\source\Graphics\Material.h" />
+    <ClInclude Include="..\..\source\Graphics\Mesh.h" />
     <ClInclude Include="..\..\source\Graphics\Shader.h" />
     <ClInclude Include="..\..\source\Graphics\SwapChain.h" />
     <ClInclude Include="..\..\source\Graphics\Texture.h" />
@@ -114,9 +119,11 @@
     <ClInclude Include="..\..\source\Memory\LinearAllocator.h" />
     <ClInclude Include="..\..\source\Memory\PoolAllocator.h" />
     <ClInclude Include="..\..\source\Settings\WndSettings.h" />
+    <ClInclude Include="..\..\source\Tests\Components\QuadTest.h" />
     <ClInclude Include="..\..\source\Tests\Components\RotationCube.h" />
     <ClInclude Include="..\..\source\Tests\Entities\TestCamera.h" />
     <ClInclude Include="..\..\source\Tests\Entities\TestCube.h" />
+    <ClInclude Include="..\..\source\Tests\Entities\TestQuad.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

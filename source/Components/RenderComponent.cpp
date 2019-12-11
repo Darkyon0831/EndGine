@@ -19,54 +19,59 @@ void EG::RenderComponent::PostStart()
 {
 	// Init constant buffers after the user have defined all variables
 
-	Shader& rShader = GetGameObject()->GetComponent<Mesh>()->GetMaterial().GetShader();
-	
-	const size_t vertexConstantBufferSize = rShader.GetTotalSizeOfVariables(EG::Shader::ShaderStage::VS);
-	const size_t pixelConstantBufferSize = rShader.GetTotalSizeOfVariables(EG::Shader::ShaderStage::PS);
+	Model* pModel = GetGameObject()->GetComponent<Model>();
 
-	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
+	for (int i = 0; i< pModel->GetTotalMeshes(); i++)
+	{
+		Shader& rShader = pModel->GetMesh(i)->GetMaterial().GetShader();
 
-	D3D11_BUFFER_DESC constantBufferVertexDesc;
-	D3D11_BUFFER_DESC constantBufferPixelDesc;
-	
-	constantBufferVertexDesc.Usage = D3D11_USAGE_DYNAMIC;
-	constantBufferVertexDesc.ByteWidth = vertexConstantBufferSize;
-	constantBufferVertexDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	constantBufferVertexDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	constantBufferVertexDesc.MiscFlags = 0;
-	constantBufferVertexDesc.StructureByteStride = 0;
+		const size_t vertexConstantBufferSize = rShader.GetTotalSizeOfVariables(EG::Shader::ShaderStage::VS);
+		const size_t pixelConstantBufferSize = rShader.GetTotalSizeOfVariables(EG::Shader::ShaderStage::PS);
 
-	constantBufferPixelDesc.Usage = D3D11_USAGE_DYNAMIC;
-	constantBufferPixelDesc.ByteWidth = pixelConstantBufferSize;
-	constantBufferPixelDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	constantBufferPixelDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	constantBufferPixelDesc.MiscFlags = 0;
-	constantBufferPixelDesc.StructureByteStride = 0;
+		ID3D11Device* pDevice = Device::GetInstance().GetDevice();
 
-	if (vertexConstantBufferSize > 0)
-		EGCHECKHR(pDevice->CreateBuffer(&constantBufferVertexDesc, nullptr, &rShader.m_pConstantsVertex));
+		D3D11_BUFFER_DESC constantBufferVertexDesc;
+		D3D11_BUFFER_DESC constantBufferPixelDesc;
 
-	if (pixelConstantBufferSize > 0)
-		EGCHECKHR(pDevice->CreateBuffer(&constantBufferPixelDesc, nullptr, &rShader.m_pConstantsVertex));
+		constantBufferVertexDesc.Usage = D3D11_USAGE_DYNAMIC;
+		constantBufferVertexDesc.ByteWidth = vertexConstantBufferSize;
+		constantBufferVertexDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		constantBufferVertexDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		constantBufferVertexDesc.MiscFlags = 0;
+		constantBufferVertexDesc.StructureByteStride = 0;
+
+		constantBufferPixelDesc.Usage = D3D11_USAGE_DYNAMIC;
+		constantBufferPixelDesc.ByteWidth = pixelConstantBufferSize;
+		constantBufferPixelDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		constantBufferPixelDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		constantBufferPixelDesc.MiscFlags = 0;
+		constantBufferPixelDesc.StructureByteStride = 0;
+
+		if (vertexConstantBufferSize > 0)
+			EGCHECKHR(pDevice->CreateBuffer(&constantBufferVertexDesc, nullptr, &rShader.m_pConstantsVertex));
+
+		if (pixelConstantBufferSize > 0)
+			EGCHECKHR(pDevice->CreateBuffer(&constantBufferPixelDesc, nullptr, &rShader.m_pConstantsVertex));
+	}
 }
 
 void EG::RenderComponent::PostUpdate()
 {
-	Shader& rShader = GetGameObject()->GetComponent<Mesh>()->GetMaterial().GetShader();
-	
-	// Update constant buffers
-	ID3D11DeviceContext* pDeviceContext = Device::GetInstance().GetDeviceContext();
+	Model* pModel = GetGameObject()->GetComponent<Model>();
 
-	if (rShader.m_pConstantsVertex != nullptr)
-		UpdateConstantBuffer(rShader, Shader::ShaderStage::VS, rShader.m_pConstantsVertex, pDeviceContext);
+	for (int i = 0; i < pModel->GetTotalMeshes(); i++)
+	{
+		Shader& rShader = pModel->GetMesh(i)->GetMaterial().GetShader();
 
-	if (rShader.m_pConstantsPixel != nullptr)
-		UpdateConstantBuffer(rShader, Shader::ShaderStage::PS, rShader.m_pConstantsPixel, pDeviceContext);
-}
+		// Update constant buffers
+		ID3D11DeviceContext* pDeviceContext = Device::GetInstance().GetDeviceContext();
 
-void EG::RenderComponent::Update()
-{
-	const float& deltaTime = Clock::GetInstance().GetDeltaTime();
+		if (rShader.m_pConstantsVertex != nullptr)
+			UpdateConstantBuffer(rShader, Shader::ShaderStage::VS, rShader.m_pConstantsVertex, pDeviceContext);
+
+		if (rShader.m_pConstantsPixel != nullptr)
+			UpdateConstantBuffer(rShader, Shader::ShaderStage::PS, rShader.m_pConstantsPixel, pDeviceContext);
+	}
 }
 
 void EG::RenderComponent::UpdateConstantBuffer(Shader& rShader, const Shader::ShaderStage shaderStage, ID3D11Buffer* pConstantBuffer, ID3D11DeviceContext* pDeviceContext) const

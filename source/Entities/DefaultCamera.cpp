@@ -3,6 +3,8 @@
 
 EG::DefaultCamera::DefaultCamera()
 {
+	SetLayer(Layer::LayerCamera);
+	
 	const float& windowHeight = WndSettings::GetInstance().GetWndHeight();
 	const float& windowWidth = WndSettings::GetInstance().GetWndWidth();
 
@@ -11,9 +13,10 @@ EG::DefaultCamera::DefaultCamera()
 		windowWidth / windowHeight,
 		1,
 		1000,
-		EG::CameraComponent::ProjectionType::Perspective,
 		EG::Vector2D(windowWidth, windowHeight),
 		EG::Vector2D(0, 0));
+
+	m_pCamera->SetRenderLayerMask(Layer::LayerVisual);
 
 	m_pCamera->SetClearColor(EG::Color(0.0f, 0.0f, 0.0f));
 	GetTransform()->position.z = -5.0f;

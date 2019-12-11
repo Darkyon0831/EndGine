@@ -1,11 +1,14 @@
 #pragma once
 
 #include "Graphics/Shader.h"
-#include "Components/Mesh.h"
+#include "Components/Model.h"
 
 #include "Globals/Singleton.h"
 #include "Components/Transform.h"
 #include "Graphics/ConstantBuffer.h"
+
+#include "ECS/ComponentManager.h"
+#include "Components/CameraComponent.h"
 
 namespace EG
 {
@@ -66,7 +69,16 @@ namespace EG
 
 		void BeginRenderFullscreen() const;
 		void EndRenderFullscreen();
-	
+
+		void RenderPerspective(
+			ID3D11DeviceContext* pDeviceContext, 
+			ComponentManager::iterator<RenderComponent> renderIT,
+			ComponentManager::iterator<CameraComponent> cameraIT) const;
+		
+		void RenderOrthogonal(
+			ID3D11DeviceContext* pDeviceContext,
+			ComponentManager::iterator<RenderComponent> renderIT,
+			ComponentManager::iterator<CameraComponent> cameraIT) const;
 
 		void Update();
 		void Render();

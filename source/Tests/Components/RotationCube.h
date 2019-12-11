@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ECS/Component.h"
-#include "Components/Mesh.h"
+#include "Components/Model.h"
 #include "Components/RenderComponent.h"
 
 class RotationCube : public EG::Component<RotationCube>
@@ -13,6 +13,6 @@ public:
 	void Update() override;
 	
 private:
-	EG::Mesh* m_pMesh;
+	EG::Model* m_pModel;
 	EG::RenderComponent* m_pRenderComponent;
 };

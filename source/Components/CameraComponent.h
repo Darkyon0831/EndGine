@@ -1,6 +1,6 @@
 #pragma once
 #include "Globals/Matrix.h"
-#include "Globals/Transform.h"
+#include "Components/Transform.h"
 #include <d3d11.h>
 #include "Globals/Color.h"
 #include "Globals/Vector2D.h"
@@ -8,7 +8,6 @@
 
 #include "ECS/Component.h"
 #include <Graphics/Texture.h>
-#include "Graphics/Mesh.h"
 
 namespace EG
 {
@@ -17,7 +16,6 @@ namespace EG
 	class CameraComponent : public Component<CameraComponent>
 	{
 	public:
-
 		friend class RenderQueue;
 		
 		enum ProjectionType
@@ -37,8 +35,7 @@ namespace EG
 			const float fov, 
 			const float aspectRatio, 
 			const float nearPlane, 
-			const float farPlane, 
-			const ProjectionType projectionType, 
+			const float farPlane,
 			const Vector2D viewportSize, 
 			const Vector2D viewportPos);
 
@@ -46,11 +43,11 @@ namespace EG
 		
 		void Update() override;
 
-		Transform& GetTransform() { return m_transform; }
+		Matrix GetViewMatrix(bool isPerspective) const;
+		Matrix GetPerspectiveProjection() const;
+		Matrix GetOrthogonalProjection() const;
 
-		Matrix GetViewMatrix();
-		Matrix GetProjectionMatrix() const;
-		Matrix GetViewProjectionMatrix();
+		unsigned int GetOrthogonalRenderMask() { return Layer::LayerCanvas; }
 
 		float& GetFov() { return m_fov; }
 		void SetFov(const float fov) { m_fov = fov; }
@@ -64,9 +61,6 @@ namespace EG
 		float& GetFarPlane() { return m_farPlane; }
 		void SetFarPlane(const float& farPlane) { m_farPlane = farPlane; }
 
-		ProjectionType& GetProjectionType() { return m_projection; }
-		void SetProjectionType(const ProjectionType projectionType) { m_projection = projectionType; }
-
 		void SetClearColor(const Color& color) { m_clearColor = color; }
 		Color& GetClearColor() { return m_clearColor; }
 
@@ -77,17 +71,19 @@ namespace EG
 		void SetViewportPos(const Vector2D& viewportPos) { m_viewportPos = viewportPos; }
 
 		const Texture* GetTexture() const { return m_texture; };
+
+		unsigned int GetRenderLayerMask() const { return m_renderLayerMask; }
+		void SetRenderLayerMask(unsigned int mask) { m_renderLayerMask = mask; }
+
+		void SetDepthStencilState(bool isPerspective) const;
 		
 	private:
 
 		void BeginRender(unsigned int clearFlags) const;
 		void EndRender();
 
-		Frustum m_frustum;
-		
-		ProjectionType m_projection;
-		Transform m_transform;
-		
+		//Frustum m_frustum;
+	
 		Vector2D m_viewportSize;
 		Vector2D m_viewportPos;
 		
@@ -95,10 +91,15 @@ namespace EG
 
 		ID3D11RenderTargetView* m_pRenderTarget;
 		ID3D11DepthStencilView* m_pDepthStencil;
+
+		ID3D11DepthStencilState* m_pDepthStencilState;
+		ID3D11DepthStencilState* m_pDepthStencilStateOff;
 		ID3D11Texture2D* m_pDepthBuffer;
 		D3D11_VIEWPORT m_viewPort;
 
 		Texture* m_texture;
+
+		unsigned int m_renderLayerMask;
 
 		float m_fov;
 		float m_aspectRatio;

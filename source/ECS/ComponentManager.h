@@ -9,6 +9,8 @@
 #include "Memory/PoolAllocator.h"
 #include "Component.h"
 
+#include "EntityManager.h"
+
 namespace EG
 {
 	class ComponentManager : public Singleton<ComponentManager>
@@ -20,9 +22,9 @@ namespace EG
 
 		ComponentManager();
 		~ComponentManager();
-
+		
 		template <typename T, typename... Args>
-		Component<T>* CreateComponent(int entityID, Args... args);
+		T* CreateComponent(int entityID, Args... args);
 
 		template <typename T>
 		void RemoveComponent(int entityID);
@@ -59,8 +61,22 @@ namespace EG
 	}
 
 	template <typename T, typename... Args>
-	Component<T>* ComponentManager::CreateComponent(int entityID, Args... args)
+	T* ComponentManager::CreateComponent(int entityID, Args... args)
 	{
+		auto entityComponentLookupIT = m_entityComponentLookup.find(entityID);
+
+		if (entityComponentLookupIT == m_entityComponentLookup.end())
+		{
+			m_entityComponentLookup.insert(std::pair<int, std::unordered_map<std::type_index, IComponent*>>(entityID, std::unordered_map<std::type_index, IComponent*>()));
+			entityComponentLookupIT = --m_entityComponentLookup.end();
+		}
+		
+		const auto componentIT = entityComponentLookupIT->second.find(typeid(T));
+
+		// An entity can only have one component of each type.
+		if (componentIT != entityComponentLookupIT->second.end())
+			return nullptr;
+		
 		PoolAllocator* poolAllocator = nullptr;
 		const auto it = m_poolAllocators.find(typeid(T));
 
@@ -73,18 +89,17 @@ namespace EG
 			m_poolAllocators.insert(std::pair<std::type_index, PoolAllocator*>(typeid(T), poolAllocator));
 		}
 
-		Component<T>* component = static_cast<Component<T>*>(poolAllocator->Alloc());
+		T* component = static_cast<T*>(poolAllocator->Alloc());
 
 		if (component == nullptr)
 			return component;
 
 		component->m_id = CreateID();
-		component->m_entityID = entityID;
+		component->m_pEntity = EntityManager::GetInstance().GetEntity(entityID);
 
 		T* ptr = static_cast<T*>(component);
 		ptr = new(ptr) T(args...);
 
-		auto entityComponentLookupIT = m_entityComponentLookup.find(entityID);
 		std::unordered_map<std::type_index, IComponent*>* componentMap = nullptr;
 		
 		if (entityComponentLookupIT == m_entityComponentLookup.end())
@@ -169,7 +184,8 @@ namespace EG
 	{
 		const auto poolIT = m_poolAllocators.find(typeid(T));
 
-		assert(poolIT != m_poolAllocators.end() && "Not valid entity type!");
+		if (poolIT == m_poolAllocators.end())
+			return nullptr;
 
 		const iterator<T> it = static_cast<iterator<T>>(poolIT->second->GetBegin());
 
@@ -181,9 +197,10 @@ namespace EG
 	{
 		const auto poolIT = m_poolAllocators.find(typeid(T));
 
-		assert(poolIT != m_poolAllocators.end() && "Not valid entity type!");
+		if (poolIT == m_poolAllocators.end())
+			return nullptr;
 
-		const iterator<T> it = static_cast<iterator<T>>(poolIT->second->GetBegin()) + (poolIT->second->GetUsedSize() / poolIT->second->GetChunkSize());
+		const iterator<T> it = static_cast<iterator<T>>(poolIT->second->GetBegin()) + poolIT->second->GetUsedSize() / poolIT->second->GetChunkSize();
 
 		return it;
 	}

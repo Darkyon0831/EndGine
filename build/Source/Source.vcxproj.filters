@@ -28,14 +28,17 @@
     <Filter Include="ECS">
       <UniqueIdentifier>{e7a31fe5-c6e6-4b0d-a48f-f24922c27224}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tests\Ecs test">
-      <UniqueIdentifier>{a0d1f794-d5fa-4931-b5fb-dadc66c06b82}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{fdbc1d59-b8bb-48d0-ad9b-ded2da8a2c96}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tests\RenderTest">
-      <UniqueIdentifier>{39ada81e-e15f-4a46-be82-db548133386d}</UniqueIdentifier>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{0083579a-9422-49c1-8ef1-7b4db1409efd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Entities">
+      <UniqueIdentifier>{ca8a37c8-f6ae-476e-b815-cc4b165b478f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Components">
+      <UniqueIdentifier>{08b55061-6d7f-47b9-b150-553d96b064b3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Entities">
       <UniqueIdentifier>{b9e624ab-dbc2-4a5f-a64e-da3ecd2c7084}</UniqueIdentifier>
@@ -78,17 +81,11 @@
     <ClCompile Include="..\..\source\Graphics\SwapChain.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\Globals\Camera.cpp">
-      <Filter>Globals</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\Globals\Transform.cpp">
       <Filter>Globals</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\Globals\Color.cpp">
       <Filter>Globals</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Graphics\Model.cpp">
-      <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\Globals\Vector4D.cpp">
       <Filter>Globals</Filter>
@@ -99,9 +96,6 @@
     <ClCompile Include="..\..\source\Globals\Clock.cpp">
       <Filter>Globals</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\Graphics\Mesh.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\Globals\File\FileSystem.cpp">
       <Filter>Globals\File</Filter>
     </ClCompile>
@@ -111,38 +105,11 @@
     <ClCompile Include="..\..\source\ECS\EntityManager.cpp">
       <Filter>ECS</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\Tests\TestEntity.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\ECS\ComponentManager.cpp">
       <Filter>ECS</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\Tests\TestComponent.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\ECS\SystemManager.cpp">
       <Filter>ECS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\TestSystem.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\DeltaTimeComponent.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\DeltaTimeSystem.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\Ecs Test\Cube.cpp">
-      <Filter>Tests\Ecs test</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\Ecs Test\MaterialComponent.cpp">
-      <Filter>Tests\Ecs test</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\Ecs Test\TransformComponent.cpp">
-      <Filter>Tests\Ecs test</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\Ecs Test\RotateCubeSystem.cpp">
-      <Filter>Tests\Ecs test</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\Components\RenderComponent.cpp">
       <Filter>Components</Filter>
@@ -159,26 +126,11 @@
     <ClCompile Include="..\..\source\Graphics\ConstantBuffer.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\Tests\RenderTest\CubeEntity.cpp">
-      <Filter>Tests\RenderTest</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\RenderTest\CameraEntity.cpp">
-      <Filter>Tests\RenderTest</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\RenderTest\AnotherCubeEntity.cpp">
-      <Filter>Tests\RenderTest</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\Components\QuadComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\Core\Asset.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\RenderTest\AnotherCameraEntity.cpp">
-      <Filter>Tests\RenderTest</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\RenderTest\ThirdCameraEntity.cpp">
-      <Filter>Tests\RenderTest</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\Core\Input.cpp">
       <Filter>Core</Filter>
@@ -188,6 +140,45 @@
     </ClCompile>
     <ClCompile Include="..\..\source\Entities\Default3DCamera.cpp">
       <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Components\Transform.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Entities\GameObject.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Entities\DefaultCamera.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\ECS\Component.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\ECS\IComponent.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\Entities\TestCube.cpp">
+      <Filter>Tests\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\Components\RotationCube.cpp">
+      <Filter>Tests\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\Entities\TestCamera.cpp">
+      <Filter>Tests\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\Components\QuadTest.cpp">
+      <Filter>Tests\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\Entities\TestQuad.cpp">
+      <Filter>Tests\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Components\Canvas.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Graphics\Mesh.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Components\Model.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,17 +227,11 @@
     <ClInclude Include="..\..\source\Globals\Macro.h">
       <Filter>Globals</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\Globals\Camera.h">
-      <Filter>Globals</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\source\Globals\Transform.h">
       <Filter>Globals</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\Globals\Color.h">
       <Filter>Globals</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Graphics\Model.h">
-      <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\Globals\Vector4D.h">
       <Filter>Globals</Filter>
@@ -256,9 +241,6 @@
     </ClInclude>
     <ClInclude Include="..\..\source\Globals\Clock.h">
       <Filter>Globals</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Graphics\Mesh.h">
-      <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\Globals\File\FileSystem.h">
       <Filter>Globals\File</Filter>
@@ -275,17 +257,11 @@
     <ClInclude Include="..\..\source\ECS\EntityManager.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\Tests\TestEntity.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\source\ECS\Component.h">
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\ECS\ComponentManager.h">
       <Filter>ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\TestComponent.h">
-      <Filter>Tests</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\ECS\System.h">
       <Filter>ECS</Filter>
@@ -295,27 +271,6 @@
     </ClInclude>
     <ClInclude Include="..\..\source\ECS\ISystem.h">
       <Filter>ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\TestSystem.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\DeltaTimeComponent.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\DeltaTimeSystem.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\Ecs Test\Cube.h">
-      <Filter>Tests\Ecs test</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\Ecs Test\MaterialComponent.h">
-      <Filter>Tests\Ecs test</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\Ecs Test\TransformComponent.h">
-      <Filter>Tests\Ecs test</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\Ecs Test\RotateCubeSystem.h">
-      <Filter>Tests\Ecs test</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\ECS\IComponent.h">
       <Filter>ECS</Filter>
@@ -338,26 +293,11 @@
     <ClInclude Include="..\..\source\Graphics\ConstantBuffer.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\Tests\RenderTest\CubeEntity.h">
-      <Filter>Tests\RenderTest</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\RenderTest\CameraEntity.h">
-      <Filter>Tests\RenderTest</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\RenderTest\AnotherCubeEntity.h">
-      <Filter>Tests\RenderTest</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\source\Components\QuadComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\Core\Asset.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\RenderTest\AnotherCameraEntity.h">
-      <Filter>Tests\RenderTest</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\RenderTest\ThirdCameraEntity.h">
-      <Filter>Tests\RenderTest</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\Core\Input.h">
       <Filter>Core</Filter>
@@ -367,6 +307,42 @@
     </ClInclude>
     <ClInclude Include="..\..\source\Entities\Default3DCamera.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Entities\GameObject.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Components\Transform.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Entities\DefaultCamera.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\Entities\TestCube.h">
+      <Filter>Tests\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\Components\RotationCube.h">
+      <Filter>Tests\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\Entities\TestCamera.h">
+      <Filter>Tests\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\Components\QuadTest.h">
+      <Filter>Tests\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\Entities\TestQuad.h">
+      <Filter>Tests\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Globals\Layer.h">
+      <Filter>Globals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Components\Canvas.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Graphics\Mesh.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Components\Model.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

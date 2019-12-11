@@ -2,22 +2,25 @@
 #include "Globals/Macro.h"
 #include "Graphics/SwapChain.h"
 
+#include "Entities/GameObject.h"
+
 EG::CameraComponent::CameraComponent(
 	const float fov, 
 	const float aspectRatio, 
 	const float nearPlane, 
 	const float farPlane, 
-	const ProjectionType projectionType, 
 	const Vector2D viewportSize,
 	const Vector2D viewportPos)
 {
+	m_renderLayerMask = AllLayerMask();
+	
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
+	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+	D3D11_DEPTH_STENCIL_DESC depthStencilDescOff;
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 
 	const float& rWindowWidth = WndSettings::GetInstance().GetWndWidth();
 	const float& rWindowHeight = WndSettings::GetInstance().GetWndHeight();
-
-	m_projection = projectionType;
 
 	m_viewPort.TopLeftX = 0.0f;
 	m_viewPort.TopLeftY = 0.0f;
@@ -61,8 +64,42 @@ EG::CameraComponent::CameraComponent(
 	depthStencilViewDesc.Flags = 0;
 
 	EGCHECKHR(pDevice->CreateDepthStencilView(m_pDepthBuffer, &depthStencilViewDesc, &m_pDepthStencil));
+
+	depthStencilDesc.DepthEnable = true;
+	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	depthStencilDesc.StencilEnable = true;
+	depthStencilDesc.StencilReadMask = 0xFF;
+	depthStencilDesc.StencilWriteMask = 0xFF;
+	depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	EGCHECKHR(pDevice->CreateDepthStencilState(&depthStencilDesc, &m_pDepthStencilState));
+
+	depthStencilDescOff.DepthEnable = false;
+	depthStencilDescOff.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depthStencilDescOff.DepthFunc = D3D11_COMPARISON_LESS;
+	depthStencilDescOff.StencilEnable = true;
+	depthStencilDescOff.StencilReadMask = 0xFF;
+	depthStencilDescOff.StencilWriteMask = 0xFF;
+	depthStencilDescOff.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDescOff.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	depthStencilDescOff.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDescOff.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	depthStencilDescOff.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDescOff.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	depthStencilDescOff.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDescOff.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	EGCHECKHR(pDevice->CreateDepthStencilState(&depthStencilDescOff, &m_pDepthStencilStateOff));
 	
-	m_frustum.Update(nearPlane, farPlane, m_transform, aspectRatio, fov);
+	//m_frustum.Update(nearPlane, farPlane, m_transform, aspectRatio, fov);
 }
 
 EG::CameraComponent::~CameraComponent()
@@ -72,38 +109,53 @@ EG::CameraComponent::~CameraComponent()
 
 void EG::CameraComponent::Update()
 {
-	m_transform.Update();
-	
-	m_frustum.Update(m_nearPlane, m_farPlane, m_transform, m_aspectRatio, m_fov);;
+	//m_frustum.Update(m_nearPlane, m_farPlane, m_transform, m_aspectRatio, m_fov);;
 }
 
-EG::Matrix EG::CameraComponent::GetViewMatrix()
+EG::Matrix EG::CameraComponent::GetViewMatrix(const bool isPerspective) const
 {
 	Matrix viewMatrix = Matrix::identity;
 	
-	viewMatrix.ApplyViewMatrix(m_transform.position, m_transform.position + m_transform.GetForward());
+	if (GetGameObject()->HaveComponent<Transform>() && isPerspective)
+	{
+		Transform* transform = GetGameObject()->GetComponent<Transform>();
+		
+		viewMatrix.ApplyViewMatrix(transform->position, transform->position + transform->GetForward());
+	}
+	else if (isPerspective == false)
+	{
+		viewMatrix.ApplyViewMatrix(Vector3D::Zero, Vector3D(0.0f, 0.0f, 1.0f));
+	}
 
 	return viewMatrix;
 }
 
-EG::Matrix EG::CameraComponent::GetProjectionMatrix() const
+EG::Matrix EG::CameraComponent::GetPerspectiveProjection() const
 {
 	Matrix projectionMatrix = Matrix::identity;
-	
-	if (m_projection == ProjectionType::Perspective)
-		projectionMatrix.ApplyPerspectiveMatrix(m_aspectRatio, m_fov, m_nearPlane, m_farPlane);
-	else if (m_projection == ProjectionType::Orthogonal)
-		projectionMatrix.ApplyOrthoMatrix(m_viewPort.Width, m_viewPort.Height, m_nearPlane, m_farPlane);
+
+	projectionMatrix.ApplyPerspectiveMatrix(m_aspectRatio, m_fov, m_nearPlane, m_farPlane);
 
 	return projectionMatrix;
 }
 
-EG::Matrix EG::CameraComponent::GetViewProjectionMatrix()
+EG::Matrix EG::CameraComponent::GetOrthogonalProjection() const
 {
-	Matrix projectionMatrix = GetProjectionMatrix();
-	Matrix viewMatrix = GetViewMatrix();
+	Matrix projectionMatrix = Matrix::identity;
 
-	return viewMatrix * projectionMatrix;
+	projectionMatrix.ApplyOrthoMatrix(m_viewPort.Width, m_viewPort.Height, 0, 1);
+
+	return projectionMatrix;
+}
+
+void EG::CameraComponent::SetDepthStencilState(const bool isPerspective) const
+{
+	ID3D11DeviceContext* pDeviceContext = Device::GetInstance().GetDeviceContext();
+	
+	if (isPerspective)
+		pDeviceContext->OMSetDepthStencilState(m_pDepthStencilState, 1);
+	else
+		pDeviceContext->OMSetDepthStencilState(m_pDepthStencilStateOff, 1);
 }
 
 void EG::CameraComponent::BeginRender(const unsigned int clearFlags) const
@@ -124,7 +176,7 @@ void EG::CameraComponent::BeginRender(const unsigned int clearFlags) const
 
 	if (clearRenderTarget)
 		pDeviceContext->ClearRenderTargetView(m_pRenderTarget, &m_clearColor.r);
-
+	
 	pDeviceContext->RSSetViewports(1, &m_viewPort);
 	pDeviceContext->ClearDepthStencilView(m_pDepthStencil, clearStencilViewFlags, 1.0f, 0.0f);
 

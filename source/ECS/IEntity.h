@@ -2,16 +2,11 @@
 
 namespace EG
 {
-	class GameObject;
-	class Entity;
-	
-	class IComponent
+	class IEntity
 	{
 	public:
-		friend class ComponentManager;
-		
-		IComponent() = default;
-		virtual ~IComponent() = default;
+		IEntity() = default;
+		virtual ~IEntity() = default;
 
 		virtual void PreStart() { }
 		virtual void Start() { }
@@ -20,10 +15,5 @@ namespace EG
 		virtual void PreUpdate() { }
 		virtual void Update() { }
 		virtual void PostUpdate() { }
-
-		GameObject* GetGameObject() const;
-
-	private:
-		Entity* m_pEntity;
 	};
 }

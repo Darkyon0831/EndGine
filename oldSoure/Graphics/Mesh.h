@@ -3,10 +3,12 @@
 #include "Globals/Color.h"
 #include "Globals/Vector3D.h"
 #include "Globals/Vector2D.h"
+#include "Device.h"
 #include "Core/Asset.h"
+#include "Material.h"
 
 #include <d3d11.h>
-#include "Graphics/Material.h"
+
 
 namespace EG
 {
@@ -15,8 +17,7 @@ namespace EG
 	public:
 		Mesh();
 		~Mesh();
-
-		struct Vertex
+				struct Vertex
 		{
 			Vector3D position;
 			Color color;
@@ -36,7 +37,7 @@ namespace EG
 
 		void SetMaterial(Material& rMaterial) { m_material = rMaterial; }
 		Material& GetMaterial() { return m_material; }
-
+		
 	private:
 		Vertex* m_vertexArray;
 		int* m_indexArray;

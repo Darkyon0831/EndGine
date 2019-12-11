@@ -1,10 +1,14 @@
 #pragma once
 
 #include "Graphics/Shader.h"
-#include "Graphics/Model.h"
+#include "Components/Model.h"
 
 #include "Globals/Singleton.h"
+#include "Components/Transform.h"
 #include "Graphics/ConstantBuffer.h"
+
+#include "ECS/ComponentManager.h"
+#include "Components/CameraComponent.h"
 
 namespace EG
 {
@@ -17,8 +21,6 @@ namespace EG
 			ID3D11RenderTargetView* pRenderTargetView;
 			D3D11_VIEWPORT viewPort;
 			Color clearColor;
-			Transform transform;
-			Shader* pShader;
 			Matrix viewMatrix;
 			Matrix projectionMatrix;
 			Mesh quad;
@@ -53,12 +55,6 @@ namespace EG
 		{
 			Color materialColor;
 		};
-		
-		struct RenderObject
-		{
-			Shader* pShader;
-			Model* pModel;
-		};
 
 		struct TextureArray
 		{
@@ -73,15 +69,21 @@ namespace EG
 
 		void BeginRenderFullscreen() const;
 		void EndRenderFullscreen();
+
+		void RenderPerspective(
+			ID3D11DeviceContext* pDeviceContext, 
+			ComponentManager::iterator<RenderComponent> renderIT,
+			ComponentManager::iterator<CameraComponent> cameraIT) const;
 		
-		void AddRenderObject(const RenderObject rRenderObject) { m_renderQueue.push_back(rRenderObject); }
+		void RenderOrthogonal(
+			ID3D11DeviceContext* pDeviceContext,
+			ComponentManager::iterator<RenderComponent> renderIT,
+			ComponentManager::iterator<CameraComponent> cameraIT) const;
 
 		void Update();
 		void Render();
 		
 	private:
-		std::vector<RenderObject> m_renderQueue;
-
 		ConstantBuffer* m_fullscreenVS;
 		ConstantBuffer* m_fullscreenPS;
 		

@@ -1,5 +1,4 @@
 #include "Mesh.h"
-#include "Graphics/Device.h"
 
 EG::Mesh::Mesh()
 	: Asset(Asset::AssetType::AMesh)
@@ -21,25 +20,28 @@ EG::Mesh::~Mesh()
 	if (m_pIndexBuffer != nullptr)
 		m_pIndexBuffer->Release();
 
-	delete[] m_vertexArray;
-	delete[] m_indexArray;
+	if (m_vertexArray != nullptr)
+		delete[] m_vertexArray;
+
+	if (m_indexArray != nullptr)
+		delete[] m_indexArray;
 }
 
-void EG::Mesh::SetVertexArray(Vertex* vertexArray, const size_t size)
+void EG::Mesh::SetVertexArray(Vertex* vertexArray, size_t size)
 {
+	if (m_vertexArray != nullptr)
+		delete[] m_vertexArray;
 	
-	delete[] m_vertexArray;
-
 	if (m_pVertexBuffer != nullptr)
 		m_pVertexBuffer->Release();
-
+	
 	m_vertexArray = vertexArray;
 	m_vertexCount = size;
-
+	
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData;
 	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
-
+	
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	vertexBufferDesc.ByteWidth = sizeof(Vertex) * size;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -56,10 +58,11 @@ void EG::Mesh::SetVertexArray(Vertex* vertexArray, const size_t size)
 	int debug = 0;
 }
 
-void EG::Mesh::SetIndexArray(int* indexArray, const size_t size)
+void EG::Mesh::SetIndexArray(int* indexArray, size_t size)
 {
-	delete[] m_indexArray;
-
+	if (m_indexArray != nullptr)
+		delete[] m_indexArray;
+	
 	if (m_pIndexBuffer != nullptr)
 		m_pIndexBuffer->Release();
 

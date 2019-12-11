@@ -5,7 +5,6 @@
 #include  "InputHandler.h"
 #include "Graphics/Device.h"
 #include "Graphics/SwapChain.h"
-#include "Tests/RenderCubeTest.h"
 #include "Globals/Clock.h"
 #include <d3d11.h>
 #include "Globals/File/FileSystem.h"
@@ -14,11 +13,10 @@
 #include "ECS/SystemManager.h"
 #include "Core/RenderQueue.h"
 
-#include "Tests/RenderTest/CameraEntity.h"
-#include "Tests/RenderTest/CubeEntity.h"
-#include "Tests/RenderTest/AnotherCubeEntity.h"
-#include "Tests/RenderTest/AnotherCameraEntity.h"
-#include "Tests/RenderTest/ThirdCameraEntity.h"
+#include "Entities/DefaultCamera.h"
+#include "Tests/Entities/TestCube.h"
+#include "Tests/Entities/TestCamera.h"
+#include "Tests/Entities/TestQuad.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -180,12 +178,10 @@ void EG::EntryPoint::InitializeSystems()
 
 void EG::EntryPoint::InitializeEntities()
 {
-	EntityManager::GetInstance().CreateEntity<AnotherCameraEntity>();
-	EntityManager::GetInstance().CreateEntity<AnotherCubeEntity>();
-	EntityManager::GetInstance().CreateEntity<CameraEntity>();
-	EntityManager::GetInstance().CreateEntity<CubeEntity>();
-	EntityManager::GetInstance().CreateEntity<ThirdCameraEntity>();
-
+	EntityManager::GetInstance().CreateEntity<DefaultCamera>();
+	EntityManager::GetInstance().CreateEntity<TestCube>();
+	EntityManager::GetInstance().CreateEntity<TestQuad>();
+	
 	ComponentManager::GetInstance().StartComponents();
 }
 

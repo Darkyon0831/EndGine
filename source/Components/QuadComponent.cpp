@@ -2,9 +2,12 @@
 
 #include "ECS/ComponentManager.h"
 
+#include "Entities/GameObject.h"
+
 EG::QuadComponent::QuadComponent()
 {
-	m_pRenderComponent = reinterpret_cast<RenderComponent*>(EG::ComponentManager::GetInstance().CreateComponent<RenderComponent>(m_entityID));
+	m_pRenderComponent = GetGameObject()->CreateComponent<RenderComponent>();
+	m_pModel = GetGameObject()->CreateComponent<Model>();
 
 	EG::Mesh::Vertex* vertex = new EG::Mesh::Vertex[4];
 
@@ -31,23 +34,14 @@ EG::QuadComponent::QuadComponent()
 	index[4] = 2;
 	index[5] = 3;
 
-	EG::Mesh* cubeMesh = new EG::Mesh();
-	cubeMesh->SetIndexArray(index, 6);
-	cubeMesh->SetVertexArray(vertex, 4);
-
 	EG::Texture* texture = new EG::Texture();
-	texture->Load("textures/white_default.dds");
+	texture->Load("textures/test.dds");
 
-	cubeMesh->GetMaterial().SetColormap(texture);
+	Mesh* pMesh = new Mesh();
+	pMesh->GetMaterial().SetColormap(texture);
+	pMesh->SetVertexArray(vertex, 4);
+	pMesh->SetIndexArray(index, 6);
+	pMesh->GetMaterial().GetShader().Load("quad_simple_vertex.hlsl", "quad_simple_pixel.hlsl");
 
-	m_pRenderComponent->GetModel().AddMesh(cubeMesh);
-
-	m_pRenderComponent->GetShader().Load("quad_simple_vertex.hlsl", "quad_simple_pixel.hlsl");
-}
-
-void EG::QuadComponent::Update()
-{
-	m_pRenderComponent->SetShader(m_shader);
-	m_pRenderComponent->GetModel().SetTransform(m_transform);
-	m_pRenderComponent->GetModel().GetMesh(0)->SetMaterial(m_material);
+	m_pModel->AddMesh(pMesh);
 }

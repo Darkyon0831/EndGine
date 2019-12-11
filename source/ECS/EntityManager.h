@@ -61,11 +61,11 @@ namespace EG
 		
 		int id = CreateID();
 		entity->m_id = id;
+
+		m_entities.insert(std::pair<int, Entity*>(entity->m_id, entity));
 		
 		T* ptr = reinterpret_cast<T*>(entity);
 		ptr = new(ptr) T(args...);
-
-		m_entities.insert(std::pair<int, Entity*>(entity->m_id, entity));
 		
 		return entity;
 	}

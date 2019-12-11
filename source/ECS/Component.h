@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IComponent.h"
+#include "Globals/Layer.h"
 
 namespace EG
 {
@@ -10,11 +11,12 @@ namespace EG
 	public:
 		friend class ComponentManager;
 
-		Component() : m_id(0), m_entityID(-1) {}
+		Component() : m_id(0) {}
 		virtual ~Component() = default;
+
+		int GetID() const { return m_id; }
 		
-	protected:
+	private:
 		int m_id;
-		int m_entityID;
 	};
 }

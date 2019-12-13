@@ -14,7 +14,24 @@ EG::Transform::~Transform()
 
 void EG::Transform::Update()
 {
-	m_worldMatrix.ScaleRotateTranslate(scale, rotation, position, Matrix::CombineFunc::Replace);;
+	m_worldMatrix.ScaleRotateTranslate(scale, rotation, position, Matrix::CombineFunc::Replace);
+}
+
+void EG::Transform::operator+=(const Transform& rTransform)
+{
+	position += rTransform.position;
+	scale += rTransform.scale;
+	rotation += rTransform.rotation;
+}
+
+EG::Transform EG::Transform::operator+(const Transform& rTransform) const
+{
+	Transform transform;
+	transform.position = rTransform.position + position;
+	transform.rotation = rTransform.rotation + rotation;
+	transform.scale = rTransform.scale + scale;
+
+	return transform;
 }
 
 EG::Vector3D EG::Transform::GetForward()

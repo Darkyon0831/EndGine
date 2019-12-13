@@ -171,6 +171,12 @@
     <ClCompile Include="..\..\source\Components\Model.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\Components\TextComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\Tests\Entities\TextTest.cpp">
+      <Filter>Tests\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\Containers\WndContainer.h">
@@ -328,6 +334,12 @@
     </ClInclude>
     <ClInclude Include="..\..\source\Components\Model.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Components\TextComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\Entities\TextTest.h">
+      <Filter>Tests\Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

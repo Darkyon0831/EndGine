@@ -32,6 +32,7 @@
     <ClCompile Include="..\..\source\Components\Model.cpp" />
     <ClCompile Include="..\..\source\Components\QuadComponent.cpp" />
     <ClCompile Include="..\..\source\Components\RenderComponent.cpp" />
+    <ClCompile Include="..\..\source\Components\TextComponent.cpp" />
     <ClCompile Include="..\..\source\Components\Transform.cpp" />
     <ClCompile Include="..\..\source\Containers\WndContainer.cpp" />
     <ClCompile Include="..\..\source\Core\Asset.cpp" />
@@ -70,6 +71,7 @@
     <ClCompile Include="..\..\source\Tests\Entities\TestCamera.cpp" />
     <ClCompile Include="..\..\source\Tests\Entities\TestCube.cpp" />
     <ClCompile Include="..\..\source\Tests\Entities\TestQuad.cpp" />
+    <ClCompile Include="..\..\source\Tests\Entities\TextTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\Components\CameraComponent.h" />
@@ -77,6 +79,7 @@
     <ClInclude Include="..\..\source\Components\Model.h" />
     <ClInclude Include="..\..\source\Components\QuadComponent.h" />
     <ClInclude Include="..\..\source\Components\RenderComponent.h" />
+    <ClInclude Include="..\..\source\Components\TextComponent.h" />
     <ClInclude Include="..\..\source\Components\Transform.h" />
     <ClInclude Include="..\..\source\Containers\WndContainer.h" />
     <ClInclude Include="..\..\source\Core\Asset.h" />
@@ -124,6 +127,7 @@
     <ClInclude Include="..\..\source\Tests\Entities\TestCamera.h" />
     <ClInclude Include="..\..\source\Tests\Entities\TestCube.h" />
     <ClInclude Include="..\..\source\Tests\Entities\TestQuad.h" />
+    <ClInclude Include="..\..\source\Tests\Entities\TextTest.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

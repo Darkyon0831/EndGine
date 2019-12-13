@@ -2,6 +2,7 @@
 
 #include "ECS/Component.h"
 #include "Components/QuadComponent.h"
+#include "Components/TextComponent.h"
 
 class QuadTest : public EG::Component<QuadTest>
 {

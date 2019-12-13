@@ -16,6 +16,7 @@
 #include "Entities/DefaultCamera.h"
 #include "Tests/Entities/TestCube.h"
 #include "Tests/Entities/TestCamera.h"
+#include "Tests/Entities/TextTest.h"
 #include "Tests/Entities/TestQuad.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -179,8 +180,9 @@ void EG::EntryPoint::InitializeSystems()
 void EG::EntryPoint::InitializeEntities()
 {
 	EntityManager::GetInstance().CreateEntity<DefaultCamera>();
-	EntityManager::GetInstance().CreateEntity<TestCube>();
-	EntityManager::GetInstance().CreateEntity<TestQuad>();
+    EntityManager::GetInstance().CreateEntity<TestCube>();
+	TestQuad* pTestQuad = dynamic_cast<TestQuad*>(EntityManager::GetInstance().CreateEntity<TestQuad>());
+	EntityManager::GetInstance().CreateEntity<TextTest>(pTestQuad);
 	
 	ComponentManager::GetInstance().StartComponents();
 }

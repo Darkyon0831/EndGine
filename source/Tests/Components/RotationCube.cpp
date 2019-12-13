@@ -7,7 +7,7 @@ RotationCube::RotationCube()
 {
 	m_pModel = GetGameObject()->CreateComponent<EG::Model>();
 	m_pRenderComponent = GetGameObject()->CreateComponent<EG::RenderComponent>();
-
+	
 	EG::Mesh::Vertex* vertex = new EG::Mesh::Vertex[8];
 
 	vertex[0].position.Set(-0.5f, 0.5f, -0.5f);

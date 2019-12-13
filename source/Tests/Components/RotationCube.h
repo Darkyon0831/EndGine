@@ -3,6 +3,7 @@
 #include "ECS/Component.h"
 #include "Components/Model.h"
 #include "Components/RenderComponent.h"
+#include "Components/TextComponent.h"
 
 class RotationCube : public EG::Component<RotationCube>
 {

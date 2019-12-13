@@ -13,7 +13,7 @@ EG::String::String(const char* str)
 
 EG::String::String(size_t size)
 {
-	m_allocator.AllocBlock(size + 1);
+	m_allocator.AllocBlock(size);
 
 	m_str = static_cast<char*>(m_allocator.GetFirst());
 }
@@ -178,7 +178,7 @@ void EG::String::operator=(const String& other)
 
 EG::String EG::String::operator+(const String& other) const
 {
-	String newString = String(GetSize() + other.GetSize());
+	String newString = String();
 	char* newStringPtr = newString.GetString();
 
 	newString += GetString();

@@ -7,7 +7,6 @@ QuadTest::QuadTest()
 {
 	m_pQuad = GetGameObject()->CreateComponent<EG::QuadComponent>();
 
-	
 	GetGameObject()->GetComponent<EG::Model>()->GetMesh(0)->GetMaterial().SetColor(EG::Color(0.0f, 1.0f, 0.0f));
 
 	GetGameObject()->GetTransform()->scale.x = 1920.0f;

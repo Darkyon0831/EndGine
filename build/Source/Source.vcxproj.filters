@@ -78,9 +78,6 @@
     <ClCompile Include="..\..\source\Graphics\SwapChain.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\Globals\Transform.cpp">
-      <Filter>Globals</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\Globals\Color.cpp">
       <Filter>Globals</Filter>
     </ClCompile>
@@ -177,6 +174,9 @@
     <ClCompile Include="..\..\source\Tests\Entities\TextTest.cpp">
       <Filter>Tests\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\Tests\Components\FPSComponent.cpp">
+      <Filter>Tests\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\Containers\WndContainer.h">
@@ -222,9 +222,6 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\Globals\Macro.h">
-      <Filter>Globals</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Globals\Transform.h">
       <Filter>Globals</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\Globals\Color.h">
@@ -340,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="..\..\source\Tests\Entities\TextTest.h">
       <Filter>Tests\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\Tests\Components\FPSComponent.h">
+      <Filter>Tests\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

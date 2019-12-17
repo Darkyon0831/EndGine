@@ -27,6 +27,7 @@ namespace EG
 		Model* GetTextModel() const { return m_pTextModel; }
 
 		void PostStart() override;
+		void PostUpdate() override;
 		
 	private:
 
@@ -37,7 +38,8 @@ namespace EG
 		
 		String m_fontFilePath;
 		String m_text;
-		
+
+		Mesh* m_pMesh;
 		Model* m_pTextModel;
 		RenderComponent* m_pRenderComponent;
 	};

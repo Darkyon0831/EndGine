@@ -53,7 +53,6 @@
     <ClCompile Include="..\..\source\Globals\Frustum.cpp" />
     <ClCompile Include="..\..\source\Globals\Matrix.cpp" />
     <ClCompile Include="..\..\source\Globals\String.cpp" />
-    <ClCompile Include="..\..\source\Globals\Transform.cpp" />
     <ClCompile Include="..\..\source\Globals\Vector2D.cpp" />
     <ClCompile Include="..\..\source\Globals\Vector3D.cpp" />
     <ClCompile Include="..\..\source\Globals\Vector4D.cpp" />
@@ -66,6 +65,7 @@
     <ClCompile Include="..\..\source\Graphics\Texture.cpp" />
     <ClCompile Include="..\..\source\Memory\LinearAllocator.cpp" />
     <ClCompile Include="..\..\source\Memory\PoolAllocator.cpp" />
+    <ClCompile Include="..\..\source\Tests\Components\FPSComponent.cpp" />
     <ClCompile Include="..\..\source\Tests\Components\QuadTest.cpp" />
     <ClCompile Include="..\..\source\Tests\Components\RotationCube.cpp" />
     <ClCompile Include="..\..\source\Tests\Entities\TestCamera.cpp" />
@@ -106,7 +106,6 @@
     <ClInclude Include="..\..\source\Globals\Matrix.h" />
     <ClInclude Include="..\..\source\Globals\Singleton.h" />
     <ClInclude Include="..\..\source\Globals\String.h" />
-    <ClInclude Include="..\..\source\Globals\Transform.h" />
     <ClInclude Include="..\..\source\Globals\Vector2D.h" />
     <ClInclude Include="..\..\source\Globals\Vector3D.h" />
     <ClInclude Include="..\..\source\Globals\Vector4D.h" />
@@ -122,6 +121,7 @@
     <ClInclude Include="..\..\source\Memory\LinearAllocator.h" />
     <ClInclude Include="..\..\source\Memory\PoolAllocator.h" />
     <ClInclude Include="..\..\source\Settings\WndSettings.h" />
+    <ClInclude Include="..\..\source\Tests\Components\FPSComponent.h" />
     <ClInclude Include="..\..\source\Tests\Components\QuadTest.h" />
     <ClInclude Include="..\..\source\Tests\Components\RotationCube.h" />
     <ClInclude Include="..\..\source\Tests\Entities\TestCamera.h" />
@@ -251,7 +251,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;CORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;$(SolutionDir)dependencies\FreeType\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -271,7 +271,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;CORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;$(SolutionDir)dependencies\FreeType\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -291,7 +291,7 @@
       <PreprocessorDefinitions>_DEBUG;CORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;$(SolutionDir)dependencies\FreeType\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -311,7 +311,7 @@
       <PreprocessorDefinitions>_DEBUG;CORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;$(SolutionDir)dependencies\FreeType\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -333,7 +333,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;CORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;$(SolutionDir)dependencies\FreeType\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -357,7 +357,7 @@
       <PreprocessorDefinitions>NDEBUG;CORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\DirectXTK\include;$(SolutionDir)dependencies\FreeType\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

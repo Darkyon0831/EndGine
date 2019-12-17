@@ -1,15 +1,14 @@
 #pragma once
 
 #include "Entities/GameObject.h"
-#include "Components/TextComponent.h"
-#include "TestQuad.h"
+#include "Tests/Components/FPSComponent.h"
 
 class TextTest : public EG::GameObject
 {
 public:
-	TextTest(TestQuad* pTestQuad);
+	TextTest();
 	~TextTest();
 	
 private:
-	EG::TextComponent* m_pTextComponent;
+	FPSComponent* m_pFPSComponent;
 };

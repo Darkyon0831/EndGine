@@ -16,6 +16,7 @@ namespace EG
 
 		const float& GetDeltaTime() const { return m_deltaTime; }
 		const float& GetLifeTime() const { return m_lifeTime; };
+
 		
 	private:
 		float m_deltaTime;

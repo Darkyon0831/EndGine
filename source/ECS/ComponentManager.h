@@ -94,11 +94,12 @@ namespace EG
 		if (component == nullptr)
 			return component;
 
-		component->m_id = CreateID();
 		component->m_pEntity = EntityManager::GetInstance().GetEntity(entityID);
 
 		T* ptr = static_cast<T*>(component);
 		ptr = new(ptr) T(args...);
+
+		component->m_id = CreateID();
 
 		std::unordered_map<std::type_index, IComponent*>* componentMap = nullptr;
 		

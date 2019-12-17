@@ -462,5 +462,8 @@ void EG::RenderQueue::Render()
 
 	EndRenderFullscreen();
 
-	SwapChain::GetInstance().Present(1, 0);
+	if (WndSettings::GetInstance().GetIsVsync())
+		SwapChain::GetInstance().Present(1, 0);
+	else
+		SwapChain::GetInstance().Present(0, 0);
 }

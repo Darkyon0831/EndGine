@@ -49,7 +49,9 @@ EG::Shader::Shader()
 	
 	EGCHECKHR(pDevice->CreateRasterizerState(&rasterDesc, &m_pRasterizerState));
 	
-	EGCHECKHR(pDevice->CreateSamplerState(&samplerDesc, &m_pSamplerState));	
+	EGCHECKHR(pDevice->CreateSamplerState(&samplerDesc, &m_pSamplerState));
+
+	int i = 0;
 }
 
 EG::Shader::~Shader()
@@ -122,30 +124,20 @@ void EG::Shader::Load(const String& vsShaderName, const String& psShaderName, bo
 	m_psShaderName = psShaderName;
 	m_vsShaderName = vsShaderName;
 
-	String vsFilePath;
-	if (IsDebuggerPresent())
-		vsFilePath += "../../game/data/shaders/";
-	else
-		vsFilePath += "data/shaders/";
-
+	String vsFilePath = "data/shaders/";
 	vsFilePath += vsShaderName.GetString();
 
-	String psFilePath;
-	if (IsDebuggerPresent())
-		psFilePath += "../../game/data/shaders/";
-	else
-		psFilePath += "data/shaders/";
-	
+	String psFilePath = "data/shaders/";	
 	psFilePath += psShaderName.GetString();
+
+	wchar_t* vsWS = new wchar_t[vsFilePath.GetSize()];
+	mbstowcs(vsWS, vsFilePath.GetString(), vsFilePath.GetSize());
 	
-	std::wstring vsWS(vsFilePath.GetSize(), L'#');
-	mbstowcs_s(nullptr, &vsWS[0], vsFilePath.GetSize(), vsFilePath.GetString(), vsFilePath.GetSize() - 1);
-
-	std::wstring psWS(psFilePath.GetSize(), L'#');
+	wchar_t* psWS = new wchar_t[psFilePath.GetSize()];
 	mbstowcs_s(nullptr, &psWS[0], psFilePath.GetSize(), psFilePath.GetString(), psFilePath.GetSize() - 1);
-
+	
 	HRESULT result = D3DCompileFromFile(
-		vsWS.c_str(),
+		vsWS,
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		"main",
@@ -155,6 +147,7 @@ void EG::Shader::Load(const String& vsShaderName, const String& psShaderName, bo
 		&m_pVertexShaderBuffer,
 		&m_pError);
 
+	
 	if (FAILED(result))
 	{
 		if (m_pError)
@@ -165,7 +158,7 @@ void EG::Shader::Load(const String& vsShaderName, const String& psShaderName, bo
 	}
 
 	result = D3DCompileFromFile(
-		psWS.c_str(),
+		psWS,
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		"main",
@@ -205,6 +198,9 @@ void EG::Shader::Load(const String& vsShaderName, const String& psShaderName, bo
 			m_pVertexShaderBuffer->GetBufferSize(),
 			&m_pInputLayout));
 	}
+
+	delete[] vsWS;
+	delete[] psWS;
 }
 
 void EG::Shader::SetInputLayout(ID3D11InputLayout* pInputLayout)
@@ -222,11 +218,11 @@ void EG::Shader::PrintError(const ShaderStage errorSource) const
 	char* compileErrors = static_cast<char*>(m_pError->GetBufferPointer());
 	const unsigned long bufferSize = m_pError->GetBufferSize();
 
-	String psErrorFile = String("../../game/");
+	String psErrorFile = String();
 	psErrorFile += m_psShaderName.GetString();
 	psErrorFile += ".txt";
 
-	String vsErrorFile = String("../../game/");
+	String vsErrorFile = String();
 	vsErrorFile += m_vsShaderName.GetString();
 	vsErrorFile += ".txt";
 	

@@ -7,13 +7,12 @@ EG::SwapChain::SwapChain()
 	IDXGIAdapter* pAdapter;
 	IDXGIOutput* pAdapterOutput;
 	DXGI_SWAP_CHAIN_DESC swapChainDesc{};
-	DXGI_MODE_DESC* pDisplayModeList;
 	DXGI_ADAPTER_DESC adapterDesc;
 	unsigned int numModes, i, numerator = 0, denominator = 0;
-	float screenWidth = WndSettings::GetInstance().GetWndWidth();
-	float screenHeight = WndSettings::GetInstance().GetWndHeight();
-	bool isVsync = WndSettings::GetInstance().GetIsVsync();
-	bool isFullscreen = WndSettings::GetInstance().GetIsFullscreen();
+	const float screenWidth = WndSettings::GetInstance().GetWndWidth();
+	const float screenHeight = WndSettings::GetInstance().GetWndHeight();
+	const bool isVsync = WndSettings::GetInstance().GetIsVsync();
+	const bool isFullscreen = WndSettings::GetInstance().GetIsFullscreen();
 	const HWND& windowHandle = WndContainer::GetInstance().GetWindowHandle();
 	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
 	IDXGIDevice* pDxgiDevice;
@@ -24,7 +23,7 @@ EG::SwapChain::SwapChain()
 	EGCHECKHR(pAdapter->EnumOutputs(0, &pAdapterOutput));
 	EGCHECKHR(pAdapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, nullptr));
 
-	pDisplayModeList = new DXGI_MODE_DESC[numModes];
+	DXGI_MODE_DESC* pDisplayModeList = new DXGI_MODE_DESC[numModes];
 
 	EGCHECKHR(pAdapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, pDisplayModeList));
 

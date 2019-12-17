@@ -19,6 +19,9 @@
 #include "Tests/Entities/TextTest.h"
 #include "Tests/Entities/TestQuad.h"
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	EG::InputHandler::GetInstance().RegisterInput(wParam, lParam, message);
@@ -67,12 +70,9 @@ int EG::EntryPoint::WinEntryPoint(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 	EntityManager::Initialize();
 	ComponentManager::Initialize();
 
-	WndSettings::GetInstance().SetIsVsync(true);
-
-	if (IsDebuggerPresent())
-		FileSystem::GetInstance().SetDataLocation("../../game/data/");
-	else
-		FileSystem::GetInstance().SetDataLocation("data/");
+	WndSettings::GetInstance().SetIsVsync(false);
+	
+	FileSystem::GetInstance().SetDataLocation("data/");
 	
 	m_wndName = L"EndGine";
 	
@@ -181,8 +181,8 @@ void EG::EntryPoint::InitializeEntities()
 {
 	EntityManager::GetInstance().CreateEntity<DefaultCamera>();
     EntityManager::GetInstance().CreateEntity<TestCube>();
-	TestQuad* pTestQuad = dynamic_cast<TestQuad*>(EntityManager::GetInstance().CreateEntity<TestQuad>());
-	EntityManager::GetInstance().CreateEntity<TextTest>(pTestQuad);
+	EntityManager::GetInstance().CreateEntity<TestQuad>();
+	EntityManager::GetInstance().CreateEntity<TextTest>();
 	
 	ComponentManager::GetInstance().StartComponents();
 }

@@ -1,14 +1,15 @@
 #include "TextTest.h"
+#include "Settings/WndSettings.h"
 
-TextTest::TextTest(TestQuad* pTestQuad)
+TextTest::TextTest()
 {
 	SetLayer(EG::Layer::LayerCanvas);
-	SetParent(pTestQuad);
+	//SetParent(pTestQuad);
 
-	m_pTextComponent = CreateComponent<EG::TextComponent>();
+	m_pFPSComponent = CreateComponent<FPSComponent>();
 }
 
 TextTest::~TextTest()
 {
-	RemoveComponent<EG::TextComponent>();
+	RemoveComponent<FPSComponent>();
 }

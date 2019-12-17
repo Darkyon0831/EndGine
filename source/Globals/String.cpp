@@ -103,27 +103,16 @@ void EG::String::operator+=(const char* str)
 {
 	const bool isOffset = m_allocator.GetOffset() == 0;
 
-	const size_t strSize = strlen(str) + static_cast<int>(isOffset);
-
-	void* newPtr = m_allocator.Alloc(strSize);
-
-	if (newPtr == nullptr)
+	char c;
+	int cIndex = 0;
+	while((c = str[cIndex]) != '\0')
 	{
-		m_allocator.Realloc(strSize);
-		newPtr = m_allocator.Alloc(strSize);
+		operator+=(c);
+		
+		cIndex++;
 	}
 
-	char* cPtr = static_cast<char*>(newPtr);
-
-	if (isOffset == false)
-		cPtr -= 1;
-
-	memcpy(cPtr, &str[0], strSize - static_cast<int>(isOffset));
-
-	cPtr += strSize - static_cast<int>(isOffset);
-	memset(cPtr, '\0', 1);
-
-	m_str = static_cast<char*>(m_allocator.GetFirst());
+	int i = 0;
 }
 
 void EG::String::operator=(const char* str)
@@ -179,7 +168,6 @@ void EG::String::operator=(const String& other)
 EG::String EG::String::operator+(const String& other) const
 {
 	String newString = String();
-	char* newStringPtr = newString.GetString();
 
 	newString += GetString();
 	newString += other.GetString();

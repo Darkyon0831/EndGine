@@ -12,15 +12,14 @@
 #include "ECS/ComponentManager.h"
 #include "ECS/SystemManager.h"
 #include "Core/RenderQueue.h"
+#include "Entry/Game.h"
 
 #include "Entities/DefaultCamera.h"
-#include "Tests/Entities/TestCube.h"
-#include "Tests/Entities/TestCamera.h"
-#include "Tests/Entities/TextTest.h"
-#include "Tests/Entities/TestQuad.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+
+Game clientGame;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -180,9 +179,8 @@ void EG::EntryPoint::InitializeSystems()
 void EG::EntryPoint::InitializeEntities()
 {
 	EntityManager::GetInstance().CreateEntity<DefaultCamera>();
-    EntityManager::GetInstance().CreateEntity<TestCube>();
-	EntityManager::GetInstance().CreateEntity<TestQuad>();
-	EntityManager::GetInstance().CreateEntity<TextTest>();
+
+	clientGame.InitializeEntities();
 	
 	ComponentManager::GetInstance().StartComponents();
 }

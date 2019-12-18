@@ -6,5 +6,7 @@ public:
 	Game() = default;
 	~Game() = default;
 
+	void PreStart();
+
 	void InitializeEntities();
 };

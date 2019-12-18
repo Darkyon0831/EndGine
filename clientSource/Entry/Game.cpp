@@ -5,6 +5,13 @@
 
 #include "ECS/EntityManager.h"
 
+void Game::PreStart()
+{
+	// Edit engine settings here
+
+
+}
+
 void Game::InitializeEntities()
 {
 	// Create your entities here!

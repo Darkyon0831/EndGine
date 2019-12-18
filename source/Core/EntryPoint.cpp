@@ -69,6 +69,8 @@ int EG::EntryPoint::WinEntryPoint(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 	EntityManager::Initialize();
 	ComponentManager::Initialize();
 
+	clientGame.PreStart();
+
 	WndSettings::GetInstance().SetIsVsync(false);
 	
 	FileSystem::GetInstance().SetDataLocation("data/");

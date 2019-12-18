@@ -19,9 +19,6 @@
     <Filter Include="Graphics">
       <UniqueIdentifier>{de2de7a8-0edb-4026-99cd-cf85cf73dfe6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tests">
-      <UniqueIdentifier>{88daed15-d861-4bb9-ad85-63b4ddedd1eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Globals\File">
       <UniqueIdentifier>{bea23664-e998-41ef-b809-32fbc24962b7}</UniqueIdentifier>
     </Filter>
@@ -33,12 +30,6 @@
     </Filter>
     <Filter Include="Entities">
       <UniqueIdentifier>{0083579a-9422-49c1-8ef1-7b4db1409efd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tests\Entities">
-      <UniqueIdentifier>{ca8a37c8-f6ae-476e-b815-cc4b165b478f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tests\Components">
-      <UniqueIdentifier>{08b55061-6d7f-47b9-b150-553d96b064b3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -144,21 +135,6 @@
     <ClCompile Include="..\..\source\ECS\IComponent.cpp">
       <Filter>ECS</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\Tests\Entities\TestCube.cpp">
-      <Filter>Tests\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\Components\RotationCube.cpp">
-      <Filter>Tests\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\Entities\TestCamera.cpp">
-      <Filter>Tests\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\Components\QuadTest.cpp">
-      <Filter>Tests\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\Entities\TestQuad.cpp">
-      <Filter>Tests\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\Components\Canvas.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -170,12 +146,6 @@
     </ClCompile>
     <ClCompile Include="..\..\source\Components\TextComponent.cpp">
       <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\Entities\TextTest.cpp">
-      <Filter>Tests\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Tests\Components\FPSComponent.cpp">
-      <Filter>Tests\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -305,21 +275,6 @@
     <ClInclude Include="..\..\source\Entities\DefaultCamera.h">
       <Filter>Entities</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\Tests\Entities\TestCube.h">
-      <Filter>Tests\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\Components\RotationCube.h">
-      <Filter>Tests\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\Entities\TestCamera.h">
-      <Filter>Tests\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\Components\QuadTest.h">
-      <Filter>Tests\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\Entities\TestQuad.h">
-      <Filter>Tests\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\source\Globals\Layer.h">
       <Filter>Globals</Filter>
     </ClInclude>
@@ -334,12 +289,6 @@
     </ClInclude>
     <ClInclude Include="..\..\source\Components\TextComponent.h">
       <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\Entities\TextTest.h">
-      <Filter>Tests\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Tests\Components\FPSComponent.h">
-      <Filter>Tests\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

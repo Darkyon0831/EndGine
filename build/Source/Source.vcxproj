@@ -65,13 +65,6 @@
     <ClCompile Include="..\..\source\Graphics\Texture.cpp" />
     <ClCompile Include="..\..\source\Memory\LinearAllocator.cpp" />
     <ClCompile Include="..\..\source\Memory\PoolAllocator.cpp" />
-    <ClCompile Include="..\..\source\Tests\Components\FPSComponent.cpp" />
-    <ClCompile Include="..\..\source\Tests\Components\QuadTest.cpp" />
-    <ClCompile Include="..\..\source\Tests\Components\RotationCube.cpp" />
-    <ClCompile Include="..\..\source\Tests\Entities\TestCamera.cpp" />
-    <ClCompile Include="..\..\source\Tests\Entities\TestCube.cpp" />
-    <ClCompile Include="..\..\source\Tests\Entities\TestQuad.cpp" />
-    <ClCompile Include="..\..\source\Tests\Entities\TextTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\Components\CameraComponent.h" />
@@ -121,13 +114,6 @@
     <ClInclude Include="..\..\source\Memory\LinearAllocator.h" />
     <ClInclude Include="..\..\source\Memory\PoolAllocator.h" />
     <ClInclude Include="..\..\source\Settings\WndSettings.h" />
-    <ClInclude Include="..\..\source\Tests\Components\FPSComponent.h" />
-    <ClInclude Include="..\..\source\Tests\Components\QuadTest.h" />
-    <ClInclude Include="..\..\source\Tests\Components\RotationCube.h" />
-    <ClInclude Include="..\..\source\Tests\Entities\TestCamera.h" />
-    <ClInclude Include="..\..\source\Tests\Entities\TestCube.h" />
-    <ClInclude Include="..\..\source\Tests\Entities\TestQuad.h" />
-    <ClInclude Include="..\..\source\Tests\Entities\TextTest.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

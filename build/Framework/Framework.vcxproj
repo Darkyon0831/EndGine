@@ -157,8 +157,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\FBXSdk\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FBXSdk\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Source.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FreeType\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Source.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;-lfreetype.a;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugEG|x64'">
@@ -170,8 +170,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\FBXSdk\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FBXSdk\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Source.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FreeType\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Source.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;-lfreetype.a;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -183,8 +183,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\FBXSdk\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FBXSdk\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Source.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FreeType\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Source.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;-lfreetype.a;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugEG|Win32'">
@@ -196,8 +196,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)source;$(SolutionDir)dependencies\FBXSdk\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FBXSdk\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Source.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FreeType\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Source.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;-lfreetype.a;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -213,8 +213,8 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FBXSdk\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Source.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FreeType\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Source.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;-lfreetype.a;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -230,20 +230,8 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FBXSdk\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Source.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseEG|Win32'">
-    <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FBXSdk\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Source.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseEG|x64'">
-    <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FBXSdk\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Source.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FreeType\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Source.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;-lfreetype.a;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

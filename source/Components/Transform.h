@@ -15,6 +15,9 @@ namespace EG
 		void Update() override;
 		Matrix& GetWorldMatrix() { return m_worldMatrix; }
 
+		void operator+=(const Transform& rTransform);
+		Transform operator+(const Transform& rTransform) const;
+
 		Vector3D GetForward();
 		Vector3D GetUp();
 		Vector3D GetRight();

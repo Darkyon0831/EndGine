@@ -152,6 +152,11 @@ void EG::RenderQueue::RenderPerspective(
 		if (renderIT->GetGameObject()->HaveComponent<Model>())
 		{
 			Transform* pTransform = renderIT->GetGameObject()->GetComponent<Transform>();
+
+			GameObject* pParent;
+			if ((pParent = renderIT->GetGameObject()->GetParent()) != nullptr)
+				*pTransform += *pParent->GetTransform();
+			
 			Model* pModel = renderIT->GetGameObject()->GetComponent<Model>();
 
 			// Loop all meshes
@@ -236,6 +241,11 @@ void EG::RenderQueue::RenderOrthogonal(
 		if (renderIT->GetGameObject()->HaveComponent<Model>())
 		{
 			Transform* pTransform = renderIT->GetGameObject()->GetComponent<Transform>();
+
+			GameObject* pParent;
+			if ((pParent = renderIT->GetGameObject()->GetParent()) != nullptr)
+				*pTransform += *pParent->GetTransform();
+			
 			Model* pModel = renderIT->GetGameObject()->GetComponent<Model>();
 
 			for (int i = 0; i < pModel->GetTotalMeshes(); i++)
@@ -452,5 +462,8 @@ void EG::RenderQueue::Render()
 
 	EndRenderFullscreen();
 
-	SwapChain::GetInstance().Present(1, 0);
+	if (WndSettings::GetInstance().GetIsVsync())
+		SwapChain::GetInstance().Present(1, 0);
+	else
+		SwapChain::GetInstance().Present(0, 0);
 }

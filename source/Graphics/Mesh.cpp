@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "Globals/Macro.h"
 #include "Graphics/Device.h"
 
 EG::Mesh::Mesh()
@@ -10,7 +11,27 @@ EG::Mesh::Mesh()
 	, m_vertexCount(0)
 	, m_indexCount(0)
 {
+	
+	D3D11_BUFFER_DESC vertexBufferDesc;
+	D3D11_BUFFER_DESC indexBufferDesc;
+	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
 
+	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	vertexBufferDesc.ByteWidth = sizeof(Vertex) * 1024;
+	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	vertexBufferDesc.MiscFlags = 0;
+	vertexBufferDesc.StructureByteStride = 0;
+
+	indexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	indexBufferDesc.ByteWidth = sizeof(unsigned int) * 2048;
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	indexBufferDesc.MiscFlags = 0;
+	indexBufferDesc.StructureByteStride = 0;
+	
+	EGCHECKHR(pDevice->CreateBuffer(&vertexBufferDesc, nullptr, &m_pVertexBuffer));
+	EGCHECKHR(pDevice->CreateBuffer(&indexBufferDesc, nullptr, &m_pIndexBuffer));
 }
 
 EG::Mesh::~Mesh()
@@ -27,59 +48,34 @@ EG::Mesh::~Mesh()
 
 void EG::Mesh::SetVertexArray(Vertex* vertexArray, const size_t size)
 {
-	
 	delete[] m_vertexArray;
-
-	if (m_pVertexBuffer != nullptr)
-		m_pVertexBuffer->Release();
 
 	m_vertexArray = vertexArray;
 	m_vertexCount = size;
 
-	D3D11_BUFFER_DESC vertexBufferDesc;
-	D3D11_SUBRESOURCE_DATA vertexData;
-	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
+	ID3D11DeviceContext* pDeviceContext = Device::GetInstance().GetDeviceContext();
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
 
-	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(Vertex) * size;
-	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.CPUAccessFlags = 0;
-	vertexBufferDesc.MiscFlags = 0;
-	vertexBufferDesc.StructureByteStride = 0;
+	pDeviceContext->Map(m_pVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 
-	vertexData.pSysMem = m_vertexArray;
-	vertexData.SysMemSlicePitch = 0;
-	vertexData.SysMemPitch = 0;
+	memcpy(mappedResource.pData, m_vertexArray, sizeof(Vertex) * size);
 
-	HRESULT result = pDevice->CreateBuffer(&vertexBufferDesc, &vertexData, &m_pVertexBuffer);
-
-	int debug = 0;
+	pDeviceContext->Unmap(m_pVertexBuffer, 0);
 }
 
 void EG::Mesh::SetIndexArray(int* indexArray, const size_t size)
 {
 	delete[] m_indexArray;
 
-	if (m_pIndexBuffer != nullptr)
-		m_pIndexBuffer->Release();
-
 	m_indexArray = indexArray;
 	m_indexCount = size;
 
-	D3D11_BUFFER_DESC indexBufferDesc;
-	D3D11_SUBRESOURCE_DATA indexData;
-	ID3D11Device* pDevice = Device::GetInstance().GetDevice();
+	ID3D11DeviceContext* pDeviceContext = Device::GetInstance().GetDeviceContext();
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	
+	pDeviceContext->Map(m_pIndexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 
-	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufferDesc.ByteWidth = sizeof(Vertex) * size;
-	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	indexBufferDesc.CPUAccessFlags = 0;
-	indexBufferDesc.MiscFlags = 0;
-	indexBufferDesc.StructureByteStride = 0;
+	memcpy(mappedResource.pData, m_indexArray, sizeof(int) * size);
 
-	indexData.pSysMem = m_indexArray;
-	indexData.SysMemSlicePitch = 0;
-	indexData.SysMemPitch = 0;
-
-	pDevice->CreateBuffer(&indexBufferDesc, &indexData, &m_pIndexBuffer);
+	pDeviceContext->Unmap(m_pIndexBuffer, 0);
 }

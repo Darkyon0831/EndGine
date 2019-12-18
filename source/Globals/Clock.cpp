@@ -14,7 +14,7 @@ EG::Clock::~Clock()
 }
 
 void EG::Clock::Update()
-{
+{	
 	if (m_isFirst)
 	{
 		m_oldTimepoint = std::chrono::high_resolution_clock::now();

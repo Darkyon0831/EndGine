@@ -1,5 +1,7 @@
 #pragma once
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "Globals/WString.h"
 #include "Device.h"
 #include "Globals/String.h"

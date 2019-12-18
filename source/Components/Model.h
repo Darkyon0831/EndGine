@@ -10,6 +10,9 @@ namespace EG
 	class Model : public Component<Model>
 	{
 	public:
+
+		Model();
+		~Model();
 		
 		void AddMesh(Mesh* pMesh) { m_meshAssets.push_back(pMesh); }
 		Mesh* GetMesh(const int index) { return m_meshAssets.at(index); }

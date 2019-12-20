@@ -43,6 +43,8 @@ struct Characher
 	float height;
 	float usedImageHeight;
 	float brearingY;
+	float bearingX;
+	float advance;
 	float left;
 	float right;
 	float up;
@@ -108,7 +110,7 @@ float CalculateMaxRowWidth(int totalChars)
 
 	for (unsigned int i = 0; i < charachers.size(); i++)
 	{
-		rowWidth += charachers.at(i).width;
+		rowWidth += charachers.at(i).advance;
 		elapsedChars++;
 
 		if (elapsedChars == charsPerRow)
@@ -153,7 +155,7 @@ float GetMaxheight()
 	for (int i = 0; i < charachers.size(); i++)
 	{
 		if (charachers.at(i).height > maxHeight)
-			maxHeight = charachers.at(i).height + charachers.at(i).brearingY;
+			maxHeight = charachers.at(i).height;
 	}
 
 	return maxHeight;
@@ -168,19 +170,17 @@ void PopulateFinalImage(ID3D11Texture2D* finalTexture, Vector2D finalImageSize, 
 	for (unsigned int i = 0; i < charachers.size(); i++)
 	{
 		Characher& rCharacher = charachers.at(i);
-
-		// Convert char bitmap to dds format using DirectXTex
-		DirectX::ScratchImage image;
-		ID3D11Texture2D* pConvertedTexture;
-
+		
+		float newY = position.y + (maxHeight - rCharacher.brearingY);
+		
 		if (rCharacher.pTexture != nullptr)
 		{
 			pDeviceContext->CopySubresourceRegion
 			(
 				finalTexture,
 				0,
-				position.x,
-				position.y,
+				position.x + rCharacher.bearingX,
+				position.y + (maxHeight - rCharacher.brearingY),
 				0.0f,
 				rCharacher.pTexture,
 				0,
@@ -189,11 +189,11 @@ void PopulateFinalImage(ID3D11Texture2D* finalTexture, Vector2D finalImageSize, 
 		}
 
 		rCharacher.left = position.x / finalImageSize.x;
-		rCharacher.right = (position.x + rCharacher.width) / finalImageSize.x;
+		rCharacher.right = (position.x + rCharacher.advance) / finalImageSize.x;
 		rCharacher.up = position.y / finalImageSize.y;
-		rCharacher.down = (position.y + rCharacher.height) / finalImageSize.y;
+		rCharacher.down = (position.y + maxHeight) / finalImageSize.y;
 
-		position.x += rCharacher.width;
+		position.x += rCharacher.advance;
 		currentRowPos++;
 
 		if (currentRowPos == charsPerRow)
@@ -203,6 +203,33 @@ void PopulateFinalImage(ID3D11Texture2D* finalTexture, Vector2D finalImageSize, 
 			currentRowPos = 0;
 		}
 	}
+
+	
+}
+
+void RoundToPowerOfTwo(Vector2D& finalImageSize)
+{
+	unsigned int finalImageX = static_cast<unsigned int>(finalImageSize.x);
+	unsigned int finalImageY = static_cast<unsigned int>(finalImageSize.y);
+	
+	finalImageX--;
+	finalImageX |= finalImageX >> 1;
+	finalImageX |= finalImageX >> 2;
+	finalImageX |= finalImageX >> 4;
+	finalImageX |= finalImageX >> 8;
+	finalImageX |= finalImageX >> 16;
+	finalImageX++;
+
+	finalImageY--;
+	finalImageY |= finalImageY >> 1;
+	finalImageY |= finalImageY >> 2;
+	finalImageY |= finalImageY >> 4;
+	finalImageY |= finalImageY >> 8;
+	finalImageY |= finalImageY >> 16;
+	finalImageY++;
+
+	finalImageSize.x = static_cast<float>(finalImageX);
+	finalImageSize.y = static_cast<float>(finalImageY);
 }
 
 bool isNumber(char* str)
@@ -238,7 +265,7 @@ void ReadArguments(int argc, char* argv[])
 	}
 }
 
-void WriteBoxDataFile()
+void WriteBoxDataFile(const float maxHeight)
 {
 	std::ofstream fileStream;
 
@@ -248,7 +275,7 @@ void WriteBoxDataFile()
 	{
 		Characher& rChar = charachers.at(i);
 
-		fileStream << rChar.left << " " << rChar.right << " " << rChar.up << " " << rChar.down << " " << rChar.width << std::endl;
+		fileStream << rChar.left << ";" << rChar.right << ";" << rChar.up << ";" << rChar.down << ";" << rChar.advance << ";" << maxHeight << std::endl;
 	}
 
 	fileStream.close();
@@ -281,8 +308,8 @@ int main(int argc, char* argv[])
 			float glyphWidth = box.xMax - box.xMin;
 			float glyphHeight = box.yMax - box.yMin;
 
-			textureDesc.Width = glyphWidth;
-			textureDesc.Height = glyphHeight;
+			textureDesc.Width = ftFace->glyph->bitmap.width;
+			textureDesc.Height = ftFace->glyph->bitmap.rows;
 			textureDesc.MipLevels = textureDesc.ArraySize = 1;
 			textureDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R8_UNORM;
 			textureDesc.SampleDesc.Count = 1;
@@ -304,24 +331,29 @@ int main(int argc, char* argv[])
 			{
 				i,
 				pTexture,
-				glyphWidth,
+				ftFace->glyph->bitmap.width,
+				ftFace->glyph->bitmap.rows,
 				glyphHeight,
-				glyphHeight,
-				ftFace->glyph->bitmap_top
+				ftFace->glyph->bitmap_top,
+				ftFace->glyph->bitmap_left,
+				ftFace->glyph->advance.x >> 6
 			};
 		
 			charachers.push_back(characher);
 		}
 
 
-		float maxHeight = GetMaxheight();
-		const Vector2D finalImageSize = CalculateFinalImageSize(ftFace->num_glyphs, maxHeight);
+		const float maxHeight = GetMaxheight();
+		Vector2D finalImageSize = CalculateFinalImageSize(ftFace->num_glyphs, maxHeight);
+		RoundToPowerOfTwo(finalImageSize);
 
+		
 		// Create final dds texture
 
 		D3D11_TEXTURE2D_DESC texture2DDesc;
 		ID3D11Texture2D* pFinalTexture;
 
+		
 		texture2DDesc.Width = finalImageSize.x;
 		texture2DDesc.Height = finalImageSize.y;
 		texture2DDesc.MipLevels = 1;
@@ -348,7 +380,7 @@ int main(int argc, char* argv[])
 		HRESULT dsadsa2 = DirectX::CaptureTexture(pDevice, pDeviceContext, pFinalTexture, finalScratchImage);
 		HRESULT dsadsa = DirectX::SaveToDDSFile(finalScratchImage.GetImages(), finalScratchImage.GetImageCount(), finalScratchImage.GetMetadata(), 0, L"test.dds");
 
-		WriteBoxDataFile();
+		WriteBoxDataFile(maxHeight);
 	}
 	else
 		std::cout << "Usage: EGTextConverter <tffFilepath> arguments..." << std::endl;

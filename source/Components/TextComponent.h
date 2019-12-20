@@ -18,6 +18,7 @@ namespace EG
 			float up;
 			float down;
 			float width;
+			float height;
 		};
 		
 		TextComponent();
@@ -27,6 +28,8 @@ namespace EG
 		String& GetText() { return m_text; }
 
 		Model* GetTextModel() const { return m_pTextModel; }
+
+		void ReadPart(float& fValue, std::ifstream& rStream) const;
 
 		void PostStart() override;
 		void PostUpdate() override;

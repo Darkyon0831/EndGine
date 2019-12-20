@@ -28,6 +28,21 @@ EG::TextComponent::~TextComponent()
 	GetGameObject()->RemoveComponent<RenderComponent>();
 }
 
+void EG::TextComponent::ReadPart(float& fValue, std::ifstream& rStream) const
+{
+	char characher;
+	String str;
+	
+	rStream >> characher;
+	while (characher != ';' && characher != '\n')
+	{
+		str += characher;
+		rStream >> characher;		
+	}	
+
+	fValue = std::stof(str.GetString());
+}
+
 void EG::TextComponent::PostStart()
 {
 	LoadFontFile();
@@ -46,17 +61,26 @@ void EG::TextComponent::LoadFontFile()
 	std::ifstream fileIn(filePath.GetString());
 	char temp;
 	CharacherIndexData characherIndexdata;
-	
-	while (fileIn.get(temp))
+
+	int i = 0;
+	while ((temp = fileIn.peek()))
 	{
-		fileIn >> characherIndexdata.left;
-		fileIn >> characherIndexdata.right;
-		fileIn >> characherIndexdata.up;
-		fileIn >> characherIndexdata.down;
-		fileIn >> characherIndexdata.width;
+		ReadPart(characherIndexdata.left, fileIn);
+		ReadPart(characherIndexdata.right, fileIn);
+		ReadPart(characherIndexdata.up, fileIn);
+		ReadPart(characherIndexdata.down, fileIn);
+		ReadPart(characherIndexdata.width, fileIn);
+		ReadPart(characherIndexdata.height, fileIn);
 
 		m_characherIndexData.push_back(characherIndexdata);
+
+		if (i == 93)
+			int dsadsa = 0;
+
+		i++;
 	}
+
+	int dd = 0;
 }
 
 void EG::TextComponent::BuildMesh()

@@ -144,7 +144,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FreeType\lib;$(SolutionDir)build\Client\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Source.lib;Client.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;libfreetype.a;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Source.lib;Client.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugEG|x64'">
@@ -170,7 +170,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FreeType\lib;$(SolutionDir)build\Client\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Source.lib;Client.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;libfreetype.a;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Source.lib;Client.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugEG|Win32'">

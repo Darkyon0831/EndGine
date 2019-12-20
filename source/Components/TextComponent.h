@@ -15,7 +15,9 @@ namespace EG
 		{
 			float left;
 			float right;
-			Vector2D size;
+			float up;
+			float down;
+			float width;
 		};
 		
 		TextComponent();

@@ -51,8 +51,9 @@ void EG::TextComponent::LoadFontFile()
 	{
 		fileIn >> characherIndexdata.left;
 		fileIn >> characherIndexdata.right;
-		fileIn >> characherIndexdata.size.x;
-		fileIn >> characherIndexdata.size.y;
+		fileIn >> characherIndexdata.up;
+		fileIn >> characherIndexdata.down;
+		fileIn >> characherIndexdata.width;
 
 		m_characherIndexData.push_back(characherIndexdata);
 	}
@@ -73,7 +74,7 @@ void EG::TextComponent::BuildMesh()
 	
 	for (int i = 0; i < m_text.GetSize() - 1; i++)
 	{
-		const CharacherIndexData charData = m_characherIndexData.at(m_text[i] - 32);
+		/*const CharacherIndexData charData = m_characherIndexData.at(m_text[i] - 32);
 
 		vertices[currentVertexIndex].position = Vector3D(traverseX, charData.size.y / 2.0f, 0.0f);
 		vertices[currentVertexIndex].uv = Vector2D(charData.left, 0.0f);
@@ -97,38 +98,38 @@ void EG::TextComponent::BuildMesh()
 		indecies[currentIndexIndex++] = currentVertexIndex + 1 - 4;
 		indecies[currentIndexIndex++] = currentVertexIndex + 2 - 4;
 		indecies[currentIndexIndex++] = currentVertexIndex + 3 - 4;
+*/
+		//traverseX += charData.size.x;
+		//
+		//// Add padding mesh, only if it is not the last char
 
-		traverseX += charData.size.x;
-		
-		// Add padding mesh, only if it is not the last char
+		//if (i + 1 != m_text.GetSize() - 1)
+		//{
+		//	vertices[currentVertexIndex].position = Vector3D(traverseX, charData.size.y / 2.0f, 0.0f);
+		//	vertices[currentVertexIndex].uv = Vector2D(0.7f, 0.8f);
+		//	currentVertexIndex++;
 
-		if (i + 1 != m_text.GetSize() - 1)
-		{
-			vertices[currentVertexIndex].position = Vector3D(traverseX, charData.size.y / 2.0f, 0.0f);
-			vertices[currentVertexIndex].uv = Vector2D(0.7f, 0.8f);
-			currentVertexIndex++;
+		//	vertices[currentVertexIndex].position = Vector3D(traverseX + padding, charData.size.y / 2.0f, 0.0f);
+		//	vertices[currentVertexIndex].uv = Vector2D(0.7f, 0.8f);
+		//	currentVertexIndex++;
 
-			vertices[currentVertexIndex].position = Vector3D(traverseX + padding, charData.size.y / 2.0f, 0.0f);
-			vertices[currentVertexIndex].uv = Vector2D(0.7f, 0.8f);
-			currentVertexIndex++;
+		//	vertices[currentVertexIndex].position = Vector3D(traverseX + padding, -charData.size.y / 2.0f, 0.0f);
+		//	vertices[currentVertexIndex].uv = Vector2D(0.7f, 0.8f);
+		//	currentVertexIndex++;
 
-			vertices[currentVertexIndex].position = Vector3D(traverseX + padding, -charData.size.y / 2.0f, 0.0f);
-			vertices[currentVertexIndex].uv = Vector2D(0.7f, 0.8f);
-			currentVertexIndex++;
+		//	vertices[currentVertexIndex].position = Vector3D(traverseX, -charData.size.y / 2.0f, 0.0f);
+		//	vertices[currentVertexIndex].uv = Vector2D(0.7f, 0.8f);
+		//	currentVertexIndex++;
 
-			vertices[currentVertexIndex].position = Vector3D(traverseX, -charData.size.y / 2.0f, 0.0f);
-			vertices[currentVertexIndex].uv = Vector2D(0.7f, 0.8f);
-			currentVertexIndex++;
+		//	indecies[currentIndexIndex++] = currentVertexIndex - 4;
+		//	indecies[currentIndexIndex++] = currentVertexIndex + 1 - 4;
+		//	indecies[currentIndexIndex++] = currentVertexIndex + 3 - 4;
+		//	indecies[currentIndexIndex++] = currentVertexIndex + 1 - 4;
+		//	indecies[currentIndexIndex++] = currentVertexIndex + 2 - 4;
+		//	indecies[currentIndexIndex++] = currentVertexIndex + 3 - 4;
 
-			indecies[currentIndexIndex++] = currentVertexIndex - 4;
-			indecies[currentIndexIndex++] = currentVertexIndex + 1 - 4;
-			indecies[currentIndexIndex++] = currentVertexIndex + 3 - 4;
-			indecies[currentIndexIndex++] = currentVertexIndex + 1 - 4;
-			indecies[currentIndexIndex++] = currentVertexIndex + 2 - 4;
-			indecies[currentIndexIndex++] = currentVertexIndex + 3 - 4;
-
-			traverseX += padding;
-		}
+		//	traverseX += padding;
+		//}
 	}
 
 	m_pMesh->SetVertexArray(vertices, vertexCount);

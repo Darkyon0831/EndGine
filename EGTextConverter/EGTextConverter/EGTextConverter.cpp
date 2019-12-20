@@ -3,11 +3,15 @@
 
 #include "pch.h"
 #include <iostream>
+#include <fstream>
+#include <cctype>
+#include <string>
 
 #include <d3d11.h>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include FT_GLYPH_H
 
 #include <DirectXTex.h>
 
@@ -22,7 +26,8 @@ ID3D11DeviceContext* pDeviceContext;
 FT_Library ftLib;
 FT_Face ftFace;
 
-const int charsPerRow = 6;
+const int charsPerRow = 12;
+int charSize = 24;
 
 struct Vector2D
 {
@@ -32,9 +37,16 @@ struct Vector2D
 
 struct Characher
 {
+	char characher;
 	ID3D11Texture2D* pTexture;
 	float width;
 	float height;
+	float usedImageHeight;
+	float brearingY;
+	float left;
+	float right;
+	float up;
+	float down;
 };
 
 std::vector<Characher> charachers;
@@ -78,7 +90,7 @@ void InitFreeType(const char* fontFilePath)
 		exit(0);
 	}
 
-	FT_Set_Pixel_Sizes(ftFace, 0, 28);
+	FT_Set_Pixel_Sizes(ftFace, 0, charSize);
 }
 
 void ReleaseDevice()
@@ -119,11 +131,11 @@ float CalculateMaxRowWidth(int totalChars)
 	return currentMaxRowWidh;
 }
 
-Vector2D CalculateFinalImageSize(const int totalChars)
+Vector2D CalculateFinalImageSize(const int totalChars, float maxHeight)
 {
 	const float maxRowWidth = CalculateMaxRowWidth(totalChars);
-	const int numRows = totalChars / charsPerRow;
-	const float height = static_cast<float>(totalChars) * 28 / static_cast<float>(numRows);
+	const int numRows = (128 - 32) / charsPerRow;
+	const float height = static_cast<float>(numRows) * maxHeight;
 
 	const Vector2D size =
 	{
@@ -134,13 +146,26 @@ Vector2D CalculateFinalImageSize(const int totalChars)
 	return size;
 }
 
-void PopulateFinalImage(ID3D11Texture2D* finalTexture)
+float GetMaxheight()
+{
+	float maxHeight = 0;
+
+	for (int i = 0; i < charachers.size(); i++)
+	{
+		if (charachers.at(i).height > maxHeight)
+			maxHeight = charachers.at(i).height + charachers.at(i).brearingY;
+	}
+
+	return maxHeight;
+}
+
+void PopulateFinalImage(ID3D11Texture2D* finalTexture, Vector2D finalImageSize, float maxHeight)
 {
 	Vector2D position = { 0.0f, 0.0f };
 
 	int currentRowPos = 0;
 	
-	for (unsigned int i = 0; i < 3; i++)
+	for (unsigned int i = 0; i < charachers.size(); i++)
 	{
 		Characher& rCharacher = charachers.at(i);
 
@@ -148,17 +173,25 @@ void PopulateFinalImage(ID3D11Texture2D* finalTexture)
 		DirectX::ScratchImage image;
 		ID3D11Texture2D* pConvertedTexture;
 
-		pDeviceContext->CopySubresourceRegion
-		(
-			finalTexture,
-			0,
-			position.x,
-			position.y,
-			0.0f,
-			rCharacher.pTexture,
-			0,
-			nullptr
-		);
+		if (rCharacher.pTexture != nullptr)
+		{
+			pDeviceContext->CopySubresourceRegion
+			(
+				finalTexture,
+				0,
+				position.x,
+				position.y,
+				0.0f,
+				rCharacher.pTexture,
+				0,
+				nullptr
+			);
+		}
+
+		rCharacher.left = position.x / finalImageSize.x;
+		rCharacher.right = (position.x + rCharacher.width) / finalImageSize.x;
+		rCharacher.up = position.y / finalImageSize.y;
+		rCharacher.down = (position.y + rCharacher.height) / finalImageSize.y;
 
 		position.x += rCharacher.width;
 		currentRowPos++;
@@ -166,30 +199,90 @@ void PopulateFinalImage(ID3D11Texture2D* finalTexture)
 		if (currentRowPos == charsPerRow)
 		{
 			position.x = 0.0f;
-			position.y += 28.0f;
+			position.y += maxHeight;
 			currentRowPos = 0;
 		}
 	}
+}
+
+bool isNumber(char* str)
+{
+	size_t strSize = strlen(str);
+
+	for (int i = 0; i < strSize; i++)
+	{
+		if (isdigit(str[i]) == false)
+			return false;
+	}
+
+	return true;
+}
+
+void ReadArguments(int argc, char* argv[])
+{
+	if (argc > 2)
+	{
+		char* argument = argv[2];
+
+		if (strcmp(argument, "-s") == 0)
+		{
+			if (argc > 3 && isNumber(argv[3]))
+			{
+				charSize = std::stoi(argv[3]);
+			}
+			else
+			{
+				std::cout << "Invalid value for the argument -s, Usage: " << "-s <number>" << std::endl;
+			}
+		}
+	}
+}
+
+void WriteBoxDataFile()
+{
+	std::ofstream fileStream;
+
+	fileStream.open("fontBox.data");
+
+	for (int i = 0; i < charachers.size(); i++)
+	{
+		Characher& rChar = charachers.at(i);
+
+		fileStream << rChar.left << " " << rChar.right << " " << rChar.up << " " << rChar.down << " " << rChar.width << std::endl;
+	}
+
+	fileStream.close();
 }
 
 int main(int argc, char* argv[])
 {
 	if (argc >= 2)
 	{
+		ReadArguments(argc, argv);
 		InitDevice();
 		InitFreeType(argv[1]);
 		
-		for (int i = 32; i < 127; i++)
+		for (int i = 33; i < 127; i++)
 		{
-			FT_Load_Char(ftFace, 'C', FT_LOAD_RENDER);
+			FT_Load_Char(ftFace, i, FT_LOAD_RENDER);
+
+			FT_Glyph glyph;
+
+			FT_Get_Glyph(ftFace->glyph, &glyph);
 
 			FT_Render_Glyph(ftFace->glyph, FT_Render_Mode::FT_RENDER_MODE_NORMAL);
+
+			FT_BBox box;
+			FT_Glyph_Get_CBox(glyph, FT_GLYPH_BBOX_PIXELS, &box);
 
 			ID3D11Texture2D* pTexture = nullptr;
 			D3D11_TEXTURE2D_DESC textureDesc;
 
-			textureDesc.Width = ftFace->glyph->bitmap.width;
-			textureDesc.Height = ftFace->glyph->bitmap.rows;
+			float glyphWidth = box.xMax - box.xMin;
+			float glyphHeight = box.yMax - box.yMin;
+
+			textureDesc.Width = glyphWidth;
+			textureDesc.Height = glyphHeight;
 			textureDesc.MipLevels = textureDesc.ArraySize = 1;
 			textureDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R8_UNORM;
 			textureDesc.SampleDesc.Count = 1;
@@ -209,15 +302,20 @@ int main(int argc, char* argv[])
 
 			Characher characher =
 			{
+				i,
 				pTexture,
-				ftFace->glyph->bitmap.width,
-				ftFace->glyph->bitmap.rows
+				glyphWidth,
+				glyphHeight,
+				glyphHeight,
+				ftFace->glyph->bitmap_top
 			};
 		
 			charachers.push_back(characher);
 		}
 
-		const Vector2D finalImageSize = CalculateFinalImageSize(ftFace->num_glyphs);
+
+		float maxHeight = GetMaxheight();
+		const Vector2D finalImageSize = CalculateFinalImageSize(ftFace->num_glyphs, maxHeight);
 
 		// Create final dds texture
 
@@ -244,13 +342,13 @@ int main(int argc, char* argv[])
 			exit(0);
 		}
 
-		PopulateFinalImage(pFinalTexture);
+		PopulateFinalImage(pFinalTexture, finalImageSize, maxHeight);
 
 		DirectX::ScratchImage finalScratchImage;
 		HRESULT dsadsa2 = DirectX::CaptureTexture(pDevice, pDeviceContext, pFinalTexture, finalScratchImage);
 		HRESULT dsadsa = DirectX::SaveToDDSFile(finalScratchImage.GetImages(), finalScratchImage.GetImageCount(), finalScratchImage.GetMetadata(), 0, L"test.dds");
 
-		int i = 0;
+		WriteBoxDataFile();
 	}
 	else
 		std::cout << "Usage: EGTextConverter <tffFilepath> arguments..." << std::endl;

@@ -67,7 +67,6 @@
     <ClCompile Include="..\..\source\Globals\WString.cpp" />
     <ClCompile Include="..\..\source\Graphics\ConstantBuffer.cpp" />
     <ClCompile Include="..\..\source\Graphics\Device.cpp" />
-    <ClCompile Include="..\..\source\Graphics\FBXLoader.cpp" />
     <ClCompile Include="..\..\source\Graphics\Mesh.cpp" />
     <ClCompile Include="..\..\source\Graphics\Shader.cpp" />
     <ClCompile Include="..\..\source\Graphics\SwapChain.cpp" />
@@ -114,7 +113,6 @@
     <ClInclude Include="..\..\source\Globals\WString.h" />
     <ClInclude Include="..\..\source\Graphics\ConstantBuffer.h" />
     <ClInclude Include="..\..\source\Graphics\Device.h" />
-    <ClInclude Include="..\..\source\Graphics\FBXLoader.h" />
     <ClInclude Include="..\..\source\Graphics\Material.h" />
     <ClInclude Include="..\..\source\Graphics\Mesh.h" />
     <ClInclude Include="..\..\source\Graphics\Shader.h" />

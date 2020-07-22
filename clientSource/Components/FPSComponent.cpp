@@ -27,7 +27,7 @@ FPSComponent::FPSComponent()
 
 	GetGameObject()->GetTransform()->rotation.z = 235.0f;
 
-	m_pTextComponent->SetColor(EG::Color(0, 234.0f / 255.0f, 1.0f));
+	//m_pTextComponent->SetColor(EG::Color(0, 234.0f / 255.0f, 1.0f));
 
 }
 

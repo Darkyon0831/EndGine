@@ -120,12 +120,6 @@
     <ClCompile Include="..\..\source\Core\Input.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\Graphics\FBXLoader.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Entities\Default3DCamera.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\Components\Transform.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -271,12 +265,6 @@
     </ClInclude>
     <ClInclude Include="..\..\source\Core\Input.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Graphics\FBXLoader.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\source\Entities\Default3DCamera.h">
-      <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\Entities\GameObject.h">
       <Filter>Entities</Filter>

@@ -48,6 +48,16 @@ EG::String::String(const String& other)
 	m_str = static_cast<char*>(m_allocator.GetFirst());
 }
 
+bool EG::String::Compare(const String& rString) const
+{
+	if (rString.GetSize() != GetSize()) return false;
+
+	for (int i = 0; i < GetSize(); i++)
+		if (rString[i] != (*this)[i]) return false;
+
+	return true;
+}
+
 char* EG::String::GetString() const
 {
 	return static_cast<char*>(m_allocator.GetFirst());

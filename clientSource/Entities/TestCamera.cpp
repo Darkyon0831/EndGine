@@ -8,8 +8,8 @@ TestCamera::TestCamera()
 	const float& windowHeight = EG::WndSettings::GetInstance().GetWndHeight();
 	const float& windowWidth = EG::WndSettings::GetInstance().GetWndWidth();
 
-	const float cameraHeight = 1080.0f / 4.0f;
-	const float cameraWidth = 1920.0f / 4.0f;
+	const float cameraHeight = 1080.0f;
+	const float cameraWidth = 1920.0f;
 
 	m_pCameraComponent = CreateComponent<EG::CameraComponent>(
 		45,
@@ -17,7 +17,7 @@ TestCamera::TestCamera()
 		1,
 		1000,
 		EG::Vector2D(cameraWidth, cameraHeight),
-		EG::Vector2D(-windowWidth / 2.0f + cameraWidth / 2.0f, windowHeight / 2.0f - cameraHeight / 2.0f));
+		EG::Vector2D(0, 0));
 
 	m_pCameraComponent->SetRenderLayerMask(EG::Layer::LayerCanvas);
 	

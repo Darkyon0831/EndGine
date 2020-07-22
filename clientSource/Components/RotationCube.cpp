@@ -102,12 +102,12 @@ RotationCube::RotationCube()
 
 	m_pModel->AddMesh(pMesh);
 
-	GetGameObject()->GetTransform()->position.x = 3.0f;
+	//GetGameObject()->GetTransform()->position.x = 3.0f;
 }
 
 RotationCube::~RotationCube()
 {
-	GetGameObject()->RemoveComponent<EG::Mesh>();
+	GetGameObject()->RemoveComponent<EG::Model>();
 	GetGameObject()->RemoveComponent<EG::RenderComponent>();
 }
 

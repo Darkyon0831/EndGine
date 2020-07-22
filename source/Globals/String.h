@@ -15,6 +15,7 @@ namespace EG
 
 		String(const String& other);
 
+		bool Compare(const String& rString) const;
 		char* GetString() const;
 		void Copy(const String& other);
 		size_t GetSize() const;

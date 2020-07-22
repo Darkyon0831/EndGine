@@ -6,19 +6,29 @@
 
 FPSComponent::FPSComponent()
 {
+	FT_Library library;
+
+	FT_Init_FreeType( &library );
+
 	//SetParent(pTestQuad);
 
-	m_pTextComponent = GetGameObject()->CreateComponent<EG::TextComponent>();
+	m_pTextComponent = GetGameObject()->CreateComponent<EG::TextComponent>("times.ttf");
 
 	const float& rWindowWidth = EG::WndSettings::GetInstance().GetWndWidth();
 	const float& rWindowHeight = EG::WndSettings::GetInstance().GetWndHeight();
 
 	EG::Transform* pTransform = GetGameObject()->GetTransform();
 
-	pTransform->position.x = -rWindowWidth / 2.0f + 6.0f;
-	pTransform->position.y = rWindowHeight / 2.0f - 16.0f / 2.0f - 6.0f;
+	pTransform->position.x = -500.0f;
+	pTransform->position.y = 80.0f;
 
-	m_pTextComponent->SetText("FPS: ");
+	m_pTextComponent->SetText("Adrian Rondahl is the best!!!!!!");
+	m_pTextComponent->SetFontSize(88);
+
+	GetGameObject()->GetTransform()->rotation.z = 235.0f;
+
+	m_pTextComponent->SetColor(EG::Color(0, 234.0f / 255.0f, 1.0f));
+
 }
 
 FPSComponent::~FPSComponent()
@@ -28,7 +38,9 @@ FPSComponent::~FPSComponent()
 
 void FPSComponent::Update()
 {
-	const float& deltaTime = EG::Clock::GetInstance().GetDeltaTime();
+	//m_pTextComponent->SetText(m_pTextComponent->GetText() + 'd');
+
+	/*const float& deltaTime = EG::Clock::GetInstance().GetDeltaTime();
 	unsigned int currentFPS = 0;
 	
 	if (deltaTime != 0.0f)
@@ -37,7 +49,7 @@ void FPSComponent::Update()
 		currentFPS = 0;
 
 	EG::String fpsString = EG::String("FPS: ");
-	fpsString += std::to_string(currentFPS).c_str();
+	fpsString += std::to_string(333).c_str();
 	
-	m_pTextComponent->SetText(fpsString);
+	m_pTextComponent->SetText(fpsString);*/
 }

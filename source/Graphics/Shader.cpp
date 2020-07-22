@@ -17,6 +17,7 @@ EG::Shader::Shader()
 {
 	// Create default states, input layouts and constant buffers
 
+	D3D11_BLEND_DESC blendStateDesc;
 	D3D11_RASTERIZER_DESC rasterDesc;
 	D3D11_INPUT_ELEMENT_DESC defaultLayout[3];
 	D3D11_SAMPLER_DESC samplerDesc;
@@ -47,17 +48,31 @@ EG::Shader::Shader()
 	samplerDesc.MinLOD = 0;
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	
+	blendStateDesc.AlphaToCoverageEnable = false;
+	blendStateDesc.IndependentBlendEnable = false;
+	blendStateDesc.RenderTarget[0].BlendEnable = true;
+	blendStateDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	blendStateDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	blendStateDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendStateDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
+	blendStateDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+	blendStateDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendStateDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	
 	EGCHECKHR(pDevice->CreateRasterizerState(&rasterDesc, &m_pRasterizerState));
 	
 	EGCHECKHR(pDevice->CreateSamplerState(&samplerDesc, &m_pSamplerState));
 
-	int i = 0;
+	EGCHECKHR(pDevice->CreateBlendState(&blendStateDesc, &m_pBlendState));
 }
 
 EG::Shader::~Shader()
 {
 	if (m_pError == nullptr)
 	{
+		if (m_pBlendState != nullptr)
+			m_pBlendState->Release();
+
 		if (m_pRasterizerState != nullptr)
 			m_pRasterizerState->Release();
 

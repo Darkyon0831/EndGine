@@ -34,6 +34,7 @@
     <ProjectGuid>{7F429927-85F1-402C-9E13-EA22B2F83E67}</ProjectGuid>
     <RootNamespace>Framework</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <ProjectName>EndGine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -169,8 +170,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FreeType\lib;$(SolutionDir)build\Client\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Source.lib;Client.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)build\Source\$(Platform)\$(Configuration)\;$(SolutionDir)dependencies\DirectXTK\lib\$(Platform)\;$(SolutionDir)dependencies\FreeType\lib\$(Configuration)\;$(SolutionDir)build\Client\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Source.lib;Client.lib;D3DCompiler.lib;DXGI.lib;D3D11.lib;DirectXTK.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugEG|Win32'">

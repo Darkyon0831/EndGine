@@ -39,5 +39,11 @@
     <FxCompile Include="..\..\game\data\shaders\fullscreen_vertex.hlsl">
       <Filter>shaders</Filter>
     </FxCompile>
+    <FxCompile Include="..\..\game\data\shaders\font_simple_pixel.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\game\data\shaders\font_simple_vertex.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

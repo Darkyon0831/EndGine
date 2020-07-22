@@ -12,8 +12,8 @@ namespace EG
 	public:
 		WndSettings()
 			: m_wndName(String("EndGine"))
-			, m_wndWidht(1920)
-			, m_wndHeight(1080)
+			, m_wndWidht(3440)
+			, m_wndHeight(1440)
 			, m_fullscreen(false)
 			, m_vsync(false)
 		{}

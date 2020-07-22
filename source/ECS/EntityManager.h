@@ -18,7 +18,7 @@ namespace EG
 		~EntityManager();
 
 		template <typename T, typename... Args>
-		Entity* CreateEntity(Args... args);
+		T* CreateEntity(Args... args);
 
 		Entity* GetEntity(int entityID);
 		const std::map<int, Entity*>& GetEntities() const;
@@ -40,7 +40,7 @@ namespace EG
 	}
 
 	template <typename T, typename... Args>
-	Entity* EntityManager::CreateEntity(Args... args)
+	T* EntityManager::CreateEntity(Args... args)
 	{
 		PoolAllocator* poolAllocator = nullptr;
 		auto it = m_poolAllocators.find(typeid(T));
@@ -54,7 +54,7 @@ namespace EG
 			m_poolAllocators.insert(std::pair<std::type_index, PoolAllocator*>(typeid(T), poolAllocator));
 		}
 
-		Entity* entity = static_cast<Entity*>(poolAllocator->Alloc());
+		T* entity = static_cast<T*>(poolAllocator->Alloc());
 
 		if (entity == nullptr)
 			return entity;

@@ -143,7 +143,7 @@ EG::Matrix EG::CameraComponent::GetOrthogonalProjection() const
 {
 	Matrix projectionMatrix = Matrix::identity;
 
-	projectionMatrix.ApplyOrthoMatrix(m_viewPort.Width, m_viewPort.Height, 0, 1);
+	projectionMatrix.ApplyOrthoMatrixOffCenter(0, -m_viewPort.Width, m_viewPort.Height, 0, m_nearPlane, m_farPlane);
 
 	return projectionMatrix;
 }

@@ -14,6 +14,7 @@ namespace EG
 		~Texture();
 
 		void Load(const String& textureName);
+		void LoadFromMemory(float width, float height, char* buffer, int pitch, int slicePitch = 0);
 
 		ID3D11Texture2D* GetD3D11Texture() const { return m_pTexture; }
 		ID3D11ShaderResourceView* GetShaderResourceView() const { return m_pShaderResource; }

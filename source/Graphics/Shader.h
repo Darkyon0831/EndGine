@@ -56,6 +56,7 @@ namespace EG
 		ID3D11SamplerState* GetSamplerState() const { return m_pSamplerState; }
 		ID3D11Buffer* GetVertexConstantBuffer() const { return m_pConstantsVertex; }
 		ID3D11Buffer* GetPixelConstantBuffer() const { return m_pConstantsPixel; }
+		ID3D11BlendState* GetBlendState() const { return m_pBlendState; }
 		
 		void PrintError(ShaderStage errorSource) const;
 
@@ -65,6 +66,7 @@ namespace EG
 		
 	private:
 
+		ID3D11BlendState* m_pBlendState;
 		ID3D11RasterizerState* m_pRasterizerState;
 		ID3D11SamplerState* m_pSamplerState;
 		ID3D11InputLayout* m_pInputLayout;

@@ -2,135 +2,135 @@
 
 #include "Entities/GameObject.h"
 
-#include <fstream>
-#include "Globals/File/FileSystem.h"
-
-EG::TextComponent::TextComponent()
-	: m_text("")
+EG::TextComponent::TextComponent(EG::String fontFilePath)
+	: m_fontFilePath(fontFilePath)
+	, m_fontSize(18)
 {
-	m_pTextModel = GetGameObject()->CreateComponent<Model>();
-	m_pRenderComponent = GetGameObject()->CreateComponent<RenderComponent>();
-
-	m_pMesh = new Mesh();
-
-	Texture* pTexture = new Texture();
-	pTexture->Load("font/font.dds");
-
-	m_pMesh->GetMaterial().SetColormap(pTexture);
-	m_pMesh->GetMaterial().GetShader().Load("mesh_simple_vertex.hlsl", "mesh_simple_pixel.hlsl");
-
-	m_pTextModel->AddMesh(m_pMesh);
+	m_pModel = GetGameObject()->CreateComponent<EG::Model>();
+	m_pRenderComponent = GetGameObject()->CreateComponent<EG::RenderComponent>();
 }
 
 EG::TextComponent::~TextComponent()
 {
-	GetGameObject()->RemoveComponent<Model>();
-	GetGameObject()->RemoveComponent<RenderComponent>();
+	GetGameObject()->RemoveComponent<EG::Model>();
+	GetGameObject()->RemoveComponent<EG::RenderComponent>();
+
+	FT_Done_Face(m_face);
+	FT_Done_FreeType(m_library);
 }
 
-void EG::TextComponent::PostStart()
+void EG::TextComponent::PreStart()
 {
-	LoadFontFile();
-	BuildMesh();
+	SetupFreeType();
+	LoadCharacherData();
 }
 
 void EG::TextComponent::PostUpdate()
 {
+	if (m_oldText.Compare(m_text) == false)
+		LoadCharacherData();
+
 	BuildMesh();
-}
 
-void EG::TextComponent::LoadFontFile()
-{
-	const String filePath = FileSystem::GetInstance().GetDataLocationForPath("font/testFont.data");
-	
-	std::ifstream fileIn(filePath.GetString());
-	char temp;
-	CharacherIndexData characherIndexdata;
-	
-	while (fileIn.get(temp))
-	{
-		fileIn >> characherIndexdata.left;
-		fileIn >> characherIndexdata.right;
-		fileIn >> characherIndexdata.size.x;
-		fileIn >> characherIndexdata.size.y;
-
-		m_characherIndexData.push_back(characherIndexdata);
-	}
+	m_oldText = m_text;
 }
 
 void EG::TextComponent::BuildMesh()
 {
-	const int padding = 2;
-	const unsigned int vertexCount = (m_text.GetSize() - 1) * 4 * 2 - 4;
-	const unsigned int indexCount = (m_text.GetSize() - 1) * 6 * 2 - 6;
-
-	Mesh::Vertex* vertices = new Mesh::Vertex[vertexCount];
-	int* indecies = new int[indexCount];
-
-	float traverseX = 0;
-	int currentVertexIndex = 0;
-	int currentIndexIndex = 0;
-	
-	for (int i = 0; i < m_text.GetSize() - 1; i++)
+	if (m_oldText.Compare(m_text) == false)
 	{
-		const CharacherIndexData charData = m_characherIndexData.at(m_text[i] - 32);
+		EG::Vector3D position = EG::Vector3D(0.0f, 0.0f, 0.0f);
+		m_pModel->ClearMeshes();
 
-		vertices[currentVertexIndex].position = Vector3D(traverseX, charData.size.y / 2.0f, 0.0f);
-		vertices[currentVertexIndex].uv = Vector2D(charData.left, 0.0f);
-		currentVertexIndex++;
-		
-		vertices[currentVertexIndex].position = Vector3D(traverseX + charData.size.x, charData.size.y / 2.0f, 0.0f);
-		vertices[currentVertexIndex].uv = Vector2D(charData.right, 0.0f);
-		currentVertexIndex++;
-		
-		vertices[currentVertexIndex].position = Vector3D(traverseX + charData.size.x, -charData.size.y / 2.0f, 0.0f);
-		vertices[currentVertexIndex].uv = Vector2D(charData.right, 1.0f);
-		currentVertexIndex++;
-		
-		vertices[currentVertexIndex].position = Vector3D(traverseX, -charData.size.y / 2.0f, 0.0f);
-		vertices[currentVertexIndex].uv = Vector2D(charData.left, 1.0f);
-		currentVertexIndex++;
-		
-		indecies[currentIndexIndex++] = currentVertexIndex - 4;
-		indecies[currentIndexIndex++] = currentVertexIndex + 1 - 4;
-		indecies[currentIndexIndex++] = currentVertexIndex + 3 - 4;
-		indecies[currentIndexIndex++] = currentVertexIndex + 1 - 4;
-		indecies[currentIndexIndex++] = currentVertexIndex + 2 - 4;
-		indecies[currentIndexIndex++] = currentVertexIndex + 3 - 4;
-
-		traverseX += charData.size.x;
-		
-		// Add padding mesh, only if it is not the last char
-
-		if (i + 1 != m_text.GetSize() - 1)
+		for (int i = 0; i < m_text.GetSize() - 1; i++)
 		{
-			vertices[currentVertexIndex].position = Vector3D(traverseX, charData.size.y / 2.0f, 0.0f);
-			vertices[currentVertexIndex].uv = Vector2D(0.7f, 0.8f);
-			currentVertexIndex++;
+			SCharacher& characher = m_charachers.at(i);
 
-			vertices[currentVertexIndex].position = Vector3D(traverseX + padding, charData.size.y / 2.0f, 0.0f);
-			vertices[currentVertexIndex].uv = Vector2D(0.7f, 0.8f);
-			currentVertexIndex++;
+			EG::Mesh::Vertex* vertex = new EG::Mesh::Vertex[4];
 
-			vertices[currentVertexIndex].position = Vector3D(traverseX + padding, -charData.size.y / 2.0f, 0.0f);
-			vertices[currentVertexIndex].uv = Vector2D(0.7f, 0.8f);
-			currentVertexIndex++;
+			vertex[0].position = EG::Vector3D(position.x + characher.bearing.x, position.y + characher.size.y - (characher.size.y - characher.bearing.y), 0.0f);
+			vertex[1].position = EG::Vector3D(position.x + characher.bearing.x + characher.size.x, position.y + characher.size.y - (characher.size.y - characher.bearing.y), 0.0f);
+			vertex[2].position = EG::Vector3D(position.x + characher.bearing.x, position.y - (characher.size.y - characher.bearing.y), 0.0f);
+			vertex[3].position = EG::Vector3D(position.x + characher.bearing.x + characher.size.x, position.y - (characher.size.y - characher.bearing.y), 0.0f);
 
-			vertices[currentVertexIndex].position = Vector3D(traverseX, -charData.size.y / 2.0f, 0.0f);
-			vertices[currentVertexIndex].uv = Vector2D(0.7f, 0.8f);
-			currentVertexIndex++;
+			vertex[0].color = EG::Color(1.0f, 1.0f, 1.0f);
+			vertex[1].color = EG::Color(1.0f, 1.0f, 1.0f);
+			vertex[2].color = EG::Color(1.0f, 1.0f, 1.0f);
+			vertex[3].color = EG::Color(1.0f, 1.0f, 1.0f);
 
-			indecies[currentIndexIndex++] = currentVertexIndex - 4;
-			indecies[currentIndexIndex++] = currentVertexIndex + 1 - 4;
-			indecies[currentIndexIndex++] = currentVertexIndex + 3 - 4;
-			indecies[currentIndexIndex++] = currentVertexIndex + 1 - 4;
-			indecies[currentIndexIndex++] = currentVertexIndex + 2 - 4;
-			indecies[currentIndexIndex++] = currentVertexIndex + 3 - 4;
+			vertex[0].uv = Vector2D(0.0f, 0.0f); 
+			vertex[1].uv = Vector2D(1.0f, 0.0f); 
+			vertex[2].uv = Vector2D(0.0f, 1.0f); 
+			vertex[3].uv = Vector2D(1.0f, 1.0f); 
 
-			traverseX += padding;
+			int* index = new int[6];
+
+			index[0] = 0;
+			index[1] = 1;
+			index[2] = 2;
+			index[3] = 1;
+			index[4] = 3;
+			index[5] = 2;
+
+			Mesh* pMesh = new Mesh();
+			pMesh->GetMaterial().SetColormap(characher.pTexture);
+			pMesh->SetVertexArray(vertex, 4);
+			pMesh->SetIndexArray(index, 6);
+
+			pMesh->GetMaterial().SetColor(m_color);
+			pMesh->GetMaterial().GetShader().Load("font_simple_vertex.hlsl", "font_simple_pixel.hlsl");
+
+			m_pModel->AddMesh(pMesh);
+
+			position.x += characher.advance;
 		}
 	}
-
-	m_pMesh->SetVertexArray(vertices, vertexCount);
-	m_pMesh->SetIndexArray(indecies, indexCount);
 }
+
+void EG::TextComponent::LoadCharacherData()
+{
+	m_charachers.clear();
+
+	for (int i = 0; i < m_text.GetSize() - 1; i++)
+	{
+		SCharacher characher;
+		characher.characher = m_text.GetString()[i];
+		
+		FT_Load_Char(m_face, m_text[i], FT_LOAD_RENDER);
+
+		characher.size.x = m_face->glyph->bitmap.width;
+		characher.size.y = m_face->glyph->bitmap.rows;
+		characher.bearing.x = m_face->glyph->bitmap_left;
+		characher.bearing.y = m_face->glyph->bitmap_top;
+		characher.advance = m_face->glyph->advance.x >> 6;
+
+		characher.pTexture = new Texture();
+
+		if (m_text[i] != ' ')
+		{
+			characher.pTexture->LoadFromMemory(
+			characher.size.x, 
+			characher.size.y, 
+			(char*)m_face->glyph->bitmap.buffer,
+			m_face->glyph->bitmap.pitch);
+		}
+
+		m_charachers.push_back(characher);
+	}
+}
+
+void EG::TextComponent::SetupFreeType()
+{
+	if (FT_Init_FreeType(&m_library))
+	{
+		// TODO: Add error handling here
+	}
+
+	if (FT_New_Face(m_library, m_fontFilePath.GetString(), 0, &m_face))
+	{
+		// TODO: Add error handling here
+	}
+
+	FT_Set_Pixel_Sizes(m_face, 0, m_fontSize);
+}
+

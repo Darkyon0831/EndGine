@@ -187,6 +187,7 @@ void EG::RenderQueue::RenderPerspective(
 				ID3D11Buffer* pixelConstantBuffers[2];
 				pixelConstantBuffers[1] = pPixelConstantBuffer;
 
+				pDeviceContext->OMSetBlendState(rShader.GetBlendState(), nullptr, 0xffffff);
 				pDeviceContext->IASetInputLayout(rShader.GetInputLayout());
 				pDeviceContext->VSSetShader(rShader.GetVertexShader(), nullptr, 0);
 				pDeviceContext->PSSetShader(rShader.GetPixelShader(), nullptr, 0);
@@ -397,8 +398,8 @@ void EG::RenderQueue::Render()
 	cameraIT = ComponentManager::GetInstance().Begin<CameraComponent>();
 
 	m_fullscreenRender.viewMatrix.ApplyViewMatrix(Vector3D::Zero, Vector3D(0.0f, 0.0f, 1.0f));
-	m_fullscreenRender.projectionMatrix.ApplyOrthoMatrix(cameraIT->m_viewPort.Width, cameraIT->m_viewPort.Height, 0, 1);
-	
+	m_fullscreenRender.projectionMatrix.ApplyOrthoMatrix(cameraIT->m_viewPort.Width, cameraIT->m_viewPort.Height, -1, 1);
+
 	FullscreenConstantsVertex fullscreenConstants;
 	fullscreenConstants.worldMatrix = Matrix::identity;
 	fullscreenConstants.viewMatrix = m_fullscreenRender.viewMatrix.Transpose(true);
@@ -410,7 +411,6 @@ void EG::RenderQueue::Render()
 	
 	for (; cameraIT != cameraEnd; cameraIT++)
 		textures.push_back(cameraIT->GetTexture()->GetShaderResourceView());
-
 
 	ID3D11Buffer* bufferPointers[2];
 	ID3D11SamplerState* pSamplerState = rFullscreenShader.GetSamplerState();

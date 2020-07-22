@@ -197,6 +197,8 @@
   <ItemGroup>
     <FxCompile Include="..\..\game\data\shaders\EGBase_pixel.hlsl" />
     <FxCompile Include="..\..\game\data\shaders\EGBase_vertex.hlsl" />
+    <FxCompile Include="..\..\game\data\shaders\font_simple_pixel.hlsl" />
+    <FxCompile Include="..\..\game\data\shaders\font_simple_vertex.hlsl" />
     <FxCompile Include="..\..\game\data\shaders\fullscreen_pixel.hlsl" />
     <FxCompile Include="..\..\game\data\shaders\fullscreen_vertex.hlsl" />
     <FxCompile Include="..\..\game\data\shaders\helpers.hlsl">

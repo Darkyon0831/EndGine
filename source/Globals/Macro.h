@@ -3,6 +3,7 @@
 #include <cassert>
 #include "Globals/String.h"
 #include <string>
+#include <iostream>
 
 inline void CheckHRError(const char* filename, const int lineNumber, const char* functionName, HRESULT resultCode)
 {
